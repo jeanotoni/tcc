@@ -1,0 +1,73 @@
+/* -------------------------------------------------------------------------- *\
+    HELPERS
+\* -------------------------------------------------------------------------- */
+.no-margin{
+    margin: 0 !important;
+}
+
+body{
+    background: #e7e7e7;
+}
+.collapsible-body{
+    background: #f7f7f7;
+}
+
+#nav{
+    width: 240px;
+}
+
+main{
+    width: calc(100% - 240px);
+    float: right;
+    padding: 16px;
+}
+
+
+
+div#top-page{
+    height: 200px;
+    width: 100%;
+    z-index: -9999;
+    top: 0;
+    position: absolute;
+}
+h3{
+    padding: 16px 0;
+}
+
+h3 a.btn{
+    font-size: 14.5px !important;
+    line-height: 46px;
+    height: 46px;
+}
+h5 a.btn{
+    font-size: 10px !important;
+    line-height: 26px;
+    height: 26px;
+    padding: 0 1.5rem !important;
+}
+
+span.status{
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    line-height: 77px;
+}
+
+h5#tarefa a{
+    padding: 20px !important;
+    line-height: 5px !important;
+}
+
+h1.title-modal {
+    font-size: 25px !important;
+    display: inline;    
+}
+
+input {
+    padding: 3px 5px !important;
+    border-radius: 3px !important;
+    border: 1px solid #ececec !important;
+    height: 30px !important;
+}

@@ -1,0 +1,101 @@
+<main ng-controller="animalController">
+    <!-- Modal Trigger -->
+    <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="mdi mdi-plus"></i>Novo</a>
+    <!-- Modal Structure -->
+    <div id="newAnimal" class="modal">
+        <div class="modal-content">
+            <h1 class="title-modal centered">Cadastrar Animal</h1>
+            <a href="#" style="color: black" class="closeModal right"><i class="mdi mdi-close"></i></a>
+            <div class="row">
+                <div class="col s12">
+                    <form method="POST" action="#">
+                        <div class="row" ng-show="!edit.id">
+                            <div class="col s6">
+                                <p>
+                                    <input ng-model="chekboxInsert" type="checkbox" id="teste" />
+                                    <label for="teste">Cadastrar Vários?</label>
+                                </p>
+                            </div>
+                        </div>
+                        <div ng-show="!chekboxInsert">
+                            <div class="col s6">
+                                <label class="active" for="apelido">Apelido</label>
+                                <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
+                            </div>
+                            <div class="col s6">
+                                <label class="active" for="dataNascimento">Data de Nascimento</label>
+                                <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" required/>
+                            </div>
+                            <div class="col s6">
+                                <label class="active" for="custo">Custo</label>
+                                <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
+                            </div>
+                            <div class="col s6">
+                                <label class="active" for="statusVenda">Status de Venda</label>
+                                <input class="validate" type="text" name="statusVenda" ng-model="edit.statusVenda" required/>
+                            </div>
+                            <div class="col s6">
+                                <label class="active" for="origem">Origem</label>
+                                <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
+                            </div>
+                            <div class="col s12">
+                                <label class="active" for="observacao">Observação</label>
+                                <input class="validate" type="text" name="observacao" ng-model="edit.observacao" required/>
+                            </div>
+                        </div>
+                        <div ng-show="chekboxInsert">
+                            <div class="col s6">
+                                <label class="active" for="statusVenda">Quantidade</label>
+                                <input class="validate" type="number" name="quantidade" ng-model="edit.quantidade" placeholder="Digite a quantidade" required/>
+                            </div>
+                            <div class="col s6">
+                                <label class="active" for="custoTotal">Custo Total</label>
+                                <input class="validate" type="number" name="custoTotal" ng-model="edit.custoTotal" placeholder="Será divido pela quantidade" required/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn modal-action modal-close waves-effect waves-green"  ng-show="!chekboxInsert" ng-click="addAnimal()">Salvar Animal</a>
+                            <a class="btn modal-action modal-close waves-effect waves-green" ng-show="chekboxInsert" ng-click="insertMultiple()">Inserir Vários</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    <div>
+            <h4 ng-bind="app"></h4>
+            <a href="#" ng-click="open()">Teste</a>
+        </div>-->
+
+    <table class="striped centered responsive-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Data de Cadastro</th>
+                <th>Data de Nascimento</th>
+                <th>Custo</th>
+                <th>Status da Venda</th>
+                <th>Origem</th>
+                <th>Vender?</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="animal in animais">
+                <td>{{animal.id}}</td>
+                <td>{{animal.dataCadastro| dateTcc}}</td>
+                <td>{{animal.dataNascimento}}</td>
+                <td>{{animal.custo| currency : 'R$ '}}</td>
+                <td>{{animal.statusVenda}}</td>
+                <td>{{animal.origem}}</td>
+                <td>
+                    <input ng-model="sell[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                    <label for="{{animal.id}}"></label>
+                </td>
+                <td><a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<!-- Usa-se a variável $animal pq no model uso o método extract() que transforma todos os indices de um array em uma variável -->

@@ -1,0 +1,56 @@
+
+<main>
+<!-- Modal Trigger -->
+<a class="right waves-effect waves-light btn modal-trigger" href="#newRacao"><i class="material-icons">add</i>Novo</a>
+<!-- Modal Structure -->
+<div id="newRacao" class="modal">
+    <div class="modal-content">
+        <h4>Cadastrar Ração</h4>
+        <div class="row">
+            <div class="col s12">
+                <form method="POST" action="#">
+                    <input type="text" name="nome" placeholder="Nome" required/>
+                    <input type="text" name="descricao" placeholder="Descrição" required/>
+                    <div class="modal-footer">
+                        <button class="btn modal-action modal-close waves-effect waves-green" name="salvarRacao"><i class="material-icons">save</i>Salvar Ração</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php 
+
+if(isset($feedback)): ?>
+    <h1><?= $feedback; ?></h1>
+<?php endif;
+
+if (!empty($racoes)): ?>
+    <table class="striped centered responsive-table">
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <!--<th>Descrição</th>-->
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($racoes as $racao): ?>
+                <tr>
+                    <td><?= $racao['id'] ?></td>
+                    <td><?= $racao['nome'] ?></td>
+                    <!--<td class="truncate"><?= $racao['descricao'] ?></td>-->
+                </tr>
+                
+            <?php endforeach; ?>
+        </tbody>
+        
+    </table>
+    <?php
+ endif;
+?>
+</main>
+
+
