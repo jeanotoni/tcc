@@ -23,12 +23,17 @@
                             <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
                         </div>
                         <div class="col s6">
-                            <label class="active" for="situacao">Situação</label>
-                            <input class="validate" type="text" name="situacao" ng-model="model.situacao" required/>
-                        </div>
-                        <div class="col s6">
                             <label class="active" for="situacao">Clientes</label>
                             <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
+                        </div>
+                        <div class="col s12">
+                            <label class="active" for="situacao">Animais</label>
+                            <!--{{animais}}-->
+                            <div ng-repeat="animal in animais">
+                                <input ng-model="sell[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                                <label for="{{animal.id}}">{{animal.id}}</label>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i> Adicionar Pedido</a>

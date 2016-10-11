@@ -19,45 +19,56 @@ class pedido extends controller implements \interfaces\controller {
 
     public function salvar() {
         $input = file_get_contents('php://input');
-
         $request = (array) json_decode($input);
         
-        $request->dataCriacao = date('d-m-y', strtotime($request->dataCriacao));
-
-        $rs = $this->model->salvar($request);
         
+        $request['dataCriacao'] = date('d-m-y', strtotime($request['dataCriacao']));
+        
+        debug($request);
+        
+        $rs = $this->model->salvar($request);
+
         // quando apontar para o índice $data['id'] ele me retornará todos os dados do pedido
         // $data = array('id' => $rs);
-        
+
         echo $this->toJson($rs);
         exit();
     }
-    
 
-//    ANTIGO MODO DE SALVAR SEM USAR ANGULAR
-//    public function add() {
-//        $dados = array();
-//        if (isset($_POST['salvarAnimal'])) {
-//            $dados = array(
-//                'apelido' => $_POST['apelido'],
-//                'dataNascimento' => $_POST['dataNascimento'],
-//                'custo' => $_POST['custo'],
-//                'statusVenda' => $_POST['statusVenda'],
-//                'observacao' => $_POST['observacao']
-//            );
-//            if (empty($_POST['id'])) {
-//                $rs = $this->model->salvar($dados);
-//                if ($rs > 0) {
-//                    $dados['feedback'] = "Animal INSERIDO com sucesso!";
-//                }
-//            } else {
-//                $rs = $this->model->editar($dados);
-//                if ($rs) {
-//                    $dados['feedback'] = "Animal EDITADO com sucesso!";
-//                }
-//            }
-//        }
-//    }
+    public function sellAnimal() {
+        $input = file_get_contents('php://input');
+
+        $dados = (array) json_decode($input);
+        
+        debug($dados);
+
+        $this->model->sellAnimal($dados, $idPedido);
+    }
+
+    /*  ANTIGO MODO DE SALVAR SEM USAR ANGULAR
+    public function add() {
+        $dados = array();
+        if (isset($_POST['salvarAnimal'])) {
+            $dados = array(
+                'apelido' => $_POST['apelido'],
+                'dataNascimento' => $_POST['dataNascimento'],
+                'custo' => $_POST['custo'],
+                'statusVenda' => $_POST['statusVenda'],
+                'observacao' => $_POST['observacao']
+            );
+            if (empty($_POST['id'])) {
+                $rs = $this->model->salvar($dados);
+                if ($rs > 0) {
+                    $dados['feedback'] = "Animal INSERIDO com sucesso!";
+                }
+            } else {
+                $rs = $this->model->editar($dados);
+                if ($rs) {
+                    $dados['feedback'] = "Animal EDITADO com sucesso!";
+                }
+            }
+        }
+    } */
 
     public function listar() {
         $dados = $this->model->listar();

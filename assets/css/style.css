@@ -71,3 +71,19 @@ input {
     border: 1px solid #ececec !important;
     height: 30px !important;
 }
+
+#toast-container{
+    min-width: 40%;
+    right: 30%;
+}
+
+.toast{
+    float: none !important;
+}
+.toast-success{
+    background-color: #009688 !important;
+}
+
+.toast-error{
+    background-color: #f44336  !important;
+}

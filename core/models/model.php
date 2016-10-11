@@ -205,6 +205,7 @@ class model {
                 break;
             case "ALL":
                 $rs = $exec->fetchAll($fethMethod);
+//                debug($rs);
                 break;            
         }
 

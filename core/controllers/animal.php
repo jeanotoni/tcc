@@ -21,19 +21,19 @@ class animal extends controller implements \interfaces\controller {
         $input = file_get_contents('php://input');
 
         $dados = (array) json_decode($input);
-        
+
         $rs = $this->model->salvar($dados);
 
         $rs = array('id' => $rs);
 
         echo $this->toJson($rs);
     }
-    
+
     public function insertMultiple() {
         $input = file_get_contents('php://input');
 
         $dados = (array) json_decode($input);
-        
+
         $rs = $this->model->insertMultiple($dados);
 
         echo $this->toJson($rs);
@@ -83,5 +83,7 @@ class animal extends controller implements \interfaces\controller {
             }
         }
     }
+
+    
 
 }

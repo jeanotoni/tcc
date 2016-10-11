@@ -1,10 +1,10 @@
 (function () {
     'user-strict';
-    angular.module("tcc").controller("animalController", function ($scope, animalService) {
+    angular.module("tcc").controller("animalController", function ($scope, animalService, pedidoService) {
 
         $scope.insertMultiple = function () {
             animalService.insertMultiple($scope.edit).then(function (response) {
-                if(response.data){
+                if (response.data) {
                     listAnimal();
                 }
             });
@@ -16,12 +16,18 @@
             });
         };
         listAnimal();
-        
+
         $scope.sell = [];
-        $scope.$watch('sell', function(val){
+        $scope.$watch('sell', function (val) {
             console.log(val);
         }, true);
-        
+
+        $scope.sellAnimals = function () {
+            pedidoService.sellAnimal($scope.sell).then(function (response) {
+                console.log(response);
+                listAnimal();
+            });
+        };
 
         $scope.modal = function (animal) {
             $scope.chekboxInsert = false;
@@ -48,9 +54,25 @@
             var rs = confirm("Deseja realmente excluir este animal?");
             if (rs) {
                 animalService.excluirAnimal(id).then(function (response) {
-                    listAnimal();
+                    if (response.data) {
+                        Materialize.toast(response.data, 4000, 'toast-success');
+                        listAnimal();
+                    }
                 });
             }
+        };
+
+        // Lista os clientes para efetuar uma venda
+        var listarClientes = function () {
+            pedidoService.listarClientes().then(function (response) {
+                $scope.clientes = response.data;
+            });
+        };
+        listarClientes();
+
+
+        $scope.openSellModal = function () {
+            $('#sell-modal').openModal({close_esc: true});
         };
 
 

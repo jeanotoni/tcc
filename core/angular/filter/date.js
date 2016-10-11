@@ -5,7 +5,7 @@
  * um objeto de data e logo em seguida aplica o filtro com o formato descrito na view
  * Retorna a data filtrada com um formato definido
  **/
-angular.module('tcc').filter('dateTcc', function ($filter) {
+angular.module('tcc').filter('tccDate', function ($filter) {
     return function (date, format) {
         var formatDate = format ? format : "dd/MM/yyyy";
 

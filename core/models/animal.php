@@ -6,6 +6,11 @@ namespace models;
 
 class animal extends model implements \interfaces\model {
 
+    /**
+     * statusVenda:
+     * 1: aberto
+     * 2: vendido
+     */
 //    aqui seta-se a tabela que será usada neste model animal
     function __construct() {
         parent::__construct('animal');
@@ -41,7 +46,7 @@ class animal extends model implements \interfaces\model {
      */
     public function salvar($dados) {
         // trata para pegar somente o que for data e ignorar o restante que são as horas
-        if(isset($dados['dataNascimento'])){
+        if (isset($dados['dataNascimento'])) {
             $dados['dataNascimento'] = date('Y-m-d', strtotime(substr($dados['dataNascimento'], 0, 10)));
         }
         if (empty($dados['id'])) {
@@ -110,7 +115,11 @@ class animal extends model implements \interfaces\model {
      * @return $rs
      */
     public function listar() {
-        $rs = $this->select()->orderBy('id DESC')->exec('ALL');
+        $w = array(
+            "statusVenda = ?" => 1
+        );
+
+        $rs = $this->select()->where($w)->orderBy('id DESC')->exec('ALL');
         return $rs;
     }
 
@@ -134,5 +143,7 @@ class animal extends model implements \interfaces\model {
             return true;
         }
     }
+
+    
 
 }
