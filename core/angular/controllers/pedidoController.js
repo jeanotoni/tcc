@@ -12,7 +12,7 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
             $scope.model = angular.copy(pedido);
         } else {
             $scope.model = {};
-            $scope.model.dataCriacao = new Date();
+//            $scope.model.dataCriacao = new Date();
         }
         $('#newPedido').openModal();
     };
@@ -31,8 +31,6 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
 //    };
     
     
-    // TA DANDO PAU TEM QUE ARRUMAR AINDA ESSA PARTE PQ UM É ARRAY E O OUTRO É OBJETO
-    // FALTA ARRUMAR CHAMADAS NO MODEL E NO CONTROLLER PRA PEGAR O ID DO PEDIDO
     $scope.addPedido = function () {
         var params = {
             itens: $scope.sell,

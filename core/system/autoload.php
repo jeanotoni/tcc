@@ -4,7 +4,7 @@ function autoload($classe){
 //    echo $classe . ' - ';
     $name = explode("\\", $classe);
     if(count($name) == 2){
-        $path = CORE . $name[0] . '/' . $name[1] . '.php';
+        $path = CORE . strtolower($name[0]) . '/' . strtolower($name[1]) . '.php';
     }else{
         $path = CORE . 'system/' . $classe . '.php';
     }

@@ -18,13 +18,12 @@ class pedido extends model implements \interfaces\model {
      * @return no caso de inserção: retorna o último id inserido, e no caso de edição o id do animal editado
      */
     public function salvar($dados) {
-        
-        debug($dados);
-        
         $this->setTable('pedido');
-        if (empty($dados['id'])) {
-            $this->insert($dados)->exec();
+        if (empty($dados['model']->id)) {
+            $this->insert($dados['model'])->exec();
             $rs = $this->getProperties();
+
+            $this->sellAnimal($dados['itens'], $rs['lastId']);
 
             if ($rs['error'] === 0) {
                 return $rs['lastId'];
@@ -121,8 +120,8 @@ class pedido extends model implements \interfaces\model {
      * @return retorna true caso não dê erro
      */
     public function sellAnimal($dados, $idPedido) {
-        $this->setTable('animal');
         foreach ($dados as $key => $value) {
+            echo 'key: ' . $key . ' - ' . 'Value' . $value . '<br>';
             if ($value == 1) {
                 $id = $key;
                 $u = array(
@@ -131,6 +130,7 @@ class pedido extends model implements \interfaces\model {
                 $w = array(
                     "id = ?" => $id
                 );
+                $this->setTable('animal');
                 $rs = $this->update($u)->where($w)->exec();
 
                 $this->addItem($id, $idPedido);
@@ -144,13 +144,13 @@ class pedido extends model implements \interfaces\model {
     }
 
     public function addItem($id, $idPedido) {
-        $this->setTable('pedidoItem');
-        
+
         $i = array(
             'idAnimal' => $id,
             'idPedido' => $idPedido
         );
 
+        $this->setTable('pedidoitem');
         $this->insert($i)->exec();
     }
 

@@ -21,10 +21,7 @@ class pedido extends controller implements \interfaces\controller {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
         
-        
-        $request['dataCriacao'] = date('d-m-y', strtotime($request['dataCriacao']));
-        
-        debug($request);
+//        $request['dataCriacao'] = date('d-m-y', strtotime($request['dataCriacao']));
         
         $rs = $this->model->salvar($request);
 

@@ -30,7 +30,11 @@ class model {
         $this->table = $tableName . ($alias ? ' AS ' . $alias : '');
     }
 
-    protected function insert($args = array()) {
+    protected function insert($args) {
+        
+        if(!is_array($args)){
+            $args = (array) $args;
+        }
 
         $this->sql = "INSERT INTO $this->table ";
 
@@ -183,14 +187,11 @@ class model {
 
     protected function exec($fetch = NULL, $fethMethod = \PDO::FETCH_ASSOC) {
 //        debug($this->conn);
-        
 //        echo "<pre>";
 //        print_r($this->sql);
 //        echo "</pre>";
-        
-        $query = str_replace(';', '', $this->sql) . ';';
 
-//        echo $query;
+        $query = str_replace(';', '', $this->sql) . ';';
 
         try {
             $exec = $this->conn->query($query);
@@ -205,10 +206,9 @@ class model {
                 break;
             case "ALL":
                 $rs = $exec->fetchAll($fethMethod);
-//                debug($rs);
-                break;            
+                break;
         }
-
+//        echo $query;
         $this->properties['rowCount'] = $exec->rowCount();
         $this->properties['lastId'] = $this->conn->lastInsertId();
         $this->properties['error'] = (int) $exec->errorCode();
