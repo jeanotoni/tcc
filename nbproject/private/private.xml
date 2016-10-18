@@ -8,20 +8,12 @@
             <file>file:/C:/wamp/www/tcc/core/views/animal/animal.phtml</file>
             <file>file:/C:/wamp/www/tcc/core/controllers/animal.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/animal.php</file>
-            <file>file:/C:/wamp/www/tcc/assets/css/style.css</file>
-            <file>file:/C:/wamp/www/tcc/core/views/vacina.phtml</file>
-            <file>file:/C:/wamp/www/tcc/core/controllers/vacina.php</file>
-            <file>file:/C:/wamp/www/tcc/core/models/vacina.php</file>
-            <file>file:/C:/wamp/www/tcc/core/angular/controllers/vacinaController.js</file>
-            <file>file:/C:/wamp/www/tcc/core/angular/services/vacinaService.js</file>
-            <file>file:/C:/wamp/www/tcc/core/system/route.php</file>
+            <file>file:/C:/wamp/www/tcc/core/views/pedido.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/controllers/pedidoController.js</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/services/pedidoService.js</file>
             <file>file:/C:/wamp/www/tcc/core/controllers/pedido.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/pedido.php</file>
-            <file>file:/C:/wamp/www/tcc/core/angular/controllers/pedidoController.js</file>
-            <file>file:/C:/wamp/www/tcc/core/models/model.php</file>
-            <file>file:/C:/wamp/www/tcc/core/views/includes/header.phtml</file>
-            <file>file:/C:/wamp/www/tcc/core/views/includes/footer.phtml</file>
-            <file>file:/C:/wamp/www/tcc/core/system/autoload.php</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/filter/date.js</file>
         </group>
     </open-files>
 </project-private>
