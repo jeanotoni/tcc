@@ -116,7 +116,7 @@ class animal extends model implements \interfaces\model {
      */
     public function listar() {
         $w = array(
-            "statusVenda = ?" => 1
+            "statusVenda = ?" => 0
         );
 
         $rs = $this->select()->where($w)->orderBy('id DESC')->exec('ALL');

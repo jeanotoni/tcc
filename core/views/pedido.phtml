@@ -14,10 +14,10 @@
                             <label class="active" for="codigo">Nº do Documento</label>
                             <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
                         </div>
-                        <div class="col s6">
+<!--                        <div class="col s6">
                             <label class="active" for="dataCriacao">Data de Criação</label>
                             <input class="validate" type="date" name="dataCriacao" ng-model="model.dataCriacao" required/>
-                        </div>
+                        </div>-->
                         <div class="col s6">
                             <label class="active" for="valorTotal">Valor Total</label>
                             <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
@@ -60,7 +60,7 @@
                 <td>{{pedido.id}}</td>
                 <td>{{pedido.numeroDocumento}}</td>
                 <td>{{pedido.nomeCliente}}</td>
-                <td>{{pedido.dataCriacao| date : "dd/MM/yyyy"}}</td>
+                <td>{{pedido.dataCriacao| tccDate : "dd/MM/yyyy"}}</td>
                 <td>{{pedido.valorTotal| currency: "R$ " }}</td>
                 <td>{{pedido.situacao}}</td>
                 <td><a href="#" ng-click="openModal(pedido)">Editar</a> | <a style="cursor: pointer" ng-click="excluir(pedido.id)">Excluir</a></td>

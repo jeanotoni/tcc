@@ -20,9 +20,12 @@ class pedido extends model implements \interfaces\model {
     public function salvar($dados) {
         $this->setTable('pedido');
         if (empty($dados['model']->id)) {
+            //tirando a hora do timestamp
+//            $dados['model']->dataCriacao = substr($dados['model']->dataCriacao, 0, 10);
+            
             $this->insert($dados['model'])->exec();
             $rs = $this->getProperties();
-
+            
             $this->sellAnimal($dados['itens'], $rs['lastId']);
 
             if ($rs['error'] === 0) {
@@ -121,11 +124,11 @@ class pedido extends model implements \interfaces\model {
      */
     public function sellAnimal($dados, $idPedido) {
         foreach ($dados as $key => $value) {
-            echo 'key: ' . $key . ' - ' . 'Value' . $value . '<br>';
+//            echo 'key: ' . $key . ' - ' . 'Value' . $value . '<br>';
             if ($value == 1) {
                 $id = $key;
                 $u = array(
-                    "statusVenda" => 2
+                    "statusVenda" => 1
                 );
                 $w = array(
                     "id = ?" => $id
@@ -144,7 +147,6 @@ class pedido extends model implements \interfaces\model {
     }
 
     public function addItem($id, $idPedido) {
-
         $i = array(
             'idAnimal' => $id,
             'idPedido' => $idPedido

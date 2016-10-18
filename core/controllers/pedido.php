@@ -19,11 +19,11 @@ class pedido extends controller implements \interfaces\controller {
 
     public function salvar() {
         $input = file_get_contents('php://input');
-        $request = (array) json_decode($input);
+        $dados = (array) json_decode($input);
         
 //        $request['dataCriacao'] = date('d-m-y', strtotime($request['dataCriacao']));
         
-        $rs = $this->model->salvar($request);
+        $rs = $this->model->salvar($dados);
 
         // quando apontar para o índice $data['id'] ele me retornará todos os dados do pedido
         // $data = array('id' => $rs);
