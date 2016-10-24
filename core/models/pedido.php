@@ -22,10 +22,10 @@ class pedido extends model implements \interfaces\model {
         if (empty($dados['model']->id)) {
             //tirando a hora do timestamp
 //            $dados['model']->dataCriacao = substr($dados['model']->dataCriacao, 0, 10);
-            
+
             $this->insert($dados['model'])->exec();
             $rs = $this->getProperties();
-            
+
             $this->sellAnimal($dados['itens'], $rs['lastId']);
 
             if ($rs['error'] === 0) {

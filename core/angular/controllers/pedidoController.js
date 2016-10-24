@@ -12,7 +12,7 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
             $scope.model = angular.copy(pedido);
         } else {
             $scope.model = {};
-//            $scope.model.dataCriacao = new Date();
+        // $scope.model.dataCriacao = new Date();
         }
         $('#newPedido').openModal();
     };
@@ -41,7 +41,9 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
                 listPedido();
             }
             $scope.model = {};
-//            $scope.model.$setPristine();
+            $scope.sell = {};
+            listarAnimais();
+//            $scope.formPedido.$setPristine();
         });
     };
 

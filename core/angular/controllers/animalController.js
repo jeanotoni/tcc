@@ -22,10 +22,18 @@
             console.log(val);
         }, true);
 
-        $scope.sellAnimals = function () {
-            pedidoService.sellAnimal($scope.sell).then(function (response) {
+        $scope.addPedido = function () {
+            var params = {
+                itens: $scope.sell,
+                model: $scope.model
+            };
+            pedidoService.salvarPedido(params).then(function (response) {
+                if (response.data) {
                 console.log(response);
+                $scope.model = {};
+                $scope.sell = {};
                 listAnimal();
+                }
             });
         };
 

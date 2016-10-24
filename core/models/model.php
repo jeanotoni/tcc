@@ -209,6 +209,7 @@ class model {
                 break;
         }
 //        echo $query;
+//        exit();
         $this->properties['rowCount'] = $exec->rowCount();
         $this->properties['lastId'] = $this->conn->lastInsertId();
         $this->properties['error'] = (int) $exec->errorCode();

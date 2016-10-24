@@ -73,22 +73,22 @@
                     <form name="formPedido" method="POST" action="#">
                         <div class="col s6">
                             <label class="active" for="codigo">Nº do Documento</label>
-                            <input class="validate" id="apelido" type="text" name="codigo" ng-model="sell.numeroDocumento" required/>
+                            <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="dataCriacao">Data de Criação</label>
-                            <input class="validate" type="date" name="dataCriacao" ng-model="sell.dataCriacao" required/>
+                            <input class="validate" type="date" name="dataCriacao" ng-model="model.dataCriacao" required/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="valorTotal">Valor Total</label>
-                            <input class="validate" type="number" name="valorTotal" ng-model="sell.valorTotal" required/>
+                            <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="situacao">Clientes</label>
-                            <select class="browser-default" ng-model="sell.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
+                            <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
                         </div>
                         <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="sellAnimals()"><i class="mdi mdi-check"></i>Adicionar Pedido</a>
+                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i>Adicionar Pedido</a>
                         </div>
                     </form>
                 </div>
