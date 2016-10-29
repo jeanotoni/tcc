@@ -1,0 +1,67 @@
+<main ng-controller="vacinaController">
+    <a class="right waves-effect waves-light btn" ng-click="openAplicarVacinaModal()" style="margin-right: 10px;">
+        <i class="mdi mdi-needle"></i>Nova Aplicação
+    </a>
+
+    <!-- MODAL APLICAR VACINA -->
+    <div id="aplicar-vacina-modal" class="modal">
+        <div class="modal-content">
+            <h1 class="title-modal centered">Aplicar Vacina</h1>
+            <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
+            <div class="row">
+                <div class="col s12">
+                    <form method="POST" action="#">
+                        <div class="col s12 m6">
+                            <label class="active" for="descricao">Descrição</label>
+                            <input class="validate" type="text" name="descricao" ng-model="model.descricao" required/>
+                        </div>
+                        <div class="col s12 m6">
+                            <label class="active" for="dataAplicacao">Data da Aplicação</label>
+                            <input class="validate" type="date" name="dataAplicacao" ng-model="model.dataAplicacao" required/>
+                        </div>
+                        <div class="col s12 m6">
+                            <label class="active" for="vacina">Vacinas</label>
+                            <select class="browser-default" ng-model="model.idVacina" ng-options="vacina.id as vacina.nome for vacina in vacinas" ng-init="resetSelect()"></select>
+                        </div>
+                        <div class="col s12">
+                            <br>
+                            <label class="active">Animais</label>
+                            <p>Selecione os animais que deseja vacinar.</p>
+                            <div ng-repeat="animal in animais">
+                                <div class="col s6 m3">
+                                    <input ng-model="list[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                                    <label for="{{animal.id}}">{{animal.id}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="vaccinateAnimals()"><i class="mdi mdi-check"></i>Adicionar Aplicação</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="striped centered responsive-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descrição</th>
+                <th>Data de Aplicação</th>
+                <th>Vacina</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="aplicacao in vacinaAplicacao">
+                <td>{{aplicacao.id}}</td>
+                <td>{{aplicacao.descricao}}</td>
+                <td>{{aplicacao.dataAplicacao| tccDate}}</td>
+                <td>{{aplicacao.idVacina}}</td>
+                <td><a style="cursor: pointer" ng-click="modalAplicacao(aplicacao)">Editar</a> | <a style="cursor: pointer" ng-click="delete(aplicacao.id)">Excluir</a></td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<!-- Usa-se a variável $animal pq no model uso o método extract() que transforma todos os indices de um array em uma variável -->

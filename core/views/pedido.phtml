@@ -1,39 +1,43 @@
 <main ng-controller="pedidoController">
     <!-- Modal Trigger -->
     <a class="right waves-effect waves-light btn" ng-click="openModal()"><i class="mdi mdi-plus"></i>Novo</a>
-    <!-- Modal Structure -->
+
+    <!-- MODAL NOVO PEDIDO -->
     <div id="newPedido" class="modal">
         <div class="modal-content">
-            <h1 class="title-modal">Inserir Pedido
-                <a href="#" style="color: black" class="closeModal right"><i class="mdi mdi-close"></i></a>
+            <h1 class="title-modal">
+                Inserir Pedido
+                <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
             </h1>
             <div class="row">
                 <div class="col s12">
                     <form name="formPedido" method="POST" action="#">
-                        <div class="col s6">
+                        <div class="col s12 m6">
                             <label class="active" for="codigo">Nº do Documento</label>
                             <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
                         </div>
-<!--                        <div class="col s6">
-                            <label class="active" for="dataCriacao">Data de Criação</label>
-                            <input class="validate" type="date" name="dataCriacao" ng-model="model.dataCriacao" required/>
-                        </div>-->
-                        <div class="col s6">
+                        <!--                        <div class="col s6">
+                                                    <label class="active" for="dataCriacao">Data de Criação</label>
+                                                    <input class="validate" type="date" name="dataCriacao" ng-model="model.dataCriacao" required/>
+                                                </div>-->
+                        <div class="col s12 m6">
                             <label class="active" for="valorTotal">Valor Total</label>
                             <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
                         </div>
-                        <div class="col s6">
+                        <div class="col s12 m6">
                             <label class="active" for="situacao">Clientes</label>
                             <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
                         </div>
                         <div class="col s12">
                             <label class="active" for="situacao">Animais</label>
                             <!--{{animais}}-->
+                            <p>Selecione os animais que deseja adicionar ao pedido.</p>
                             <div ng-repeat="animal in animais">
-                                <input ng-model="sell[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
-                                <label for="{{animal.id}}">{{animal.id}}</label>
+                                <div class="col s6 m3">
+                                    <input ng-model="list[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                                    <label for="{{animal.id}}">{{animal.id}}</label>
+                                </div>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i> Adicionar Pedido</a>

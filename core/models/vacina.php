@@ -48,37 +48,6 @@ class vacina extends model implements \interfaces\model {
     }
 
     /**
-     * @method insertMultiple
-     * Faz a inserção de vários animais de acordo com a quantidade passada pelo usuário
-     * @param $dados
-     * @return true/false
-     */
-//    public function insertMultiple($dados) {
-//        // atribuo a quantidade do formulário
-//        if (!empty($dados['quantidade'])) {
-//            $quantidade = $dados['quantidade'];
-//            unset($dados['quantidade']);
-//        }
-//        // atribuo o custo do formulário
-//        if (!empty($dados['custoTotal'])) {
-//            $custo = $dados['custoTotal'];
-//            unset($dados['custoTotal']);
-//            $dados['custo'] = ($custo / $quantidade);
-//        }
-//        // remove data de nascimento que já vem setada por padrão no formulário
-//        unset($dados['dataNascimento']);
-//        if (empty($dados['id'])) {
-//            for ($i = 0; $i < $quantidade; $i++) {
-//                $this->insert($dados)->exec();
-//                $rs = $this->getProperties();
-//                if ($rs['error'] === 1) {
-//                    return false;
-//                }
-//            }
-//        }
-//    }
-
-    /**
      * Método listar todos as vacinas
      * @method listar
      * @date 11/10/2016
@@ -109,5 +78,5 @@ class vacina extends model implements \interfaces\model {
             return true;
         }
     }
-
+    
 }

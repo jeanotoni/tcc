@@ -1,6 +1,6 @@
 (function () {
     'user-strict';
-    angular.module("tcc").controller("animalController", function ($scope, animalService, pedidoService) {
+    angular.module("tcc").controller("animalController", function ($scope, animalService, pedidoService, vacinaService) {
 
         $scope.insertMultiple = function () {
             animalService.insertMultiple($scope.edit).then(function (response) {
@@ -9,7 +9,7 @@
                 }
             });
         };
-
+        
         var listAnimal = function () {
             animalService.listAnimal().then(function (response) {
                 $scope.animais = response.data;
@@ -17,22 +17,22 @@
         };
         listAnimal();
 
-        $scope.sell = [];
-        $scope.$watch('sell', function (val) {
+        $scope.list = [];
+        $scope.$watch('list', function (val) {
             console.log(val);
         }, true);
 
         $scope.addPedido = function () {
             var params = {
-                itens: $scope.sell,
+                itens: $scope.list,
                 model: $scope.model
             };
             pedidoService.salvarPedido(params).then(function (response) {
                 if (response.data) {
-                console.log(response);
-                $scope.model = {};
-                $scope.sell = {};
-                listAnimal();
+                    console.log(response);
+                    $scope.model = {};
+                    $scope.list = {};
+                    listAnimal();
                 }
             });
         };
@@ -82,6 +82,29 @@
         $scope.openSellModal = function () {
             $('#sell-modal').openModal({close_esc: true});
         };
+
+        $scope.openDetailsModal = function (idAnimal) {
+            var param = {
+                idAnimal: idAnimal
+            };
+            vacinaService.getDadosAplicacao(param).then(function (response) {
+                console.log(response);
+                $scope.details = response.data;
+            });
+            
+            $('#details-modal').openModal({close_esc: true});
+        };
+
+        $scope.closeModal = function () {
+            $('#details-modal').closeModal();
+            $('#sell-modal').closeModal();
+        };
+
+        // to com problemas pra listar os dados dos animais dentro da view animalDetails
+//        $scope.details = function (id) {
+//            window.location = '/animal/details/' + id;
+//        };
+
 
 
 

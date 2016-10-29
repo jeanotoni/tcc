@@ -11,13 +11,12 @@ class vacina extends controller implements \interfaces\controller {
     }
 
     public function init() {
-        $dados['vacina'] = $this->model->listar();
-        $this->view('vacina', $dados);
+//        $dados['vacina'] = $this->model->listar();
+        $this->view('vacina');
     }
 
     public function salvar() {
         $input = file_get_contents('php://input');
-
         $dados = (array) json_decode($input);
 
         $rs = $this->model->salvar($dados);
@@ -49,11 +48,11 @@ class vacina extends controller implements \interfaces\controller {
         } else {
             $rs = $this->model->deletar($id);
             if ($rs) {
-                echo 'Vacina excluido com sucesso!';
+                echo 'Vacina excluida com sucesso!';
             } else {
                 echo 'Falha ao deletar Vacina!';
             }
         }
     }
-
+  
 }

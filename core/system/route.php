@@ -13,6 +13,10 @@ $route->setRoute('vacina/deletar', array(
     'id' => 'integerFilter'
 ));
 
+//$route->setRoute('animal/details', array(
+//    'id' => 'integerFilter'
+//));
+
 //$route->setRoute('cliente/deletar', array(
 //    'id' => 'integerFilter'
 //));

@@ -15,5 +15,13 @@ angular.module("tcc").service("animalService", function ($http) {
     this.insertMultiple = function (animal) {
         return $http.post('/animal/insertMultiple/', animal);
     };
+    
+//    this.details = function (){
+//        return $http.get('/animal/animalDetails/');
+//    };
+    
+    this.getAnimalById = function (){
+        return $http.get('/animal/getAnimalById/');
+    };
 
 });

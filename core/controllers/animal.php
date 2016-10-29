@@ -13,13 +13,30 @@ class animal extends controller implements \interfaces\controller {
     }
 
     public function init() {
-        $dados['animais'] = $this->model->listar();
-        $this->view('animal/animal', $dados);
+//        $dados['animais'] = $this->model->listar();
+        $this->view('animal/animal');
     }
+    
+//    public function details(){
+//        $id = (isset($_GET['id']) ? $_GET['id'] : null);
+//        
+//        $this->view('animal/animalDetails');
+//        
+//        echo 'oi';
+//    }
+    
+//    public function getAnimalById(){
+//        $id = (isset($_GET['id']) ? $_GET['id'] : null);
+//        
+//        $rs = $this->model->getAnimalById($id);
+//        
+//        debug($rs);
+//        
+//        echo $this->toJson($rs);
+//    }
 
     public function salvar() {
         $input = file_get_contents('php://input');
-
         $dados = (array) json_decode($input);
 
         $rs = $this->model->salvar($dados);
@@ -31,7 +48,6 @@ class animal extends controller implements \interfaces\controller {
 
     public function insertMultiple() {
         $input = file_get_contents('php://input');
-
         $dados = (array) json_decode($input);
 
         $rs = $this->model->insertMultiple($dados);
@@ -65,8 +81,8 @@ class animal extends controller implements \interfaces\controller {
 //    }
 
     public function listar() {
-        $dados = $this->model->listar();
-        echo $this->toJson($dados);
+        $rs = $this->model->listar();
+        echo $this->toJson($rs);
     }
 
     public function deletar() {

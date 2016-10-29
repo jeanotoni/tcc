@@ -12,28 +12,20 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
             $scope.model = angular.copy(pedido);
         } else {
             $scope.model = {};
-        // $scope.model.dataCriacao = new Date();
+            // $scope.model.dataCriacao = new Date();
         }
         $('#newPedido').openModal();
     };
 
     // Crio array que conterá os animais que estão marcados como pago
-    $scope.sell = [];
-    $scope.$watch('sell', function (val) {
+    $scope.list = [];
+    $scope.$watch('list', function (val) {
         console.log(val);
     }, true);
-    
-//    $scope.sellAnimals = function () {
-//        pedidoService.sellAnimal($scope.sell).then(function (response) {
-//            console.log(response);
-//            listAnimal();
-//        });
-//    };
-    
-    
+
     $scope.addPedido = function () {
         var params = {
-            itens: $scope.sell,
+            itens: $scope.list,
             model: $scope.model
         };
         pedidoService.salvarPedido(params).then(function (response) {
@@ -41,8 +33,8 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
                 listPedido();
             }
             $scope.model = {};
-            $scope.sell = {};
-            listarAnimais();
+            $scope.list = {};
+            listAnimals();
 //            $scope.formPedido.$setPristine();
         });
     };
@@ -75,12 +67,16 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
     listarClientes();
 
     // Utiliza requisição do service do animal
-    var listarAnimais = function () {
+    var listAnimals = function () {
         animalService.listAnimal().then(function (response) {
             $scope.animais = response.data;
         });
     };
-    listarAnimais();
+    listAnimals();
+
+    $scope.closeModal = function () {
+        $('#newPedido').closeModal();        
+    };
 
 
 

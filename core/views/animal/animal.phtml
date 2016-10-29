@@ -5,7 +5,7 @@
     <div id="newAnimal" class="modal">
         <div class="modal-content">
             <h1 class="title-modal centered">Cadastrar Animal</h1>
-            <a href="#" style="color: black" class="closeModal right"><i class="mdi mdi-close"></i></a>
+            <a href="#" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
                     <form method="POST" action="#">
@@ -63,11 +63,11 @@
         </div>
     </div>
 
-
+    <!-- MODAL VENDER ANIMAL -->
     <div id="sell-modal" class="modal">
         <div class="modal-content">
             <h1 class="title-modal centered">Confirmar Venda</h1>
-            <a href="#" style="color: black" class="closeModal right"><i class="mdi mdi-close"></i></a>
+            <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
                     <form name="formPedido" method="POST" action="#">
@@ -96,11 +96,40 @@
         </div>
     </div>
 
-    <!--    <div>
-            <h4 ng-bind="app"></h4>
-            <a href="#" ng-click="open()">Teste</a>
-        </div>-->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <h1 class="title-modal centered">Detalhes Vacinas</h1>
+            <a href="#" ng-click="closeModal()" style="color: black" class="right"><i class="mdi mdi-close"></i></a>
+            <div class="row">
+                <div class="col s12">
+                    <table class="striped centered responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Vacina</th>
+                                <th>Descrição</th>
+                                <th>Data de Aplicação</th>
+<!--                                <th>Ações</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="detail in details| orderBy: '-id'">
+                                <td>{{detail.id}}</td>
+                                <td>{{detail.idVacina}}</td>
+                                <td>{{detail.descricao}}</td>
+                                <td>{{detail.dataAplicacao| tccDate}}</td>                                
+<!--                                <td>
+                                    <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | 
+                                    <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a>
+                                </td>-->
+                            </tr>
+                        </tbody>
+                    </table>
 
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="striped centered responsive-table">
         <thead>
             <tr>
@@ -111,23 +140,26 @@
                 <th>Status da Venda</th>
                 <th>Origem</th>
                 <th><a class="waves-effect waves-light btn" ng-click="openSellModal()">Vender?</a></th>
-                <!--<th ng-show="sell">Vender?</th>-->
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="animal in animais">
+            <tr ng-repeat="animal in animais| orderBy: '-id'">
                 <td>{{animal.id}}</td>
                 <td>{{animal.dataCadastro| tccDate}}</td>
                 <td>{{animal.dataNascimento}}</td>
                 <td>{{animal.custo| currency : 'R$ '}}</td>
                 <td>{{animal.statusVenda}}</td>
                 <td>{{animal.origem}}</td>
-                <td>
-                    <input ng-model="sell[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                <td style="z-index: 222">
+                    <input ng-model="list[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
                     <label for="{{animal.id}}"></label>
                 </td>
-                <td><a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a></td>
+                <td>
+                    <a style="cursor: pointer" ng-click="openDetailsModal(animal.id)">Ver</a> | 
+                    <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | 
+                    <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a>
+                </td>
             </tr>
         </tbody>
     </table>

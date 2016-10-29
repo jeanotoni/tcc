@@ -12,9 +12,19 @@ body{
     background: #f7f7f7;
 }
 
-#nav{
-    width: 240px;
+nav{
+    width: 83%;
+    margin-left: 17%;
 }
+
+.side-nav{
+    z-index: 2 !important;
+}
+
+.side-nav.fixed a{
+    padding-left: 10px !important; 
+}
+
 
 main{
     width: calc(100% - 240px);
@@ -65,12 +75,45 @@ h1.title-modal {
     display: inline;    
 }
 
+.icon-close-modal{
+    font-size: 20px !important;
+}
+
+#aplicar-vacina-modal,
+#details-modal,
+#newPedido.modal{
+    top: 6% !important; 
+    max-height: 87% !important; 
+    width: 80% !important;
+}
+
+@media only screen and (max-width: 600px){
+    .modal-content {
+        padding: 16px 0 0 0 !important;
+    }
+    .title-modal{
+        padding: 0 0 0 20px;           
+    }
+    .icon-close-modal{
+        padding-right: 10px !important;
+    }
+    
+}
+
 input {
     padding: 3px 5px !important;
     border-radius: 3px !important;
     border: 1px solid #ececec !important;
     height: 30px !important;
 }
+textarea {
+    padding: 3px 5px !important;
+    border-radius: 3px !important;
+    border: 1px solid #ececec !important;
+    min-height: 100px !important;
+}
+
+
 
 #toast-container{
     min-width: 40%;

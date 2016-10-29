@@ -118,8 +118,8 @@ class animal extends model implements \interfaces\model {
         $w = array(
             "statusVenda = ?" => 0
         );
-
-        $rs = $this->select()->where($w)->orderBy('id DESC')->exec('ALL');
+        
+        $rs = $this->select()->where($w)->exec('ALL');
         return $rs;
     }
 
@@ -143,6 +143,20 @@ class animal extends model implements \interfaces\model {
             return true;
         }
     }
+    
+//    public function getAnimalById($id){
+//        $w = array(
+//            "id = ?" => $id
+//        );
+//
+//        $rs = $this->select()->where($w)->exec('ALL');
+//        
+//        if (empty($rs['error'])) {
+//            return $rs;
+//        } else {
+//            return false;
+//        }
+//    }
 
     
 

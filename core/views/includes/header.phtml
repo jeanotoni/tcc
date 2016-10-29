@@ -1,4 +1,4 @@
-<?php 
+<?php
 error_reporting(-1);
 ?>
 <!DOCTYPE html>
@@ -15,15 +15,18 @@ error_reporting(-1);
     </head>
     <body>
         <nav>
-            <ul id="nav" class="side-nav fixed">
-                <li class="logo no-padding"><a href="<?= URL_MAIN ?>" class="waves-effect waves-teal" id="logo-container" class="brand-logo">LOGO</a></li>        
-                <li class="bold no-padding"><a href="<?= URL_MAIN ?>animal" class="waves-effect waves-teal">Animais</a></li>
-                <li class="bold no-padding"><a href="<?= URL_MAIN ?>racao" class="waves-effect waves-teal">Rações</a></li>
-                <li class="bold no-padding"><a href="<?= URL_MAIN ?>pedido" class="waves-effect waves-teal">Pedidos</a></li>
-                <li class="bold no-padding"><a href="<?= URL_MAIN ?>vacina" class="waves-effect waves-teal">Vacinas</a></li>
-                <li class="bold no-padding"><a href="<?= URL_MAIN ?>cliente" class="waves-effect waves-teal">Clientes</a></li>
-                <li class="bold no-padding"><a href="#" class="waves-effect waves-teal">Vendas</a></li>
-                <li class="bold no-padding"><a href="#" class="waves-effect waves-teal">Remédios</a></li>
+            <ul class="side-nav fixed">
+                <li class="logo" style="padding: 0 0 90px 0;">
+                    <a href="<?= URL_MAIN ?>" class="waves-effect waves-teal" id="logo-container" class="brand-logo"><i class="mdi mdi-book-open left"></i>TCC</a>
+                </li>        
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>animal" class="waves-effect waves-teal"><i class="mdi mdi-cow left"></i>Animais</a></li>
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>racao" class="waves-effect waves-teal"><i class="mdi mdi-paw left"></i>Rações</a></li>
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>pedido" class="waves-effect waves-teal"><i class="mdi mdi-wallet-travel left"></i>Pedidos</a></li>
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>vacina" class="waves-effect waves-teal"><i class="mdi mdi-needle left"></i>Vacinas</a></li>
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>vacinaAplicacao" class="waves-effect waves-teal"><i class="mdi mdi-needle left"></i>Aplicação de Vacinas</a></li>
+                <li class="bold no-padding"><a href="<?= URL_MAIN ?>cliente" class="waves-effect waves-teal"><i class="mdi mdi-account-multiple left"></i>Clientes</a></li>
+                <!--<li class="bold no-padding"><a href="#" class="waves-effect waves-teal">Vendas</a></li>-->
+                <!--<li class="bold no-padding"><a href="#" class="waves-effect waves-teal">Remédios</a></li>-->
             </ul>
             <ul id="slide-out" class="side-nav">
                 <li><a href="#!">First Sidebar Link</a></li>
@@ -44,17 +47,19 @@ error_reporting(-1);
                     </ul>
                 </li>
             </ul>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#!">Link 1</a></li>
-                <li><a href="#!">Link 2</a></li>
-                <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Menu<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
-                <ul id='dropdown1' class='dropdown-content'>
-                    <li><a href="#!">Opção 1</a></li>
-                    <li><a href="#!">Opção 2</a></li>
-                    <li><a href="#!">Opção 3</a></li>
-                    <li><a href="#!">Opção 4</a></li>
-                </ul>
-            </ul>
+
+            <div class="center">TCC AGROPECUÁRIO</div>
+
+            <!--            <ul class="hide-on-med-and-down">
+                            <li><a href="#!">Link 1</a></li>
+                            <li><a href="#!">Link 2</a></li>
+                            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Menu<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li><a href="#!">Opção 1</a></li>
+                                <li><a href="#!">Opção 2</a></li>
+                                <li><a href="#!">Opção 3</a></li>
+                                <li><a href="#!">Opção 4</a></li>
+                            </ul>
+                        </ul>-->
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
         </nav>
-        
