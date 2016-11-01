@@ -38,9 +38,8 @@ class animal extends controller implements \interfaces\controller {
     public function salvar() {
         $input = file_get_contents('php://input');
         $dados = (array) json_decode($input);
-
+        
         $rs = $this->model->salvar($dados);
-
         $rs = array('id' => $rs);
 
         echo $this->toJson($rs);

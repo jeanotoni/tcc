@@ -32,12 +32,12 @@ class vacinaAplicacao extends controller implements \interfaces\controller {
 
         echo $this->toJson($rs);
     }
-    
-    public function getDadosAplicacao(){
+
+    public function getDadosAplicacao() {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
         
-        $rs = $this->model->getDadosAplicacao($request);
+        $rs = $this->model->getAplicacaoByIdAnimal($request['idAnimal']);
         
         echo $this->toJson($rs);
     }

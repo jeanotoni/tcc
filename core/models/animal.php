@@ -109,7 +109,7 @@ class animal extends model implements \interfaces\model {
     }
 
     /**
-     * Método listar todos os animais da base ordenados por id
+     * Método listar todos os animais da base
      * @method listar
      * @date 17/08/2016
      * @return $rs

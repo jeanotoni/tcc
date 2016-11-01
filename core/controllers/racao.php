@@ -11,28 +11,24 @@ class racao extends controller implements \interfaces\controller {
     }
 
     public function init() {
-        $dados = array();
-
-        if (isset($_POST['salvarRacao'])) {
-            $dados = array(
-                "nome" => $_POST['nome'],
-                "descricao" => $_POST['descricao']
-            );
-
-            $rs = $this->model->salvar($dados);
-            if ($rs > 0) {
-                $dados['feedback'] = "Ração inserida com sucesso!";
-            }
-        }
-        $dados['racoes'] = $this->model->listar();
-//        debug($dados);
-        $this->view('racao', $dados);
+        $this->view('racao');
+    }
+    
+    public function salvar(){
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
+        
+        $rs = $this->model->salvar($request);
+        $rs = array('id' => $rs);
+        
+        echo $this->toJson($rs);
     }
 
 
-//    public function listagem() {
-//        $dados['racao'] = $this->model->listar();
-//        $this->view('racao', $dados);
-//    }
+    public function listar() {
+        $rs = $this->model->listar();
+        
+        echo $this->toJson($rs);
+    }
 
 }

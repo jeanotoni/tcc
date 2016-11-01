@@ -31,6 +31,7 @@ class vacinaAplicacao extends model implements \interfaces\model {
     public function vaccinateAnimals($request) {
         //////// FALTA VER A QUESTÃO DAS DATAS. COMO SALVAR E COMO TRAZER DO BANCO
 //        $request['dataAplicacao'] = date('Y-m-d');
+
         $this->setTable('vacinaAplicacao');
 
         if (empty($request['model']->id)) {
@@ -52,12 +53,12 @@ class vacinaAplicacao extends model implements \interfaces\model {
             $w = array(
                 "id = ?" => $id
             );
-
+            
             $this->update($request['model'])->where($w)->exec();
-            if ($request['itens']) {
+            if($request['itens']){
                 $this->addItem($id, $request['itens']);
             }
-
+            
             $rs = $this->getProperties();
 
             if ($rs['error'] == 0) {
@@ -89,27 +90,17 @@ class vacinaAplicacao extends model implements \interfaces\model {
         }
     }
 
-    /**
-     * Método responsável por trazer os dados da aplicação da vacina como descrição, data de aplicação, etc. E para isso
-     * faz um join na tabela de itens para saber qual o id da aplicação da vacina referente ao animal que está sendo solicitado($idAnimal)
-     * @param $idAnimal
-     * @return $rs
-     */
-    public function getAplicacaoByIdAnimal($idAnimal) {
-        $j = array(
-            'table' => 'vacinaItem',
-            'cond' => 'vacinaAplicacao.id = vacinaItem.idVacinaAplicacao'
-        );
-
+    public function getIdAplicacaoByAnimal($idAnimal) {
+        $s = array('idVacinaAplicacao');
         $w = array(
             'idAnimal = ?' => $idAnimal
         );
 
-        $this->setTable('vacinaAplicacao');
-        $rs = $this->select()->join($j)->where($w)->exec('ALL');
+        $this->setTable('vacinaItem');
+        $rs = $this->select($s)->where($w)->exec('ALL');
 
         $info = $this->getProperties();
-        
+
         if ($info['error'] == 0) {
             return $rs;
         } else {
@@ -117,5 +108,36 @@ class vacinaAplicacao extends model implements \interfaces\model {
         }
     }
 
+    /**
+     * Função para listar as informações de todas as vacinas tomadas por um certo animal
+     * @param $request
+     * @return $rs
+     */
+    public function getDadosAplicacao($request) {
+        // Aqui pego o id de todas as aplicações de vacinas feitas em um animal
+        $arrIdAplicacao = $this->getIdAplicacaoByAnimal($request['idAnimal']);
+
+        // Aqui pego cada id e listo os dados da aplicação um por um e armazeno em um array $rs
+        $rs = array();
+        foreach ($arrIdAplicacao as $key => $value) {
+            $id = $value['idVacinaAplicacao'];
+
+            $w = array(
+                'id = ?' => $id
+            );
+
+            $this->setTable('vacinaAplicacao');
+            $temp = $this->select()->where($w)->exec('ALL');
+
+            $rs[$key] = $temp[0];
+            $info = $this->getProperties();
+        }
+
+        if ($info['error'] == 0) {
+            return $rs;
+        } else {
+            return false;
+        }
+    }
 
 }
