@@ -24,8 +24,9 @@
                             </div>
                             <div class="col s6">
                                 <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" required/>
+                                <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
                             </div>
+                            {{edit}}
                             <div class="col s6">
                                 <label class="active" for="custo">Custo</label>
                                 <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
@@ -117,7 +118,7 @@
                                 <td>{{detail.id}}</td>
                                 <td>{{detail.idVacina}}</td>
                                 <td>{{detail.descricao}}</td>
-                                <td>{{detail.dataAplicacao| tccDate}}</td>                                
+                                <td>{{detail.dataAplicacao| tccDate}}</td>
 <!--                                <td>
                                     <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | 
                                     <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a>
@@ -147,7 +148,7 @@
             <tr ng-repeat="animal in animais| orderBy: '-id'">
                 <td>{{animal.id}}</td>
                 <td>{{animal.dataCadastro| tccDate}}</td>
-                <td>{{animal.dataNascimento}}</td>
+                <td>{{animal.dataNascimento| tccDate }}</td>
                 <td>{{animal.custo| currency : 'R$ '}}</td>
                 <td>{{animal.statusVenda}}</td>
                 <td>{{animal.origem}}</td>

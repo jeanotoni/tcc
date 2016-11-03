@@ -42,6 +42,7 @@
             $scope.edit = {};
             if (animal) {
                 $scope.edit = angular.copy(animal);
+                $scope.edit.dataNascimento = new Date($scope.edit.dataNascimento);
             } else {
                 $scope.edit = {
                     dataNascimento: new Date()

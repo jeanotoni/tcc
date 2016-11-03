@@ -15,6 +15,7 @@ angular.module('tcc').filter('tccDate', function ($filter) {
         if (!angular.isDate(date)) {
             date = new Date(date);
         }
-        return $filter('date')(date, formatDate);
+        //UTC é para não bugar a data, pois sem ele o valor da data vem um dia antes
+        return $filter('date')(date, formatDate, 'UTC');
     };
 });
