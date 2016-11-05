@@ -16,27 +16,6 @@ class animal extends model implements \interfaces\model {
         parent::__construct('animal');
     }
 
-    /*    public function salvar($dados) {
-      if (empty($id)) {
-      $this->insert($dados)->exec();
-      $rs = $this->getProperties();
-      if ($rs['error'] === 0) {
-      return $rs['lastId'];
-      } else {
-      return false;
-      }
-      } else {
-      $id = isset($_GET['id']) ? $_GET['id'] : null;
-
-      $w = array(
-      "id = ?" => $id
-      );
-
-      $this->update()->where($w)->exec();
-      }
-      }
-     */
-
     /**
      * Método para salvar um animal na base de dados, verifica se não tiver um id é uma inserção, caso haja,
      * ele trata como uma edição.
@@ -143,21 +122,5 @@ class animal extends model implements \interfaces\model {
             return true;
         }
     }
-    
-//    public function getAnimalById($id){
-//        $w = array(
-//            "id = ?" => $id
-//        );
-//
-//        $rs = $this->select()->where($w)->exec('ALL');
-//        
-//        if (empty($rs['error'])) {
-//            return $rs;
-//        } else {
-//            return false;
-//        }
-//    }
-
-    
-
+  
 }

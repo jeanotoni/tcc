@@ -20,5 +20,13 @@ angular.module("tcc").service("pedidoService", function ($http) {
         return $http.post('/pedido/addItem', dados);
     };
     
+    this.updateStatusPedido = function(params){
+        return  $http.post('/pedido/updateStatusPedido/', params);
+    };
+    
+    this.listAnimalByPedido = function (idPedido){
+        return $http.get('/pedido/listAnimalByPedido/'+ idPedido);
+    };
+    
     
 });

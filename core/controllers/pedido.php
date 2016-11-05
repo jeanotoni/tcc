@@ -19,11 +19,9 @@ class pedido extends controller implements \interfaces\controller {
 
     public function salvar() {
         $input = file_get_contents('php://input');
-        $dados = (array) json_decode($input);
-        
-//        $request['dataCriacao'] = date('d-m-y', strtotime($request['dataCriacao']));
-        
-        $rs = $this->model->salvar($dados);
+        $request = (array) json_decode($input);
+
+        $rs = $this->model->salvar($request);
 
         // quando apontar para o índice $data['id'] ele me retornará todos os dados do pedido
         // $data = array('id' => $rs);
@@ -32,46 +30,64 @@ class pedido extends controller implements \interfaces\controller {
         exit();
     }
 
-    public function sellAnimal() {
+    /*  ANTIGO MODO DE SALVAR SEM USAR ANGULAR
+      public function add() {
+      $dados = array();
+      if (isset($_POST['salvarAnimal'])) {
+      $dados = array(
+      'apelido' => $_POST['apelido'],
+      'dataNascimento' => $_POST['dataNascimento'],
+      'custo' => $_POST['custo'],
+      'statusVenda' => $_POST['statusVenda'],
+      'observacao' => $_POST['observacao']
+      );
+      if (empty($_POST['id'])) {
+      $rs = $this->model->salvar($dados);
+      if ($rs > 0) {
+      $dados['feedback'] = "Animal INSERIDO com sucesso!";
+      }
+      } else {
+      $rs = $this->model->editar($dados);
+      if ($rs) {
+      $dados['feedback'] = "Animal EDITADO com sucesso!";
+      }
+      }
+      }
+      } */
+
+    /**
+     * Usado para alterar o status de um pedido de aberto para pago, cancelado e estornado
+     */
+    public function updateStatusPedido() {
         $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
 
-        $dados = (array) json_decode($input);
-        
-        debug($dados);
+        $rs = $this->model->updateStatusPedido($request);
 
-        $this->model->sellAnimal($dados, $idPedido);
+        echo $this->toJson($rs);
     }
 
-    /*  ANTIGO MODO DE SALVAR SEM USAR ANGULAR
-    public function add() {
-        $dados = array();
-        if (isset($_POST['salvarAnimal'])) {
-            $dados = array(
-                'apelido' => $_POST['apelido'],
-                'dataNascimento' => $_POST['dataNascimento'],
-                'custo' => $_POST['custo'],
-                'statusVenda' => $_POST['statusVenda'],
-                'observacao' => $_POST['observacao']
-            );
-            if (empty($_POST['id'])) {
-                $rs = $this->model->salvar($dados);
-                if ($rs > 0) {
-                    $dados['feedback'] = "Animal INSERIDO com sucesso!";
-                }
-            } else {
-                $rs = $this->model->editar($dados);
-                if ($rs) {
-                    $dados['feedback'] = "Animal EDITADO com sucesso!";
-                }
-            }
+    /**
+     * Usado para pegar todos os animais de um determinado pedido e trazer os que são deles já selecionados
+     */
+    public function listAnimalByPedido() {
+        if (!empty($_GET['id']) && (int) $_GET['id'] > 0) {
+            $rs = $this->model->listAnimalByPedido($_GET['id']);
         }
-    } */
+        echo $this->toJson($rs);
+    }
 
+    /**
+     * Usado para listar os pedidos
+     */
     public function listar() {
         $dados = $this->model->listar();
         echo $this->toJson($dados);
     }
 
+    /**
+     * Usado para deletar um pedido
+     */
     public function deletar() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
 

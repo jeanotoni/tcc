@@ -4,14 +4,14 @@
 
     <!-- MODAL NOVO PEDIDO -->
     <div id="newPedido" class="modal">
-        <div class="modal-content">
-            <h1 class="title-modal">
-                Inserir Pedido
-                <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
-            </h1>
-            <div class="row">
-                <div class="col s12">
-                    <form name="formPedido" method="POST" action="#">
+        <form name="formPedido" method="POST" action="#">
+            <div class="modal-content">
+                <h1 class="title-modal">
+                    <div>{{titleModal}}</div>
+                    <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
+                </h1>
+                <div class="row">
+                    <div class="col s12">
                         <div class="col s12 m6">
                             <label class="active" for="codigo">Nº do Documento</label>
                             <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
@@ -29,24 +29,27 @@
                             <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
                         </div>
                         <div class="col s12">
-                            <label class="active" for="situacao">Animais</label>
-                            <!--{{animais}}-->
+                            <label class="active" for="animais">Animais</label>
                             <p>Selecione os animais que deseja adicionar ao pedido.</p>
-                            <div ng-repeat="animal in animais">
+                            <div ng-repeat="animal in animais track by $index">
                                 <div class="col s6 m3">
                                     <input ng-model="list[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
                                     <label for="{{animal.id}}">{{animal.id}}</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i> Adicionar Pedido</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido(1)"><i class="mdi mdi-check"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action modal-close waves-effect waves-green blue" ng-show="model.situacao == 1" ng-click="updateStatusPedido(2)"><i class="mdi mdi-cash-multiple"></i> Finalizar</a>
+                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="updateStatusPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
+                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="updateStatusPedido(4)"><i class="mdi mdi-check"></i> Estornar</a>
+            </div>
+        </form>
     </div>
+    
     <table class="striped centered responsive-table">
         <thead>
             <tr>
@@ -56,7 +59,7 @@
                 <th>Data de Criação</th>
                 <th>Valor Total</th>
                 <th>Situação</th>
-                <th>Ações</th>
+                <th>Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -66,8 +69,9 @@
                 <td>{{pedido.nomeCliente}}</td>
                 <td>{{pedido.dataCriacao| tccDate : "dd/MM/yyyy"}}</td>
                 <td>{{pedido.valorTotal| currency: "R$ " }}</td>
-                <td>{{pedido.situacao}}</td>
-                <td><a href="#" ng-click="openModal(pedido)">Editar</a> | <a style="cursor: pointer" ng-click="excluir(pedido.id)">Excluir</a></td>
+                <td>{{getSituation(pedido.situacao)}}</td>
+                <td><a href="#" ng-click="openModal(pedido)">Ver/Editar</a></td>
+                <!--<a style="cursor: pointer" ng-click="excluir(pedido.id)">Excluir</a>-->
             </tr>
         </tbody>
     </table>

@@ -17,10 +17,17 @@ $route->setRoute('racao/deletar', array(
     'id' => 'integerFilter'
 ));
 
+$route->setRoute('pedido/getAnimalByPedido', array(
+    'id' => 'integerFilter'
+));
+
+$route->setRoute('pedido/listAnimalByPedido', array(
+    'id' => 'integerFilter'
+));
+
 //$route->setRoute('animal/details', array(
 //    'id' => 'integerFilter'
 //));
-
 //$route->setRoute('cliente/deletar', array(
 //    'id' => 'integerFilter'
 //));
