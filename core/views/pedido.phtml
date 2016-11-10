@@ -42,10 +42,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido(1)"><i class="mdi mdi-check"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido(1)"><i class="mdi mdi-pencil"></i>{{btnSalvar}}</a>
                 <a class="btn modal-action modal-close waves-effect waves-green blue" ng-show="model.situacao == 1" ng-click="updateStatusPedido(2)"><i class="mdi mdi-cash-multiple"></i> Finalizar</a>
                 <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="updateStatusPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
-                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="updateStatusPedido(4)"><i class="mdi mdi-check"></i> Estornar</a>
+                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="updateStatusPedido(4)"><i class="mdi mdi-block-helper"></i> Estornar</a>
             </div>
         </form>
     </div>

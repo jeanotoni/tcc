@@ -45,9 +45,9 @@ class pedido extends model implements \interfaces\model {
             unset($dados['model']->nomeCliente);
             
             /////// ENCONTRAR UM JEITO DE VALIDAR A EDIÇÃO PARA QUE NÃO INSIRA DENOVO OS QUE JÁ ESTÃO PREENCHIDOS
-//            $this->sellAnimal($dados['itens'], $id);
+            $this->sellAnimal($dados['itens'], $id);
             
-            // Se o pedido estiver cancelado(3) ou estornado(4) e clicar em salvar
+            // Se o pedido estiver cancelado(3) ou estornado(4) e clicar em salvar abre-o novamente
             if ($dados['model']->situacao == 3 || $dados['model']->situacao == 4) {
                 $dados['model']->situacao = 1;
             }
@@ -55,7 +55,8 @@ class pedido extends model implements \interfaces\model {
             $w = array(
                 "id = ?" => $id
             );
-
+            
+            $this->setTable('pedido');
             $this->update($dados['model'])->where($w)->exec();
 
             $rs = $this->getProperties();
@@ -166,17 +167,17 @@ class pedido extends model implements \interfaces\model {
     public function sellAnimal($dados, $idPedido) {
         foreach ($dados as $key => $value) {
             if ($value == 1) {
-                $id = $key;
+                $idAnimal = $key;
                 $u = array(
                     "statusVenda" => 1
                 );
                 $w = array(
-                    "id = ?" => $id
+                    "id = ?" => $idAnimal
                 );
                 $this->setTable('animal');
                 $this->update($u)->where($w)->exec();
                 
-                $this->addItem($id, $idPedido);
+                $this->addItem($idAnimal, $idPedido);
                 
                 $rs = $this->getProperties();
             }
@@ -189,13 +190,25 @@ class pedido extends model implements \interfaces\model {
         }
     }
 
-    public function addItem($id, $idPedido) {
+    public function addItem($idAnimal, $idPedido) {
+        $this->setTable('pedidoitem');
+        
+        $w = array(
+            'idAnimal = ?' => $idAnimal,
+            'idPedido = ?' => $idPedido
+        );
+        
+        $checkAnimal = $this->select('id')->where($w)->exec('ROW');
+        
+        if(!empty($checkAnimal['id'])){
+            return false;
+        }
+        
         $i = array(
-            'idAnimal' => $id,
+            'idAnimal' => $idAnimal,
             'idPedido' => $idPedido
         );
 
-        $this->setTable('pedidoitem');
         $this->insert($i)->exec();
     }
 

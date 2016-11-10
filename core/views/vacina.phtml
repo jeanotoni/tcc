@@ -17,11 +17,11 @@
                             <label class="active" for="apelido">Nome</label>
                             <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
                         </div>
-                        <div class="col s6">
+<!--                        <div class="col s6">
                             <label class="active" for="custo">Custo</label>
                             <input class="validate" type="number" name="custo" ng-model="model.custo" required/>
-                        </div>
-                        <div class="col s6">
+                        </div>-->
+                        <div class="col s12">
                             <label class="active" for="dosagem">Dosagem por Quilo (ml)</label>
                             <input class="validate" type="number" name="dosagem" ng-model="model.dosagem"/>
                         </div>
@@ -43,7 +43,7 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Custo</th>
+                <!--<th>Custo</th>-->
                 <th>Data de Cadastro</th>
                 <th>Dosagem (ml)</th>
                 <th>Ações</th>
@@ -53,7 +53,7 @@
             <tr ng-repeat="vacina in vacinas">
                 <td>{{vacina.id}}</td>
                 <td>{{vacina.nome}}</td>
-                <td>{{vacina.custo| currency : 'R$ '}}</td>
+                <!--<td>{{vacina.custo| currency : 'R$ '}}</td>-->
                 <td>{{vacina.dataCadastro| tccDate}}</td>
                 <td>{{vacina.dosagem| tccMl}}</td>
                 <td><a style="cursor: pointer" ng-click="modal(vacina)">Editar</a> | <a style="cursor: pointer" ng-click="delete(vacina.id)">Excluir</a></td>
