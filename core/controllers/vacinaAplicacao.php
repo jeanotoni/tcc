@@ -41,5 +41,16 @@ class vacinaAplicacao extends controller implements \interfaces\controller {
         
         echo $this->toJson($rs);
     }
+    
+    public function getAnimalSelected(){
+        if (!empty($_GET['id']) && (int) $_GET['id'] > 0) {
+            $id = $_GET['id'];
+            $rs = array(
+                'selected' => $this->model->getAnimalSelected($id)
+            );
+        }
+        
+        echo $this->toJson($rs);
+    }
 
 }

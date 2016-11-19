@@ -16,10 +16,10 @@
                             <label class="active" for="codigo">Nº do Documento</label>
                             <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
                         </div>
-                        <!--                        <div class="col s6">
-                                                    <label class="active" for="dataCriacao">Data de Criação</label>
-                                                    <input class="validate" type="date" name="dataCriacao" ng-model="model.dataCriacao" required/>
-                                                </div>-->
+                        <div class="col s6">
+                            <label class="active" for="dataEmissao">Data de Emissão</label>
+                            <input class="validate" type="date" name="dataEmissao" ng-model="model.dataEmissao" ng-model-options="{timezone: 'UTC'}" required/>
+                        </div>
                         <div class="col s12 m6">
                             <label class="active" for="valorTotal">Valor Total</label>
                             <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
@@ -42,14 +42,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido(1)"><i class="mdi mdi-pencil"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action modal-close waves-effect waves-green" ng-show="model.situacao != 3 && model.situacao != 4" ng-click="addPedido(1)"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
                 <a class="btn modal-action modal-close waves-effect waves-green blue" ng-show="model.situacao == 1" ng-click="updateStatusPedido(2)"><i class="mdi mdi-cash-multiple"></i> Finalizar</a>
-                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="updateStatusPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
-                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="updateStatusPedido(4)"><i class="mdi mdi-block-helper"></i> Estornar</a>
+                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="estornarCancelarPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
+                <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="estornarCancelarPedido(4)"><i class="mdi mdi-block-helper"></i> Estornar</a>
+                <p ng-show="model.situacao == 3" class="center red-text">Este pedido foi Cancelado!</p>
+                <p ng-show="model.situacao == 4" class="center orange-text">Este pedido foi Estornado!</p>
             </div>
         </form>
     </div>
-    
+
     <table class="striped centered responsive-table">
         <thead>
             <tr>
@@ -66,21 +68,12 @@
             <tr ng-repeat="pedido in pedidos">
                 <td>{{pedido.id}}</td>
                 <td>{{pedido.numeroDocumento}}</td>
-                <td>{{pedido.nomeCliente}}</td>
+                <td>{{pedido.cliente}}</td>
                 <td>{{pedido.dataCriacao| tccDate : "dd/MM/yyyy"}}</td>
                 <td>{{pedido.valorTotal| currency: "R$ " }}</td>
                 <td>{{getSituation(pedido.situacao)}}</td>
                 <td><a href="#" ng-click="openModal(pedido)">Ver/Editar</a></td>
-                <!--<a style="cursor: pointer" ng-click="excluir(pedido.id)">Excluir</a>-->
             </tr>
         </tbody>
     </table>
 </main>
-
-
-<!-- 
-    -Criei as estruturas da classe pedidos dia 30/08, comecei a fazer um join com a tabela de clientes, porém estou com
-    problemas na hora de alterar no banco ele meio que não permite alterar o cliente(não sei se é normal ser assim)
-    -Quando continuar pegar para verificar o relacionamento com a tabela de animais, e fazer salvar, editar, excluir, etc
-    -(renomear os métodos, e as requisições do service)
--->

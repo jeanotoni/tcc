@@ -1,12 +1,63 @@
 angular.module('tcc').controller("clienteController", function ($scope, clienteService) {
-
-     var listClientes = function () {
-        clienteService.listCliente().then(function (response) {
+    /**
+     * Lista todos os clientes
+     */
+    var listarCliente = function () {
+        clienteService.listarCliente().then(function (response) {
             $scope.clientes = response.data;
-            console.log(response);
         });
     };
-    listClientes();
+    listarCliente();
+
+    /**
+     * Usado para abrir o modal tanto para cadastrar novo cliente como para editar os dados de um já existente
+     */
+    $scope.modal = function (client) {
+        $scope.model = {};
+        if (client) {
+            $scope.titleModal = "Editar Cliente";
+            $scope.btnIcon = 'pencil';
+            $scope.btnSalvar = 'EDITAR CLIENTE';
+            $scope.model = angular.copy(client);
+        } else {
+            $scope.titleModal = "Inserir Cliente";
+            $scope.btnIcon = 'check';
+            $scope.btnSalvar = 'SALVAR CLIENTE';
+            $scope.model = {};
+        }
+        $('#newClient').openModal();
+    };
+
+    $scope.closeModal = function () {
+        $('#newClient').closeModal();
+    };
+
+    // Insere cliente no banco e atualiza a listagem
+    $scope.addClient = function () {
+        clienteService.addClient($scope.model).then(function (response) {
+            if (response.data.id) {
+                listarCliente();
+            }
+        });
+    };
+
+    /**
+     * Chama método para deletar cliente
+     * Primeiro verifica se o cliente tem algum vínculo com pedidos e se não tiver o deleta.
+     */
+    $scope.deletar = function (id) {
+        var rs = confirm("Deseja realmente excluir este cliente?");
+        if (rs) {
+            clienteService.deletarCliente(id).then(function (response) {
+                if (response.data) {
+                    Materialize.toast('Cliente Cod. ' + id + ' excluído com sucesso!', 4000, 'toast-success');
+                    listarCliente();
+                } else {
+                    Materialize.toast('Impossível excluir cliente Cod. ' + id + ', pois há pedidos ligados à ele.', 5000, 'toast-error');
+                }
+            });
+        }
+    };
 
 
 });

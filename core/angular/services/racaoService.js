@@ -8,8 +8,8 @@ angular.module("tcc").service("racaoService", function ($http) {
         return $http.post('/racao/salvar/', racao);
     };
     
-    this.deleteVaccine = function (id) {
-        return $http.get('/vacina/deletar/' + id);
+    this.deletarRacao = function (id) {
+        return $http.get('/racao/deletar/' + id);
     };
 
 

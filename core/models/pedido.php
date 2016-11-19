@@ -21,11 +21,12 @@ class pedido extends model implements \interfaces\model {
     public function salvar($dados) {
         $this->setTable('pedido');
         if (empty($dados['model']->id)) {
-            
+
             $this->insert($dados['model'])->exec();
             $rs = $this->getProperties();
             //validação para não dar erro caso o usuário não selecione nenhum animal
-            if(!empty($dados['itens'])){
+
+            if (!empty($dados['itens'])) {
                 $this->sellAnimal($dados['itens'], $rs['lastId']);
             }
 
@@ -40,22 +41,25 @@ class pedido extends model implements \interfaces\model {
              * E o nome do cliente pois no método de listar eu envio ele junto com o resultado, e na hora de abrir o 
              * modal de edição, ele vem junto com o angular.copy(pedido), porém é um campo que não existe no banco
              */
+            
             $id = $dados['model']->id;
             unset($dados['model']->id);
-            unset($dados['model']->nomeCliente);
+            unset($dados['model']->cliente);
             
-            /////// ENCONTRAR UM JEITO DE VALIDAR A EDIÇÃO PARA QUE NÃO INSIRA DENOVO OS QUE JÁ ESTÃO PREENCHIDOS
-            $this->sellAnimal($dados['itens'], $id);
-            
+            // Chama método somente se estiver algum animal selecionado
+            if (!empty($dados['itens'])) {
+                $this->sellAnimal($dados['itens'], $id);
+            }
+
             // Se o pedido estiver cancelado(3) ou estornado(4) e clicar em salvar abre-o novamente
             if ($dados['model']->situacao == 3 || $dados['model']->situacao == 4) {
                 $dados['model']->situacao = 1;
             }
-            
+
             $w = array(
                 "id = ?" => $id
             );
-            
+
             $this->setTable('pedido');
             $this->update($dados['model'])->where($w)->exec();
 
@@ -94,27 +98,79 @@ class pedido extends model implements \interfaces\model {
     }
 
     /**
+     * Método para estornar pedido, tem de ser separado pois além de alterar o seu status para estornado
+     * ele tem de remover seus itens da tabela pedidoIem e alterar o statusVenda do animal na tabela animal.
+     * @param $request
+     */
+    public function estornarCancelarPedido($request) {
+        /* --------------------------------------------------------*\
+         * Altera situação do pedido para estornado(4)
+         * -------------------------------------------------------- */
+        $u = array(
+            'situacao' => $request['situacao']
+        );
+        $w = array(
+            'id = ?' => $request['model']->id
+        );
+
+        $this->setTable('pedido');
+        $this->update($u)->where($w)->exec();
+
+        /* --------------------------------------------------------------------------------------*\
+         * Itera sob os itens alterando seus status para 0 e os removendo da tabela pedidoItem
+         * -------------------------------------------------------------------------------------- */
+        $us = array(
+            'statusVenda' => 0
+        );
+        if (!empty($request['itens'])) {
+            foreach ($request['itens'] as $idAnimal => $value) {
+                $ws = array(
+                    'id = ?' => $idAnimal
+                );
+
+                $this->setTable('animal');
+                $this->update($us)->where($ws)->exec();
+
+                $wd = array(
+                    'idAnimal = ?' => $idAnimal
+                );
+
+                $this->setTable('pedidoItem');
+                $this->delete()->where($wd)->exec();
+            }
+        }
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Método listar todos os animais da base ordenados por id
      * @method listar
      * @date 17/08/2016
      * @return $rs
      */
     public function listar() {
-        $this->setTable('pedido');
-
         $o = 'pedido.id DESC';
-
-        $s = array('pedido.*', 'cliente.nome as nomeCliente');
-
+        
+        $s = array(
+            'pedido.*', 'cliente.nome as cliente'
+        );
         $j = array(
             "table" => 'cliente',
             "cond" => 'cliente.id = pedido.idCliente'
         );
-
-        $rs = $this->select($s)->join($j, 'LEFT')->orderBy($o)->exec('ALL');
-
-        $data = $this->getProperties();
-        if ($data['error'] == 0) {
+        
+        $this->setTable('pedido');
+        $rs = $this->select($s)->join($j)->orderBy($o)->exec('ALL');
+        
+        $info = $this->getProperties();
+        
+        if ($info['error'] == 0) {
             return $rs;
         } else {
             return false;
@@ -160,29 +216,40 @@ class pedido extends model implements \interfaces\model {
 
     /**
      * Método para efetuar a venda de uma animal
-     * @method sellAnimal
+     * Caso value seja = 1 $add recebe true para indicar no método addItem que aquele registro será inserido 
+     * no pedido e seu status de venda passa para 1, caso seja = 0 indica que aquele registro será somente 
+     * deletado do pedido e seu status de venda volta a ser 0 como de padrão.
      * @date 17/08/2016
-     * @return retorna true caso não dê erro
      */
     public function sellAnimal($dados, $idPedido) {
         foreach ($dados as $key => $value) {
+            $add = false;
+            // Para não sair executando e alterando o status dos animais não marcados e para entrar quando remover um animal do pedido
             if ($value == 1) {
-                $idAnimal = $key;
+                $add = true;
                 $u = array(
                     "statusVenda" => 1
                 );
-                $w = array(
-                    "id = ?" => $idAnimal
+            } else if ($value == 0) {
+                $add = false;
+                $u = array(
+                    "statusVenda" => 0
                 );
+            }
+            if (isset($u)) {
+                $w = array(
+                    "id = ?" => $key
+                );
+                // Faz a alteração no status de venda do animal
                 $this->setTable('animal');
                 $this->update($u)->where($w)->exec();
-                
-                $this->addItem($idAnimal, $idPedido);
-                
-                $rs = $this->getProperties();
+
+                // Chama método que adiciona o animal na tabela pedidoItem
+                $this->addItem($key, $idPedido, $add);
             }
         }
-        
+
+        $rs = $this->getProperties();
         if ($rs['error'] === 0) {
             return true;
         } else {
@@ -190,26 +257,28 @@ class pedido extends model implements \interfaces\model {
         }
     }
 
-    public function addItem($idAnimal, $idPedido) {
-        $this->setTable('pedidoitem');
-        
+    /**
+     * Método addItem primeiramente del
+     * @param type $idAnimal
+     * @param type $idPedido
+     * @param type $add
+     */
+    public function addItem($idAnimal, $idPedido, $add) {
         $w = array(
             'idAnimal = ?' => $idAnimal,
             'idPedido = ?' => $idPedido
         );
-        
-        $checkAnimal = $this->select('id')->where($w)->exec('ROW');
-        
-        if(!empty($checkAnimal['id'])){
-            return false;
-        }
-        
-        $i = array(
-            'idAnimal' => $idAnimal,
-            'idPedido' => $idPedido
-        );
+        $this->setTable('pedidoitem');
+        $this->delete()->where($w)->exec();
 
-        $this->insert($i)->exec();
+        if ($add == true) {
+            $i = array(
+                'idAnimal' => $idAnimal,
+                'idPedido' => $idPedido
+            );
+
+            $this->insert($i)->exec();
+        }
     }
 
     /**
@@ -219,39 +288,48 @@ class pedido extends model implements \interfaces\model {
      * @param $idPedido
      * @return boolean|int
      */
-    public function listAnimalByPedido($idPedido) {
-        $s = array(
-            'animal.id',
-            'pedidoItem.idPedido'
-        );
+    public function getAnimalByPedido($idPedido) {
+        $s = array('animal.id');
+
         $j = array(
             'table' => 'pedidoItem',
             'cond' => 'animal.id = pedidoItem.idAnimal'
         );
+
         $w = array(
-            'pedidoItem.idPedido = ?' => $idPedido,
-            'animal.statusVenda = ?' => 0
+            'animal.statusVenda = 0 OR pedidoItem.idPedido = ?' => $idPedido
         );
-        
+
         $this->setTable('animal');
-        $arrAnimais = $this->select($s)->join($j)->where($w, 'OR')->exec('ALL');
+        $rs = $this->select($s)->join($j)->where($w)->exec('ALL');
         $info = $this->getProperties();
-        
-        // Verifica quais animais são deste pedido para atribuí-los em $selected
-        $selecteds = null;
-        foreach ($arrAnimais as $animal) {
-            if (!empty($animal['idPedido'])) {
-                $selecteds[$animal['id']] = 1;
-            }
-        }
-        
-        $rs = array(
-            'selecteds' => $selecteds,
-            'arrAnimais' => $arrAnimais
-        );
 
         if ($info['error'] == 0) {
             return $rs;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAnimalSelected($idPedido) {
+        $w = array(
+            'idPedido = ?' => $idPedido
+        );
+
+        $this->setTable('pedidoItem');
+        $arrAnimais = $this->select()->where($w)->exec('ALL');
+        $info = $this->getProperties();
+
+        // Verifica quais animais são deste pedido para atribuí-los em $selected
+        $selecteds = null;
+        if (!empty($arrAnimais)) {
+            foreach ($arrAnimais as $animal) {
+                $selecteds[$animal['idAnimal']] = 1;
+            }
+        }
+
+        if ($info['error'] == 0) {
+            return $selecteds;
         } else {
             return false;
         }
@@ -265,26 +343,25 @@ class pedido extends model implements \interfaces\model {
      * @date 05/11/2016
      * @param $idPedido
      */
-    public function getAnimalByPedido($idPedido) {
-        $s = array('idAnimal');
-        $w = array(
-            "idPedido = ?" => $idPedido
-        );
-
-        $this->setTable('pedidoItem');
-        $arrAnimais = $this->select($s)->where($w)->exec('ALL');
-        $info = $this->getProperties();
-
-        $rs = array();
-        foreach ($arrAnimais as $animal) {
-            $rs[$animal['idAnimal']] = 1;
-        }
-
-        if (empty($info['error'])) {
-            return $rs;
-        } else {
-            return false;
-        }
-    }
-
+//    public function getAnimalByPedido($idPedido) {
+//        $s = array('idAnimal');
+//        $w = array(
+//            "idPedido = ?" => $idPedido
+//        );
+//
+//        $this->setTable('pedidoItem');
+//        $arrAnimais = $this->select($s)->where($w)->exec('ALL');
+//        $info = $this->getProperties();
+//
+//        $rs = array();
+//        foreach ($arrAnimais as $animal) {
+//            $rs[$animal['idAnimal']] = 1;
+//        }
+//
+//        if (empty($info['error'])) {
+//            return $rs;
+//        } else {
+//            return false;
+//        }
+//    }
 }

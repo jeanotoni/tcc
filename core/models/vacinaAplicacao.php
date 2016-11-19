@@ -14,12 +14,22 @@ class vacinaAplicacao extends model implements \interfaces\model {
      * @return $rs
      */
     public function getVaccineApplication() {
+
+        $o = 'vacinaAplicacao.id DESC';
+
+        $s = array(
+            'vacinaAplicacao.*', 'vacina.nome as vacina'
+        );
+
+        $j = array(
+            "table" => 'vacina',
+            "cond" => 'vacina.id = vacinaAplicacao.idVacina'
+        );
+
         $this->setTable('vacinaAplicacao');
-        $rs = $this->select()->where()->exec('ALL');
+        $rs = $this->select($s)->join($j)->orderBy($o)->exec('ALL');
 
-//        $rs['dataAplicacao'] = date('Y-m-d', strtotime($rs[0]['dataAplicacao']));
-//        debug($rs);
-
+        // $rs['dataAplicacao'] = date('Y-m-d', strtotime($rs[0]['dataAplicacao']));
         return $rs;
     }
 
@@ -29,8 +39,6 @@ class vacinaAplicacao extends model implements \interfaces\model {
      * @return $rs lastId
      */
     public function vaccinateAnimals($request) {
-        //////// FALTA VER A QUESTÃO DAS DATAS. COMO SALVAR E COMO TRAZER DO BANCO
-//        $request['dataAplicacao'] = date('Y-m-d');
         $this->setTable('vacinaAplicacao');
 
         if (empty($request['model']->id)) {
@@ -45,18 +53,20 @@ class vacinaAplicacao extends model implements \interfaces\model {
                 return false;
             }
         } else {
-            $id = $request['model']->id;
             // Para quando for editar ele não tentar atualizar o id, pq senão vai dar pau
+            $id = $request['model']->id;
             unset($request['model']->id);
+            unset($request['model']->vacina);
 
             $w = array(
                 "id = ?" => $id
             );
 
             $this->update($request['model'])->where($w)->exec();
-            if ($request['itens']) {
+
+//            if ($request['itens']) {
                 $this->addItem($id, $request['itens']);
-            }
+//            }
 
             $rs = $this->getProperties();
 
@@ -69,21 +79,30 @@ class vacinaAplicacao extends model implements \interfaces\model {
     }
 
     /**
-     * Método responsável por adicionar os animais na tabela vacinaItem pegando um array de animais selecionados e o id da aplicação
+     * Método para adicionar os animais que foram vacinados na tabela vacinaItem
+     * Primeiro ele deleta todos os itens e em seguida adiciona apenas os que tem $value igual à 1, 
+     * ou seja os que estiverem selecionados
      * @param $idVacinaAplicacao
      * @param $arrAnimals
      */
     public function addItem($idVacinaAplicacao, $arrAnimals) {
+        $this->setTable('vacinaItem');
+        
         foreach ($arrAnimals as $key => $value) {
-            if ($value == 1) {
-                $idAnimal = $key;
+            $idAnimal = $key;
+            
+            $w = array(
+                'idVacinaAplicacao = ?' => $idVacinaAplicacao,
+                'idAnimal = ?' => $idAnimal
+            );
+            $this->delete()->where($w)->exec();
 
+            if ($value == 1) {
                 $i = array(
                     'idVacinaAplicacao' => $idVacinaAplicacao,
                     'idAnimal' => $idAnimal
                 );
 
-                $this->setTable('vacinaItem');
                 $this->insert($i)->exec();
             }
         }
@@ -109,7 +128,7 @@ class vacinaAplicacao extends model implements \interfaces\model {
         $rs = $this->select()->join($j)->where($w)->exec('ALL');
 
         $info = $this->getProperties();
-        
+
         if ($info['error'] == 0) {
             return $rs;
         } else {
@@ -117,5 +136,28 @@ class vacinaAplicacao extends model implements \interfaces\model {
         }
     }
 
+    public function getAnimalSelected($idVacinaAplicacao) {
+        $w = array(
+            'idVacinaAplicacao = ?' => $idVacinaAplicacao
+        );
+
+        $this->setTable('vacinaItem');
+        $arrAnimais = $this->select()->where($w)->exec('ALL');
+        $info = $this->getProperties();
+
+        // Verifica quais animais são deste pedido para atribuí-los em $selected
+        $selecteds = null;
+        if (!empty($arrAnimais)) {
+            foreach ($arrAnimais as $animal) {
+                $selecteds[$animal['idAnimal']] = 1;
+            }
+        }
+
+        if ($info['error'] == 0) {
+            return $selecteds;
+        } else {
+            return false;
+        }
+    }
 
 }

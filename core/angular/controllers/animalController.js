@@ -9,7 +9,7 @@
                 }
             });
         };
-        
+
         var listAnimal = function () {
             animalService.listAnimal().then(function (response) {
                 $scope.animais = response.data;
@@ -29,13 +29,28 @@
             };
             pedidoService.salvarPedido(params).then(function (response) {
                 if (response.data) {
-                    console.log(response);
                     $scope.model = {};
                     $scope.list = {};
                     listAnimal();
                 }
             });
         };
+
+        var statusVenda = {
+            0: 'Aberto',
+            1: 'Vendido'
+        };
+        $scope.getStatusVenda = function (id) {
+            return statusVenda[id];
+        };
+        
+        
+        $scope.filterListAnimal = {};
+        $scope.$watch('filterListAnimal', function (val) {
+            if (val.statusVenda == null) {
+                delete($scope.filterListAnimal.statusVenda);
+            }
+        }, true);
 
         $scope.modal = function (animal) {
             $scope.chekboxInsert = false;
@@ -59,13 +74,15 @@
             });
         };
 
-        $scope.excluir = function (id) {
+        $scope.deletar = function (id) {
             var rs = confirm("Deseja realmente excluir este animal?");
             if (rs) {
-                animalService.excluirAnimal(id).then(function (response) {
+                animalService.deletarAnimal(id).then(function (response) {
                     if (response.data) {
-                        Materialize.toast(response.data, 4000, 'toast-success');
+                        Materialize.toast('Animal Cod. ' + id + ' excluído com sucesso!', 4000, 'toast-success');
                         listAnimal();
+                    } else {
+                        Materialize.toast('Impossível excluir animal Cod. ' + id + ', pois há pedidos ligados à ele.', 5000, 'toast-error');
                     }
                 });
             }
@@ -89,25 +106,21 @@
                 idAnimal: idAnimal
             };
             vacinaService.getDadosAplicacao(param).then(function (response) {
-                console.log(response);
                 $scope.details = response.data;
             });
-            
+
             $('#details-modal').openModal({close_esc: true});
         };
 
         $scope.closeModal = function () {
+            $('#newAnimal').closeModal();
             $('#details-modal').closeModal();
             $('#sell-modal').closeModal();
         };
 
-        // to com problemas pra listar os dados dos animais dentro da view animalDetails
 //        $scope.details = function (id) {
 //            window.location = '/animal/details/' + id;
 //        };
-
-
-
 
     });
 })();

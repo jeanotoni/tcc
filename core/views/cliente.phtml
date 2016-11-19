@@ -1,40 +1,56 @@
 <main ng-controller="clienteController">
     <!-- Modal Trigger -->
-    <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="material-icons">add</i>Novo</a>
-    <!--Modal Structure--> 
-    <div id="newAnimal" class="modal">
+    <a class="right waves-effect waves-light btn" ng-click="modal()">
+        <i class="mdi mdi-plus"></i>Novo
+    </a>
+
+    <!-- MODAL NOVO CLIENTE -->
+    <div id="newClient" class="modal">
         <div class="modal-content">
-            <h4 style="display: inline">Cadastrar Animal</h4>
-            <a href="#" style="color: black" class="closeModal right"><i class="material-icons">close</i></a>
+            <h1 class="title-modal centered">{{titleModal}}</h1>
+            <a href="#" ng-click="closeModal()" style="color: black" class="right icon-close-modal"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
                     <form method="POST" action="#">
-                        <div class="input-field col s6">
-                            <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
-                            <label class="active" for="apelido">Apelido</label>
+                        <div class="col s12 m6">
+                            <label class="active" for="nome">Nome</label>
+                            <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
                         </div>
-                        <div class="input-field col s6">
-                            <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" required/>
-                            <label class="active" for="dataNascimento">Data de Nascimento</label>
+                        <div class="col s12 m6">
+                            <label class="active" for="cpf">Cpf</label>
+                            <input class="validate" id="cpf" type="text" name="cpf" ng-model="model.cpf" required/>
                         </div>
-                        <div class="input-field col s6">
-                            <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
-                            <label class="active" for="custo">Custo</label>
+                        <div class="col s12 m6">
+                            <label class="active" for="endereco">Endereço</label>
+                            <input class="validate" id="endereco" type="text" name="endereco" ng-model="model.endereco" required/>
                         </div>
-                        <div class="input-field col s6">
-                            <input class="validate" type="text" name="statusVenda" ng-model="edit.statusVenda" required/>
-                            <label class="active" for="statusVenda">Status de Venda</label>
+                        <div class="col s12 m3">
+                            <label class="active" for="numeroCasa">Número da Casa</label>
+                            <input class="validate" id="numeroCasa" type="text" name="numeroCasa" ng-model="model.numeroCasa" required/>
                         </div>
-                        <div class="input-field col s12">
-                            <input class="validate" type="text" name="observacao" ng-model="edit.observacao" required/>
+                        <div class="col s12 m3">
+                            <label class="active" for="bairro">Bairro</label>
+                            <input class="validate" id="bairro" type="text" name="bairro" ng-model="model.bairro" required/>
+                        </div>
+                        <div class="col s12 m6">
+                            <label class="active" for="telefone">Telefone</label>
+                            <input class="validate" id="telefone" type="text" name="telefone" ng-model="model.telefone" required/>
+                        </div>
+                        <div class="col s12 m6">
+                            <label class="active" for="celular">Celular</label>
+                            <input class="validate" id="celular" type="text" name="celular" ng-model="model.celular" required/>
+                        </div>
+
+                        <div class="col s12">
                             <label class="active" for="observacao">Observação</label>
-                        </div>
-                        <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addAnimal()"><i class="material-icons">save</i> Salvar Animal</a>
+                            <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="model.observacao"></textarea>
                         </div>
                     </form>
                 </div>
             </div>
+        </div>
+        <div class="modal-footer">
+            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addClient()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
         </div>
     </div>
 
@@ -43,6 +59,7 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
+                <th>Telefone</th>
                 <th>Data de Cadastro</th>
                 <th>Ações</th>
             </tr>
@@ -51,8 +68,9 @@
             <tr ng-repeat="cliente in clientes">
                 <td>{{cliente.id}}</td>
                 <td>{{cliente.nome}}</td>                
-                <td>{{cliente.teste}}</td>
-                <td><a href="#" ng-click="modal(animal)">Editar</a> | <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a></td>
+                <td>{{cliente.telefone}}</td>                
+                <td>{{cliente.dataCadastro| tccDate}}</td>
+                <td><a href="#" ng-click="modal(cliente)">Editar</a> | <a style="cursor: pointer" ng-click="deletar(cliente.id)">Excluir</a></td>
             </tr>
         </tbody>
     </table>

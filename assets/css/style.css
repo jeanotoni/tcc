@@ -135,3 +135,11 @@ textarea {
     margin-right: 16px !important;
     margin-bottom: 6px !important;
 }
+
+.visualizacao-animal a{
+    color: white;
+}
+.visualizacao-animal .active{
+    background: black !important;
+    font-size: 20px;
+}

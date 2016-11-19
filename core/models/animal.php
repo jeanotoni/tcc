@@ -24,10 +24,9 @@ class animal extends model implements \interfaces\model {
      * @return no caso de inserção: retorna o último id inserido, e no caso de edição o id do animal editado
      */
     public function salvar($dados) {
-        // trata para pegar somente o que for data e ignorar o restante que são as horas
-        if (isset($dados['dataNascimento'])) {
-            $dados['dataNascimento'] = date('Y-m-d', strtotime(substr($dados['dataNascimento'], 0, 10)));
-        }
+        // Usa método para tratar data e pegar somente a parte que seja de fato data e ignorar o restante que são as horas
+        $dados['dataNascimento'] = $this->tratarData($dados['dataNascimento']);
+        
         if (empty($dados['id'])) {
             $this->insert($dados)->exec();
             $rs = $this->getProperties();
@@ -88,39 +87,100 @@ class animal extends model implements \interfaces\model {
     }
 
     /**
-     * Método listar todos os animais da base
+     * Lista todos os animais da base e não precisa mais levar em consideração o statusVenda, pois agora o usuário
+     * pode alternar a visualização clicando em aberto, vendido ou todos.
      * @method listar
      * @date 17/08/2016
      * @return $rs
      */
     public function listar() {
-        $w = array(
-            "statusVenda = ?" => 0
-        );
-        
-        $rs = $this->select()->where($w)->exec('ALL');
-        return $rs;
+//        $w = array(
+//            "statusVenda = ?" => 0
+//        );
+
+        $rs = $this->select()->exec('ALL');
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Método para deletar um animal
-     * @method salvar
-     * @param $id
-     * @date 17/08/2016
-     * @return retorna true caso não dê erro
+     * Lista todos os animais da base sem levar em considerção seu status
+     * @date 15/11/2016
      */
-    public function deletar($id) {
-        $w = array(
-            "id = ?" => $id
-        );
+    public function listAll() {
+        $s = array('id');
 
-        $rs = $this->delete()->where($w)->exec();
+        $this->setTable('animal');
+        $rs = $this->select($s)->exec('ALL');
 
-        if ($rs['error']) {
-            return false;
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
         } else {
-            return true;
+            return false;
         }
     }
-  
+    
+    /**
+     * Método que faz busca na tabela pedidoItem para saber se há algum pedido com aquele determinado animal
+     * para que possa deletar-lo sem problemas posteriormente
+     * Obs: usado aqui pelo método deletar()
+     * @param $idAnimal
+     * @date 19/11/2016
+     */
+    public function getPedidoItemByAnimal($idAnimal) {
+        $s = array('id');
+        
+        $w = array(
+            'idAnimal = ?' => $idAnimal
+        );
+
+        $this->setTable('pedidoItem');
+        $this->select($s)->where($w)->exec('ALL');
+
+        $info = $this->getProperties();
+        
+        if ($info['rowCount'] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Método para deletar um animal, verifica se o resultado do método getPedidoItemByAnimal retornar 'true', significa
+     * que não há nenhum pedido ligado a àquele cliente, e ele pode ser deletado normalmente
+     * @param $idAnimal
+     * @date 19/11/2016
+     */
+    public function deletar($idAnimal) {
+        $verify = $this->getPedidoItemByAnimal($idAnimal);
+        
+        if ($verify) {
+            echo 'oi';
+            $w = array(
+                "id = ?" => $idAnimal
+            );
+
+            $this->setTable('animal');
+            $this->delete()->where($w)->exec();
+
+            $info = $this->getProperties();
+
+            if ($info['error'] == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }       
+
 }

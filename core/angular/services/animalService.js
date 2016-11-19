@@ -3,8 +3,12 @@ angular.module("tcc").service("animalService", function ($http) {
     this.listAnimal = function () {
         return $http.get('/animal/listar/');
     };
+    
+    this.listAll = function () {
+        return $http.get('/animal/listAll/');
+    };
 
-    this.excluirAnimal = function (id) {
+    this.deletarAnimal = function (id) {
         return $http.get('/animal/deletar/' + id);
     };
 

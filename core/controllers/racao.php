@@ -13,22 +13,34 @@ class racao extends controller implements \interfaces\controller {
     public function init() {
         $this->view('racao');
     }
-    
-    public function salvar(){
+
+    public function salvar() {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
-        
-        $rs = $this->model->salvar($request);
-        $rs = array('id' => $rs);
-        
+
+        $result = $this->model->salvar($request);
+
+        $rs = array('id' => $result);
+
         echo $this->toJson($rs);
     }
 
-
     public function listar() {
         $rs = $this->model->listar();
-        
+
         echo $this->toJson($rs);
+    }
+
+    public function deletar() {
+        $idRacao = isset($_GET['id']) ? $_GET['id'] : null;
+
+        $rs = $this->model->deletar($idRacao);
+
+        if ($rs) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

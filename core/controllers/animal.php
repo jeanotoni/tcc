@@ -16,7 +16,7 @@ class animal extends controller implements \interfaces\controller {
 //        $dados['animais'] = $this->model->listar();
         $this->view('animal/animal');
     }
-    
+
 //    public function details(){
 //        $id = (isset($_GET['id']) ? $_GET['id'] : null);
 //        
@@ -24,7 +24,6 @@ class animal extends controller implements \interfaces\controller {
 //        
 //        echo 'oi';
 //    }
-    
 //    public function getAnimalById(){
 //        $id = (isset($_GET['id']) ? $_GET['id'] : null);
 //        
@@ -38,7 +37,7 @@ class animal extends controller implements \interfaces\controller {
     public function salvar() {
         $input = file_get_contents('php://input');
         $dados = (array) json_decode($input);
-        
+
         $rs = $this->model->salvar($dados);
         $rs = array('id' => $rs);
 
@@ -84,21 +83,23 @@ class animal extends controller implements \interfaces\controller {
         echo $this->toJson($rs);
     }
 
+    public function listAll() {
+        $rs = $this->model->listAll();
+        echo $this->toJson($rs);
+    }
+
     public function deletar() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
 
-        if ($id == null) {
-            echo 'O id é nulo.';
+        $rs = $this->model->deletar($id);
+        
+        if ($rs) {
+            return true;
+//            echo 'Animal excluido com sucesso!';
         } else {
-            $rs = $this->model->deletar($id);
-            if ($rs) {
-                echo 'Animal excluido com sucesso!';
-            } else {
-                echo 'Falha ao deletar animal!';
-            }
+            return false;
+//            echo 'Falha ao deletar animal!';
         }
     }
-
-    
 
 }

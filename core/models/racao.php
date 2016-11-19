@@ -16,20 +16,19 @@ class racao extends model implements \interfaces\model {
      * @return no caso de inserção: retorna o último id inserido, e no caso de edição o id da ração editado
      */
     public function salvar($request) {
-//        debug();
         if (empty($request['id'])) {
-            
+
             $this->insert($request)->exec();
-            $rs = $this->getProperties();
-            
-            if ($rs['error'] === 0) {
-                return $rs['lastId'];
+            $info = $this->getProperties();
+
+            if ($info['error'] == 0) {
+                return $info['lastId'];
             } else {
                 return false;
             }
         } else {
-            $id = $request['id'];
             // para quando for editar ele não tentar atualizar o id, pq senão vai dar pau
+            $id = $request['id'];
             unset($request['id']);
 
             $w = array(
@@ -37,9 +36,9 @@ class racao extends model implements \interfaces\model {
             );
             $this->update($request)->where($w)->exec();
 
-            $rs = $this->getProperties();
+            $info = $this->getProperties();
 
-            if ($rs['error'] === 0) {
+            if ($info['error'] == 0) {
                 return $id;
             } else {
                 return false;
@@ -50,15 +49,16 @@ class racao extends model implements \interfaces\model {
     /**
      * Método usado para listar as rações cadastradas na base
      * @method listar
-     * @date 01/11/2016
+     * @date 19/11/2016
      * @return $rs
      */
-    public function listar() {
+     public function listar() {
         $this->setTable('racao');
-
         $rs = $this->select()->exec('ALL');
 
-        if (!empty($rs)) {
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
             return $rs;
         } else {
             return false;

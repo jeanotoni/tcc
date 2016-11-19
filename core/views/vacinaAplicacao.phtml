@@ -1,5 +1,5 @@
 <main ng-controller="vacinaController">
-    <a class="right waves-effect waves-light btn" ng-click="openAplicarVacinaModal()" style="margin-right: 10px;">
+    <a class="right waves-effect waves-light btn" ng-click="modalAplicacao()" style="margin-right: 10px;">
         <i class="mdi mdi-needle"></i>Nova Aplicação
     </a>
 
@@ -17,13 +17,14 @@
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="dataAplicacao">Data da Aplicação</label>
-                            <input class="validate" type="date" name="dataAplicacao" ng-model="model.dataAplicacao" required/>
+                            <input class="validate" type="date" name="dataAplicacao" ng-model="model.dataAplicacao" ng-model-options="{timezone: 'UTC'}" required/>
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="vacina">Vacinas</label>
                             <select class="browser-default" ng-model="model.idVacina" ng-options="vacina.id as vacina.nome for vacina in vacinas" ng-init="resetSelect()"></select>
                         </div>
                         <div class="col s12">
+                            {{list}}
                             <br>
                             <label class="active">Animais</label>
                             <p>Selecione os animais que deseja vacinar.</p>
@@ -58,7 +59,7 @@
                 <td>{{aplicacao.id}}</td>
                 <td>{{aplicacao.descricao}}</td>
                 <td>{{aplicacao.dataAplicacao| tccDate}}</td>
-                <td>{{aplicacao.idVacina}}</td>
+                <td>{{aplicacao.vacina}}</td>
                 <td><a style="cursor: pointer" ng-click="modalAplicacao(aplicacao)">Editar</a> | <a style="cursor: pointer" ng-click="delete(aplicacao.id)">Excluir</a></td>
             </tr>
         </tbody>

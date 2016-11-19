@@ -19,8 +19,14 @@
             $scope.chekboxInsert = false;
             $scope.model = {};
             if (racao) {
+                $scope.titleModal = 'Editar Ração';
+                $scope.btnIcon = 'pencil';
+                $scope.btnSalvar = 'EDITAR';
                 $scope.model = angular.copy(racao);
             } else {
+                $scope.titleModal = 'Inserir Ração';
+                $scope.btnIcon = 'check';
+                $scope.btnSalvar = 'SALVAR';
                 $scope.model = {};
             }
             $('#newRacao').openModal();
@@ -28,7 +34,7 @@
 
 
 
-        // Insere vacina no banco
+        // Insere Ração no banco
         $scope.salvarRacao = function () {
             racaoService.salvarRacao($scope.model).then(function (response) {
                 if (response.data.id) {
@@ -37,13 +43,13 @@
             });
         };
 
-        $scope.delete = function (id) {
-            var rs = confirm("Deseja realmente excluir esta vacina?");
+        $scope.deletar = function (id) {
+            var rs = confirm("Deseja realmente excluir esta ração?");
             if (rs) {
-                vacinaService.deleteVaccine(id).then(function (response) {
+                racaoService.deletarRacao(id).then(function (response) {
                     if (response.data) {
                         Materialize.toast(response.data, 4000, 'toast-success');
-                        listVaccine();
+                        listarRacao();
                     }
                 });
             }

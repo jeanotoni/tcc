@@ -11,19 +11,23 @@ angular.module("tcc").service("vacinaService", function ($http) {
     this.addVaccine = function (vacina) {
         return $http.post('/vacina/salvar/', vacina);
     };
-    
-    // RELACIONADO À APLICAÇÃO DE VACINAS
-    
-    this.getVaccineApplication = function (){
+
+
+    // RELACIONADO À APLICAÇÃO DE VACINAS \\
+    this.getVaccineApplication = function () {
         return $http.get('/vacinaAplicacao/getVaccineApplication/');
     };
-    
+
     this.vaccinateAnimals = function (dados) {
         return $http.post('/vacinaAplicacao/vaccinateAnimals/', dados);
     };
-    
+
     this.getDadosAplicacao = function (idAnimal) {
         return $http.post('/vacinaAplicacao/getDadosAplicacao/', idAnimal);
+    };
+    
+    this.getAnimalSelected = function (idVacinaAplicacao) {        
+        return $http.get('/vacinaAplicacao/getAnimalSelected/' + idVacinaAplicacao);
     };
 
 });

@@ -8,20 +8,26 @@ $route->setRoute('animal/deletar', array(
     'id' => 'integerFilter'
 //    'order' => null
 ));
-
 $route->setRoute('vacina/deletar', array(
     'id' => 'integerFilter'
 ));
-
 $route->setRoute('racao/deletar', array(
     'id' => 'integerFilter'
 ));
+$route->setRoute('cliente/deletar', array(
+    'id' => 'integerFilter'
+));
+
 
 $route->setRoute('pedido/getAnimalByPedido', array(
     'id' => 'integerFilter'
 ));
 
 $route->setRoute('pedido/listAnimalByPedido', array(
+    'id' => 'integerFilter'
+));
+
+$route->setRoute('vacinaAplicacao/getAnimalSelected', array(
     'id' => 'integerFilter'
 ));
 

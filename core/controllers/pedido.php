@@ -66,13 +66,27 @@ class pedido extends controller implements \interfaces\controller {
 
         echo $this->toJson($rs);
     }
+    
+    public function estornarCancelarPedido(){
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
+        
+        $rs = $this->model->estornarCancelarPedido($request);
+        
+        echo $this->toJson($rs);
+    }
 
     /**
      * Usado para pegar todos os animais de um determinado pedido e trazer os que são deles já selecionados
      */
-    public function listAnimalByPedido() {
+    public function getAnimalByPedido() {
         if (!empty($_GET['id']) && (int) $_GET['id'] > 0) {
-            $rs = $this->model->listAnimalByPedido($_GET['id']);
+            $id = $_GET['id'];
+            
+            $rs = array(
+                'animal' => $this->model->getAnimalByPedido($id),
+                'selected' => $this->model->getAnimalSelected($id)
+            );
         }
         echo $this->toJson($rs);
     }

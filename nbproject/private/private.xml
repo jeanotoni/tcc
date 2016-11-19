@@ -9,7 +9,15 @@
             <file>file:/C:/wamp/www/tcc/core/controllers/pedido.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/pedido.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/model.php</file>
-            <file>file:/C:/wamp/www/tcc/core/views/vacina.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/views/vacinaAplicacao.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/controllers/vacinaController.js</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/services/vacinaService.js</file>
+            <file>file:/C:/wamp/www/tcc/core/controllers/vacinaAplicacao.php</file>
+            <file>file:/C:/wamp/www/tcc/core/models/vacinaAplicacao.php</file>
+            <file>file:/C:/wamp/www/tcc/core/models/animal.php</file>
+            <file>file:/C:/wamp/www/tcc/core/controllers/animal.php</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/services/animalService.js</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/controllers/animalController.js</file>
         </group>
     </open-files>
 </project-private>

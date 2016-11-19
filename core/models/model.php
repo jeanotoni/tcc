@@ -31,8 +31,8 @@ class model {
     }
 
     protected function insert($args) {
-        
-        if(!is_array($args)){
+
+        if (!is_array($args)) {
             $args = (array) $args;
         }
 
@@ -94,7 +94,7 @@ class model {
 
         foreach ($args as $k => $v) {
             if (!$strict) {
-                if (!empty($v)) {
+                if (!empty($v) || $v == 0) {
                     $value = (is_numeric($v) ? $v : "'" . $v . "'");
                     $query .= "`$k` = $value, ";
                 }
@@ -224,6 +224,14 @@ class model {
 
     public function getProperties() {
         return $this->properties;
+    }
+
+    public function tratarData($date) {
+        if (isset($date)) {
+            return date('Y-m-d', strtotime(substr($date, 0, 10)));
+        } else {
+            return false;
+        }
     }
 
 }
