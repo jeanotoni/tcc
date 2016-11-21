@@ -9,15 +9,26 @@
             <file>file:/C:/wamp/www/tcc/core/controllers/pedido.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/pedido.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/model.php</file>
-            <file>file:/C:/wamp/www/tcc/core/views/vacinaAplicacao.phtml</file>
-            <file>file:/C:/wamp/www/tcc/core/angular/controllers/vacinaController.js</file>
             <file>file:/C:/wamp/www/tcc/core/angular/services/vacinaService.js</file>
-            <file>file:/C:/wamp/www/tcc/core/controllers/vacinaAplicacao.php</file>
-            <file>file:/C:/wamp/www/tcc/core/models/vacinaAplicacao.php</file>
+            <file>file:/C:/wamp/www/tcc/assets/css/style.css</file>
+            <file>file:/C:/wamp/www/tcc/core/views/cliente.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/controllers/clienteController.js</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/services/clienteService.js</file>
+            <file>file:/C:/wamp/www/tcc/core/controllers/cliente.php</file>
+            <file>file:/C:/wamp/www/tcc/core/models/cliente.php</file>
+            <file>file:/C:/wamp/www/tcc/core/views/racao.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/controllers/racaoController.js</file>
+            <file>file:/C:/wamp/www/tcc/core/angular/services/racaoService.js</file>
+            <file>file:/C:/wamp/www/tcc/core/controllers/racao.php</file>
+            <file>file:/C:/wamp/www/tcc/core/models/racao.php</file>
+            <file>file:/C:/wamp/www/tcc/core/system/route.php</file>
             <file>file:/C:/wamp/www/tcc/core/models/animal.php</file>
             <file>file:/C:/wamp/www/tcc/core/controllers/animal.php</file>
             <file>file:/C:/wamp/www/tcc/core/angular/services/animalService.js</file>
             <file>file:/C:/wamp/www/tcc/core/angular/controllers/animalController.js</file>
+            <file>file:/C:/wamp/www/tcc/core/views/animal/animal.phtml</file>
+            <file>file:/C:/wamp/www/tcc/core/controllers/vacinaAplicacao.php</file>
+            <file>file:/C:/wamp/www/tcc/core/models/vacinaAplicacao.php</file>
         </group>
     </open-files>
 </project-private>

@@ -43,4 +43,13 @@ class racao extends controller implements \interfaces\controller {
         }
     }
 
+    public function addRacaoByAnimal() {
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
+
+        $rs = $this->model->addRacaoByAnimal($request);
+        
+        echo $this->toJson($rs);
+    }
+
 }

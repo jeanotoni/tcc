@@ -11,6 +11,10 @@ angular.module("tcc").service("racaoService", function ($http) {
     this.deletarRacao = function (id) {
         return $http.get('/racao/deletar/' + id);
     };
+    
+    this.addRacaoByAnimal = function (racao){
+        return $http.post('/racao/addRacaoByAnimal/', racao);
+    };
 
 
 });

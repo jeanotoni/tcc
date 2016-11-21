@@ -143,3 +143,8 @@ textarea {
     background: black !important;
     font-size: 20px;
 }
+
+.aba-animal .aba{
+    padding: 5px 10px;
+    color: white;
+}

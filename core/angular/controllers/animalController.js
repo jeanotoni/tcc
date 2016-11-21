@@ -1,6 +1,6 @@
 (function () {
     'user-strict';
-    angular.module("tcc").controller("animalController", function ($scope, animalService, pedidoService, vacinaService) {
+    angular.module("tcc").controller("animalController", function ($scope, animalService, pedidoService, vacinaService, racaoService) {
 
         $scope.insertMultiple = function () {
             animalService.insertMultiple($scope.edit).then(function (response) {
@@ -43,8 +43,8 @@
         $scope.getStatusVenda = function (id) {
             return statusVenda[id];
         };
-        
-        
+
+
         $scope.filterListAnimal = {};
         $scope.$watch('filterListAnimal', function (val) {
             if (val.statusVenda == null) {
@@ -121,6 +121,26 @@
 //        $scope.details = function (id) {
 //            window.location = '/animal/details/' + id;
 //        };
+        $('#newAnimal').openModal();
+
+        $scope.aba = 2;
+        $scope.alterAba = function (aba) {
+            $scope.aba = aba;
+        };
+
+        // Depois criar função que traz somente o nome e id da ração para otimizar
+        var listarRacao = function () {
+            racaoService.listarRacao().then(function (response) {
+                $scope.racoes = response.data;
+            });
+        };
+        listarRacao();
+
+        $scope.addRacao = function () {
+            racaoService.addRacao
+        };
+
+
 
     });
 })();

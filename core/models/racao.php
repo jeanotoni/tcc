@@ -64,5 +64,14 @@ class racao extends model implements \interfaces\model {
             return false;
         }
     }
+    
+    // FINALIZAR CRIAÇÃO DE MÉTODO PARA ADICIONAR UMA RAÇÃO À UM ANIMAL
+    // DEPOIS CRIAR MÉTODO PARA LISTAR A RAÇÃO (EM FORMA DE TABELA)
+    public function addRacaoByAnimal(){
+        $this->setTable('racaoItem');
+        
+        
+        
+    }
 
 }
