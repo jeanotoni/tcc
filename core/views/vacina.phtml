@@ -7,13 +7,13 @@
     <!-- MODAL NOVA VACINA-->
     <div id="newVaccine" class="modal">
         <div class="modal-content">
-            <h1 class="title-modal centered">Inserir Vacina</h1>
+            <h1 class="title-modal centered">Inserir Vacina - Medicamento</h1>
             <a href="#" ng-click="closeModal()" style="color: black" class="right icon-close-modal"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
                     <form method="POST" action="#">
                         <br/>
-                        <div class="col s12">
+                        <div class="col s12 m6">
                             <label class="active" for="apelido">Nome</label>
                             <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
                         </div>
@@ -21,7 +21,7 @@
                             <label class="active" for="custo">Custo</label>
                             <input class="validate" type="number" name="custo" ng-model="model.custo" required/>
                         </div>-->
-                        <div class="col s12">
+                        <div class="col s12 m6">
                             <label class="active" for="dosagem">Dosagem por Quilo (ml)</label>
                             <input class="validate" type="number" name="dosagem" ng-model="model.dosagem"/>
                         </div>

@@ -15,6 +15,14 @@ angular.module("tcc").service("racaoService", function ($http) {
     this.addRacaoByAnimal = function (racao){
         return $http.post('/racao/addRacaoByAnimal/', racao);
     };
+    
+    this.listRacaoByAnimal = function (idAnimal) {
+        return $http.get('/racao/listRacaoByAnimal/'+ idAnimal);
+    };
+    
+    this.interromperRacao = function (params) {
+        return $http.post('/racao/interromperRacao/', params);
+    };
 
 
 });

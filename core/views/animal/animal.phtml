@@ -1,144 +1,190 @@
 <main ng-controller="animalController">
     <!-- Modal Trigger -->
     <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="mdi mdi-plus"></i>Novo</a>
-    <!-- Modal Structure -->
-    
+
+    <!-- MODAL NEW ANIMAL -->
     <div id="newAnimal" class="modal">
-        <div class="modal-content">
-            <h1 class="title-modal centered">Cadastrar Animal</h1>
-            <a href="#" style="color: black" class="icon-close-modal right" ng-click="closeModal()"><i class="mdi mdi-close"></i></a><br/><br/>
-
-            <div class="row aba-animal">
-                <div class="col s12">
-                    <a href="#" class="aba blue" ng-click="alterAba(1)">Dados</a>
-                    <a href="#" class="aba brown" ng-click="alterAba(2)">Ração</a>
+        <div  ng-show="aba == 1">
+            <div class="modal-content">
+                <h1 class="title-modal centered">{{titleModal}}</h1>
+                <a href="#" style="color: black" class="icon-close-modal right" ng-click="closeModal()"><i class="mdi mdi-close"></i></a><br/><br/>
+                <div class="row aba-animal">
+                    <div class="col s12">
+                        <a href="#" class="aba teal activeAba" ng-click="alterAba(1)">Dados</a>
+                        <a href="#" class="aba brown" ng-click="alterAba(2)">Ração</a>
+                        <a href="#" class="aba blue" ng-click="alterAba(3)">Vacina</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <form method="POST" action="#">
+                            <div class="row" ng-show="!edit.id">
+                                <div class="col s6">
+                                    <p>
+                                        <input ng-model="chekboxInsert" type="checkbox" id="chekboxInsert" />
+                                        <label for="chekboxInsert">Cadastrar Vários?</label>
+                                    </p>
+                                </div>
+                            </div>
+                            <div ng-show="!chekboxInsert">
+                                <div class="col s12 m6">
+                                    <label class="active" for="apelido">Apelido</label>
+                                    <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
+                                </div>
+                                <div class="col s12 m6">
+                                    <label class="active" for="dataNascimento">Data de Nascimento</label>
+                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
+                                </div>
+                                <div class="col s12 m6">
+                                    <label class="active" for="custo">Custo</label>
+                                    <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
+                                </div>
+                                <!-- <div class="col s12 m6">
+                                    <label class="active" for="statusVenda">Status de Venda</label>
+                                    <input class="validate" type="text" name="statusVenda" ng-model="edit.statusVenda" required/>
+                                </div>-->
+                                <div class="col s12 m6">
+                                    <label class="active" for="origem">Origem</label>
+                                    <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
+                                </div>
+                                <div class="col s12">
+                                    <label class="active" for="observacao">Observação</label>
+                                    <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="edit.observacao"></textarea>
+                                </div>
+                            </div>
+                            <div ng-show="chekboxInsert">
+                                <div class="col s12 m6">
+                                    <label class="active" for="statusVenda">Quantidade</label>
+                                    <input class="validate" type="number" name="quantidade" ng-model="edit.quantidade" placeholder="Digite a quantidade" required/>
+                                </div>
+                                <div class="col s12 m6">
+                                    <label class="active" for="custoTotal">Custo Total</label>
+                                    <input class="validate" type="number" name="custoTotal" ng-model="edit.custoTotal" placeholder="Será divido pela quantidade" required/>
+                                </div>
+                                <div class="col s12 m6">
+                                    <label class="active" for="origem">Origem</label>
+                                    <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
+                                </div>
+                                <div class="col s12 m6">
+                                    <label class="active" for="dataNascimento">Data de Nascimento</label>
+                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            
-            <!-- CRIAR UM NOVO MODAL E COLOCAR O NG-SHOW DA ABA NELE PARA FACILITAR A TROCA DO TÍTULO NAS DUAS ABAS E A
-                 ESCRIA DOS BOTÕES, ETC -->
-            
-            <div class="row" ng-show="aba == 2">
-                <div class="col s12">
-                    <form method="POST" action="#">
-                        {{model}}
-
-                        <div class="col s6">
-                            <label class="active" for="situacao">Ração</label>
-                            <select class="browser-default" ng-model="model.racao" ng-options="racao.id as racao.nome for racao in racoes" ng-init="resetSelect()"></select>
-                        </div>
-
-                        <div class="col s12 m6">
-                            <label class="active" for="quantidade">Quantidade</label>
-                            <input class="validate" type="number" name="quantidade" ng-model="model.quantidade" placeholder="Digite a quantidade" required/>
-                        </div>
-
-                        <a class="btn modal-action modal-close waves-effect waves-green brown" ng-click="addRacao()">Adicionar</a>
-
-
-                        <!--                        <div class="col s12 m6">
-                                                    <label class="active" for="apelido">Apelido</label>
-                                                    <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
-                                                </div>
-                                                <div class="col s12 m6">
-                                                    <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
-                                                </div>
-                                                <div class="col s12 m6">
-                                                    <label class="active" for="custo">Custo</label>
-                                                    <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
-                                                </div>
-                                                <div class="col s12 m6">
-                                                    <label class="active" for="origem">Origem</label>
-                                                    <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
-                                                </div>
-                                                <div class="col s12">
-                                                    <label class="active" for="observacao">Observação</label>
-                                                    <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="model.observacao"></textarea>
-                                                </div>-->
-                    </form>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="row" ng-show="aba == 1">
-                <div class="col s12">
-                    <form method="POST" action="#">
-                        <div class="row" ng-show="!edit.id">
-                            <div class="col s6">
-                                <p>
-                                    <input ng-model="chekboxInsert" type="checkbox" id="teste" />
-                                    <label for="teste">Cadastrar Vários?</label>
-                                </p>
-                            </div>
-                        </div>
-                        <div ng-show="!chekboxInsert">
-                            <div class="col s12 m6">
-                                <label class="active" for="apelido">Apelido</label>
-                                <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
-                            </div>
-                            <div class="col s12 m6">
-                                <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
-                            </div>
-                            <div class="col s12 m6">
-                                <label class="active" for="custo">Custo</label>
-                                <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
-                            </div>
-                            <!--                            <div class="col s12 m6">
-                                                            <label class="active" for="statusVenda">Status de Venda</label>
-                                                            <input class="validate" type="text" name="statusVenda" ng-model="edit.statusVenda" required/>
-                                                        </div>-->
-                            <div class="col s12 m6">
-                                <label class="active" for="origem">Origem</label>
-                                <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
-                            </div>
-                            <div class="col s12">
-                                <label class="active" for="observacao">Observação</label>
-                                <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="model.observacao"></textarea>
-                            </div>
-                        </div>
-                        <div ng-show="chekboxInsert">
-                            <div class="col s12 m6">
-                                <label class="active" for="statusVenda">Quantidade</label>
-                                <input class="validate" type="number" name="quantidade" ng-model="edit.quantidade" placeholder="Digite a quantidade" required/>
-                            </div>
-                            <div class="col s12 m6">
-                                <label class="active" for="custoTotal">Custo Total</label>
-                                <input class="validate" type="number" name="custoTotal" ng-model="edit.custoTotal" placeholder="Será divido pela quantidade" required/>
-                            </div>
-                            <div class="col s12 m6">
-                                <label class="active" for="origem">Origem</label>
-                                <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
-                            </div>
-                            <div class="col s12 m6">
-                                <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="modal-footer">
+                <a class="btn modal-action waves-effect waves-green" ng-show="!chekboxInsert" ng-click="addAnimal()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action modal-close waves-effect waves-green" ng-show="chekboxInsert" ng-click="insertMultiple()">Inserir Vários</a>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="btn modal-action modal-close waves-effect waves-green" ng-show="!chekboxInsert" ng-click="addAnimal()">Salvar Animal</a>
-            <a class="btn modal-action modal-close waves-effect waves-green" ng-show="chekboxInsert" ng-click="insertMultiple()">Inserir Vários</a>
+
+        <!-- ABA RAÇÃO-->
+        <div ng-show="aba == 2">
+            <div class="modal-content">
+                <h1 class="title-modal centered">Vincular Ração - Alimento</h1>
+                <a href="#" style="color: black" class="icon-close-modal right" ng-click="closeModal()"><i class="mdi mdi-close"></i></a><br/><br/>
+                <div class="row aba-animal">
+                    <div class="col s12">
+                        <a href="#" class="aba teal" ng-click="alterAba(1)">Dados</a>
+                        <a href="#" class="aba brown activeAba" ng-click="alterAba(2)">Ração</a>
+                        <a href="#" class="aba blue" ng-click="alterAba(3)">Vacina</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <form method="POST" action="#" name="formRacao">
+                            <div class="col s12 m6">
+                                <label class="active" for="racao">Ração</label>
+                                <select class="browser-default" ng-model="model.idRacao" ng-options="racao.id as racao.nome for racao in racoes" ng-init="resetSelect()"></select>
+                            </div>
+                            <div class="col s12 m6">
+                                <label class="active" for="quantidade">Quantidade</label>
+                                <input class="validate" type="number" name="quantidade" ng-model="model.quantidade" placeholder="Digite a quantidade"  ng-required="true" ng-class="{'invalid-form': formRacao.quantidade.$error.required}"/>
+                            </div>
+                            <div class="col s12 m6">
+                                <label class="active" for="dataInicial">Data Inicial</label>
+                                <input class="validate" type="date" name="dataInicial" ng-model="model.dataInicial"/>
+                            </div>
+                            <div class="col s12 m6" style="padding-top: 20px;">
+                                <a class="btn modal-action waves-effect waves-green brown lighten-1" ng-click="addRacao()" style="width: 100%;">Adicionar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12" ng-show="listRacoes != ''">
+                        <table class="striped centered responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Ração</th>
+                                    <th>Quantidade</th>
+                                    <th>Data Inicial</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="listRacao in listRacoes| orderBy: '-id'">
+                                    <td>{{listRacao.idRacaoItem}}</td>
+                                    <td>{{listRacao.racao}}</td>
+                                    <td>{{listRacao.quantidade}} {{listRacao.unidadeMedida}}</td>
+                                    <td>{{listRacao.dataInicial| tccDate}}</td>
+                                    <td>
+                                        <a style="cursor: pointer" ng-click="interromperRacao(listRacao.idRacaoItem)">Interromper</a>
+                                        <!--<a style="cursor: pointer" ng-click="excluir(listRacao.id)">Excluir</a>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ABA VACINA-->
+        <div ng-show="aba == 3">
+            <div class="modal-content">
+                <h1 class="title-modal centered">Vacinas - Medicamentos aplicados</h1>
+                <a href="#" style="color: black" class="icon-close-modal right" ng-click="closeModal()"><i class="mdi mdi-close"></i></a><br/><br/>
+                <div class="row aba-animal">
+                    <div class="col s12">
+                        <a href="#" class="aba teal" ng-click="alterAba(1)">Dados</a>
+                        <a href="#" class="aba brown" ng-click="alterAba(2)">Ração</a>
+                        <a href="#" class="aba blue activeAba" ng-click="alterAba(3)">Vacina</a>
+                        <p ng-show="details == ''">Não há nenhuma aplicação com este animal ainda!</p>
+                    </div>
+                </div>
+                <div class="row" ng-show="details != ''">
+                    <div class="col s12">
+                        <table class="striped centered responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Código da Aplicação</th>
+                                    <th>Vacina</th>
+                                    <th>Descrição</th>
+                                    <th>Data de Aplicação</th>
+    <!--                                <th>Ações</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="detail in details| orderBy: '-id'">
+                                    <td>{{detail.idVacinaAplicacao}}</td>
+                                    <td>{{detail.nomeVacina}}</td>
+                                    <td>{{detail.descricao| truncate : 35}}</td>
+                                    <td>{{detail.dataAplicacao| tccDate}}</td>
+    <!--                                <td>
+                                        <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | 
+                                        <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a>
+                                    </td>-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -173,53 +219,17 @@
         <div class="modal-footer">
             <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i>Salvar</a>
         </div>
-
     </div>
-
-    <div id="details-modal" class="modal" style="min-height: 70%;">
-        <div class="modal-content">
-            <h1 class="title-modal centered">Detalhes Vacinas</h1>
-            <a href="#" ng-click="closeModal()" style="color: black" class="right"><i class="mdi mdi-close"></i></a>
-            <div class="row">
-                <div class="col s12">
-                    <table class="striped centered responsive-table">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Vacina</th>
-                                <th>Descrição</th>
-                                <th>Data de Aplicação</th>
-<!--                                <th>Ações</th>-->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="detail in details| orderBy: '-id'">
-                                <td>{{detail.id}}</td>
-                                <td>{{detail.idVacina}}</td>
-                                <td>{{detail.descricao}}</td>
-                                <td>{{detail.dataAplicacao| tccDate}}</td>
-<!--                                <td>
-                                    <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> | 
-                                    <a style="cursor: pointer" ng-click="excluir(animal.id)">Excluir</a>
-                                </td>-->
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
+    <!-- LISTAGEM DOS ANIMAIS -->
     <div class="row">
         <div class="col s12 m6 visualizacao-animal">
-            <label>Visualização</label>
+            <label>Status do Animal</label>
             <a class="cyan waves-effect" ng-click="filterListAnimal.statusVenda = null" ng-class="{'active': filterListAnimal.statusVenda == null}">Todos</a>
-            <a class="green waves-effect" ng-click="filterListAnimal.statusVenda = 0" ng-class="{'active': filterListAnimal.statusVenda == 0}"><i class="mdi mdi-arrow-down-bold white-text"></i>Abertos</a>
-            <a class="red waves-effect" ng-click="filterListAnimal.statusVenda = 1" ng-class="{'active': filterListAnimal.statusVenda == 1}"><i class="mdi mdi-arrow-up-bold white-text"></i>Vendidos</a>
+            <a class="green waves-effect" ng-click="filterListAnimal.statusVenda = 0" ng-class="{'active': filterListAnimal.statusVenda == 0}">Abertos</a>
+            <a class="red waves-effect" ng-click="filterListAnimal.statusVenda = 1" ng-class="{'active': filterListAnimal.statusVenda == 1}">Vendidos</a>
         </div>
     </div>
-
     <table class="striped centered responsive-table">
         <thead>
             <tr>
@@ -244,8 +254,8 @@
                     <label for="{{animal.id}}"></label>
                 </td>
                 <td>
-                    <a style="cursor: pointer" ng-click="openDetailsModal(animal.id)">Ver</a> |
-                    <a style="cursor: pointer" ng-click="modal(animal)">Editar</a> |
+                    <!--<a style="cursor: pointer" ng-click="openDetailsModal(animal.id)">Ver</a> |-->
+                    <a style="cursor: pointer" ng-click="modal(animal)">Ver/Editar</a> |
                     <a style="cursor: pointer" ng-click="deletar(animal.id)">Excluir</a>
                 </td>
             </tr>

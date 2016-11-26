@@ -48,7 +48,24 @@ class racao extends controller implements \interfaces\controller {
         $request = (array) json_decode($input);
 
         $rs = $this->model->addRacaoByAnimal($request);
+
+        echo $this->toJson($rs);
+    }
+
+    public function interromperRacao() {
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
         
+        $rs = $this->model->interromperRacao($request);
+
+        echo $this->toJson($rs);
+    }
+
+    public function listRacaoByAnimal() {
+        $idAnimal = isset($_GET['id']) ? $_GET['id'] : null;
+
+        $rs = $this->model->listRacaoByAnimal($idAnimal);
+
         echo $this->toJson($rs);
     }
 

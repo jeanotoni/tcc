@@ -14,11 +14,7 @@
                             <label class="active" for="nome">Nome</label>
                             <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
                         </div>
-<!--                        <div class="col s12 m6">
-                            <label class="active" for="quantidade">Quantidade</label>
-                            <input class="validate" id="quantidade" type="text" name="quantidade" ng-model="model.quantidade" required/>
-                        </div>
-                        <div class="col s12 m6">
+                        <!-- <div class="col s12 m6">
                             <label class="active" for="unidadeMedida">Unidade de medida</label>
                             <select class="browser-default" ng-model="model.unidadeMedida" ng-init="resetSelect()">
                                 <option>Quilogramas</option>
@@ -43,7 +39,6 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Quantidade</th>
                 <th>Unidade Medida</th>
                 <th>Data de Cadastro</th>
                 <!--<th>Preço</th>-->
@@ -54,7 +49,6 @@
             <tr ng-repeat="racao in racoes| orderBy: '-id'">
                 <td>{{racao.id}}</td>
                 <td>{{racao.nome}}</td>
-                <td>{{racao.quantidade}}</td>
                 <td>{{racao.unidadeMedida}}</td>
                 <td>{{racao.dataCadastro| tccDate}}</td>
                 <!--<td>{{racao.preco| currency : 'R$ '}}</td>-->

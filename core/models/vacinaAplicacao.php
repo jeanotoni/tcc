@@ -65,7 +65,7 @@ class vacinaAplicacao extends model implements \interfaces\model {
             $this->update($request['model'])->where($w)->exec();
 
 //            if ($request['itens']) {
-                $this->addItem($id, $request['itens']);
+            $this->addItem($id, $request['itens']);
 //            }
 
             $rs = $this->getProperties();
@@ -87,10 +87,10 @@ class vacinaAplicacao extends model implements \interfaces\model {
      */
     public function addItem($idVacinaAplicacao, $arrAnimals) {
         $this->setTable('vacinaItem');
-        
+
         foreach ($arrAnimals as $key => $value) {
             $idAnimal = $key;
-            
+
             $w = array(
                 'idVacinaAplicacao = ?' => $idVacinaAplicacao,
                 'idAnimal = ?' => $idAnimal
@@ -115,9 +115,21 @@ class vacinaAplicacao extends model implements \interfaces\model {
      * @return $rs
      */
     public function getAplicacaoByIdAnimal($idAnimal) {
+        $s = array(
+            'vacinaAplicacao.*',
+            'vacinaItem.*',
+            'vacina.nome as nomeVacina'
+        );
+        
         $j = array(
-            'table' => 'vacinaItem',
-            'cond' => 'vacinaAplicacao.id = vacinaItem.idVacinaAplicacao'
+            array(
+                'table' => 'vacinaItem',
+                'cond' => 'vacinaAplicacao.id = vacinaItem.idVacinaAplicacao'
+            ),
+            array(
+                'table' => 'vacina',
+                'cond' => 'vacinaAplicacao.idVacina = vacina.id'
+            )
         );
 
         $w = array(
@@ -125,7 +137,7 @@ class vacinaAplicacao extends model implements \interfaces\model {
         );
 
         $this->setTable('vacinaAplicacao');
-        $rs = $this->select()->join($j)->where($w)->exec('ALL');
+        $rs = $this->select($s)->multipleJoin($j)->where($w)->exec('ALL');
 
         $info = $this->getProperties();
 

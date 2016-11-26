@@ -26,29 +26,39 @@ class animal extends model implements \interfaces\model {
     public function salvar($dados) {
         // Usa método para tratar data e pegar somente a parte que seja de fato data e ignorar o restante que são as horas
         $dados['dataNascimento'] = $this->tratarData($dados['dataNascimento']);
-        
+
         if (empty($dados['id'])) {
             $this->insert($dados)->exec();
             $rs = $this->getProperties();
-            if ($rs['error'] === 0) {
-                return $rs['lastId'];
+                        
+            $rs['updated'] = false;
+
+            if ($rs['error'] == 0) {
+                return $rs;
             } else {
                 return false;
             }
         } else {
+            /*
+             * - Dou o unset para quando for editar ele não tentar atualizar o id, pq senão vai dar erro
+             * - Atribuo o id do animal alterado para padronizar no controller para que ambos sempre tenham a propriedade
+             *   lastId idependente se foi inserida ou alterada, o que vai diferenciar isso será a propriedade updated passada como parâmetro na inserção acima
+             */
             $id = $dados['id'];
-            // para quando for editar ele não tentar atualizar o id, pq senão vai dar pau
             unset($dados['id']);
 
             $w = array(
                 "id = ?" => $id
             );
-            $this->update($dados)->where($w)->exec();
 
+            $this->update($dados)->where($w)->exec();
             $rs = $this->getProperties();
 
-            if ($rs['error'] === 0) {
-                return $id;
+            $rs['lastId'] = $id;
+            $rs['updated'] = true;
+            
+            if ($rs['error'] == 0) {
+                return $rs;
             } else {
                 return false;
             }
@@ -126,7 +136,7 @@ class animal extends model implements \interfaces\model {
             return false;
         }
     }
-    
+
     /**
      * Método que faz busca na tabela pedidoItem para saber se há algum pedido com aquele determinado animal
      * para que possa deletar-lo sem problemas posteriormente
@@ -136,7 +146,7 @@ class animal extends model implements \interfaces\model {
      */
     public function getPedidoItemByAnimal($idAnimal) {
         $s = array('id');
-        
+
         $w = array(
             'idAnimal = ?' => $idAnimal
         );
@@ -145,14 +155,14 @@ class animal extends model implements \interfaces\model {
         $this->select($s)->where($w)->exec('ALL');
 
         $info = $this->getProperties();
-        
+
         if ($info['rowCount'] == 0) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * Método para deletar um animal, verifica se o resultado do método getPedidoItemByAnimal retornar 'true', significa
      * que não há nenhum pedido ligado a àquele cliente, e ele pode ser deletado normalmente
@@ -161,7 +171,7 @@ class animal extends model implements \interfaces\model {
      */
     public function deletar($idAnimal) {
         $verify = $this->getPedidoItemByAnimal($idAnimal);
-        
+
         if ($verify) {
             echo 'oi';
             $w = array(
@@ -181,6 +191,6 @@ class animal extends model implements \interfaces\model {
         } else {
             return false;
         }
-    }       
+    }
 
 }

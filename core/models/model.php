@@ -113,6 +113,14 @@ class model {
         return $this;
     }
 
+    // Para realizar múltiplos joins
+    protected function multipleJoin($conds = array(), $type = 'LEFT') {
+        foreach ($conds as $cond) {
+            $this->sql .= " " . $type . " JOIN `" . $cond['table'] . "` ON " . $cond['cond'] . " ";
+        }
+        return $this;
+    }
+
     protected function join($args = array(), $type = 'LEFT') {
 
         $query = ' ' . $type . ' JOIN ' . $args['table'] . ' ON ' . $args['cond'];

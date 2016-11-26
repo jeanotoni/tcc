@@ -26,7 +26,9 @@
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="situacao">Clientes</label>
-                            <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
+                            <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()">
+                                <option value="">Selecione um cliente</option>
+                            </select>
                         </div>
                         <div class="col s12">
                             <label class="active" for="animais">Animais</label>

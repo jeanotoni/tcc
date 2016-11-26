@@ -78,7 +78,7 @@ h1.title-modal {
 .icon-close-modal{
     font-size: 20px !important;
 }
-
+#newAnimal,
 #aplicar-vacina-modal,
 #details-modal,
 #newPedido.modal{
@@ -97,7 +97,7 @@ h1.title-modal {
     .icon-close-modal{
         padding-right: 10px !important;
     }
-    
+
 }
 
 input {
@@ -111,6 +111,12 @@ textarea {
     border-radius: 3px !important;
     border: 1px solid #ececec !important;
     min-height: 100px !important;
+}
+select{
+    padding: 3px 5px !important;
+    border-radius: 3px !important;
+    border: 1px solid #ececec !important;
+    height: 33px !important;
 }
 
 
@@ -138,13 +144,34 @@ textarea {
 
 .visualizacao-animal a{
     color: white;
+    padding: 5px 10px;
+    filter: grayscale(70%);
+    opacity: 0.5;
+    border-radius: 3px;
 }
 .visualizacao-animal .active{
-    background: black !important;
-    font-size: 20px;
+    padding: 10px 15px !important;
+    filter: grayscale(0%);
+    opacity: 1;
 }
 
 .aba-animal .aba{
     padding: 5px 10px;
     color: white;
+    filter: grayscale(70%);
+    opacity: 0.5;
+    border-radius: 3px;
+
+}
+
+.activeAba{
+    padding: 10px 15px !important;
+    filter: grayscale(0%) !important;
+    opacity: 1 !important;
+
+}
+
+.invalid-form{
+    border-bottom: 1px solid red !important;
+    box-shadow: 0 0.1px 0 0 red !important;
 }

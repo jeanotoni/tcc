@@ -34,13 +34,21 @@ class animal extends controller implements \interfaces\controller {
 //        echo $this->toJson($rs);
 //    }
 
+    /**
+     * Método para salvar o animal, na resposta envio o lastId que pode ser tanto o id de uma inserção ou de uma edição
+     * e abaixo a propriedade 'updated' para indicar se é inserção ou edição para receberem tratamentos diferentes no controller.js
+     */
     public function salvar() {
         $input = file_get_contents('php://input');
         $dados = (array) json_decode($input);
 
-        $rs = $this->model->salvar($dados);
-        $rs = array('id' => $rs);
-
+        $info = $this->model->salvar($dados);
+        
+        $rs = array(
+            'id' => $info['lastId'],
+            'updated' => $info['updated']
+        );
+        
         echo $this->toJson($rs);
     }
 
@@ -92,7 +100,7 @@ class animal extends controller implements \interfaces\controller {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
 
         $rs = $this->model->deletar($id);
-        
+
         if ($rs) {
             return true;
 //            echo 'Animal excluido com sucesso!';

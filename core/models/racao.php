@@ -52,7 +52,7 @@ class racao extends model implements \interfaces\model {
      * @date 19/11/2016
      * @return $rs
      */
-     public function listar() {
+    public function listar() {
         $this->setTable('racao');
         $rs = $this->select()->exec('ALL');
 
@@ -64,14 +64,87 @@ class racao extends model implements \interfaces\model {
             return false;
         }
     }
-    
-    // FINALIZAR CRIAÇÃO DE MÉTODO PARA ADICIONAR UMA RAÇÃO À UM ANIMAL
-    // DEPOIS CRIAR MÉTODO PARA LISTAR A RAÇÃO (EM FORMA DE TABELA)
-    public function addRacaoByAnimal(){
+
+    /**
+     * Método para atribuir rações à um determinado animal, cria um registro na tabela racaoItem com idRacao, idAnimal e quantidade
+     * @param $request
+     * @date 26/11/2016
+     */
+    public function addRacaoByAnimal($request) {
+        $request['model']->idAnimal = $request['id'];
+
         $this->setTable('racaoItem');
-        
-        
-        
+
+        $this->insert($request['model'])->exec();
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $info['lastId'];
+        } else {
+            return false;
+        }
     }
+    
+    public function interromperRacao($request){
+        $u = array(
+            'statusRacaoItem' => 1,
+            'dataFinal' => $request['dataFinal']
+        );
+        
+        $w = array(
+            'id = ?' => $request['idRacaoItem']
+        );
+        
+        $this->setTable('racaoItem');
+        $this->update($u)->where($w)->exec();
+        
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Método usado para listar e trazer algumas informações da ração que aquele animal consome. É usado para listagem no
+     * modal do animal na aba 'Ração'
+     * @param type $idAnimal
+     * @date 26/11/2016
+     */
+    public function listRacaoByAnimal($idAnimal) {
+        $s = array(
+            'racaoItem.id as idRacaoItem',
+            'racaoItem.quantidade',
+            'racaoItem.dataInicial',
+            'racaoItem.dataFinal',
+            'racao.nome as racao',
+            'racao.unidadeMedida'
+        );
+        
+        $w = array(
+            'idAnimal = ?' => $idAnimal
+        );
+        
+        $j = array(
+            'table' => 'racao',
+            'cond' => 'racao.id = racaoItem.idRacao'
+        );
+        
+        $this->setTable('racaoItem');
+
+        $rs = $this->select($s)->join($j)->where($w)->exec('ALL');
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
 
 }

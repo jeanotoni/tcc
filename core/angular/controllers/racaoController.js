@@ -19,12 +19,12 @@
             $scope.chekboxInsert = false;
             $scope.model = {};
             if (racao) {
-                $scope.titleModal = 'Editar Ração';
+                $scope.titleModal = 'Editar Ração - Alimento';
                 $scope.btnIcon = 'pencil';
                 $scope.btnSalvar = 'EDITAR';
                 $scope.model = angular.copy(racao);
             } else {
-                $scope.titleModal = 'Inserir Ração';
+                $scope.titleModal = 'Inserir Ração - Alimento';
                 $scope.btnIcon = 'check';
                 $scope.btnSalvar = 'SALVAR';
                 $scope.model = {};
