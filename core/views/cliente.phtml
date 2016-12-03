@@ -20,15 +20,29 @@
                             <label class="active" for="cpf">Cpf</label>
                             <input class="validate" id="cpf" type="text" name="cpf" ng-model="model.cpf" required/>
                         </div>
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <label class="active" for="estado">Estados</label>
+                                <select class="browser-default" ng-model="model.idEstado" ng-change="getCidadeByEstado(model.idEstado)" ng-options="estado.id as estado.nome for estado in estados" ng-init="resetSelect()">
+                                    <option value="">Selecione um estado</option>
+                                </select>
+                            </div>
+                            <div class="col s12 m6">
+                                <label class="active" for="cidade">Cidades</label>
+                                <select class="browser-default" ng-model="model.idCidade" ng-options="cidade.id as cidade.nome for cidade in cidades" ng-init="resetSelect()">
+                                    <option value="">Selecione uma cidade</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col s12 m6">
                             <label class="active" for="endereco">Endereço</label>
                             <input class="validate" id="endereco" type="text" name="endereco" ng-model="model.endereco" required/>
                         </div>
-                        <div class="col s12 m3">
-                            <label class="active" for="numeroCasa">Número da Casa</label>
+                        <div class="col s12 m2">
+                            <label class="active" for="numeroCasa">N° da Casa</label>
                             <input class="validate" id="numeroCasa" type="text" name="numeroCasa" ng-model="model.numeroCasa" required/>
                         </div>
-                        <div class="col s12 m3">
+                        <div class="col s12 m4">
                             <label class="active" for="bairro">Bairro</label>
                             <input class="validate" id="bairro" type="text" name="bairro" ng-model="model.bairro" required/>
                         </div>

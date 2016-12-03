@@ -18,4 +18,4 @@ define('ASSETS', URL_MAIN . 'assets/');
 define('BD_HOST', 'localhost');
 define('BD_USER', 'root');
 define('BD_PASS', '');
-define('BD_DATABASE', 'tcc2');
+define('BD_DATABASE', 'tcc');

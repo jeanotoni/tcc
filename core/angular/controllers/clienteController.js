@@ -19,6 +19,8 @@ angular.module('tcc').controller("clienteController", function ($scope, clienteS
             $scope.btnIcon = 'pencil';
             $scope.btnSalvar = 'EDITAR CLIENTE';
             $scope.model = angular.copy(client);
+            // Função para carregar cidade ao abrir para edição
+            $scope.getCidadeByEstado($scope.model.idEstado);
         } else {
             $scope.titleModal = "Inserir Cliente";
             $scope.btnIcon = 'check';
@@ -57,6 +59,24 @@ angular.module('tcc').controller("clienteController", function ($scope, clienteS
                 }
             });
         }
+    };
+
+    /**
+     * ESTADOS
+     */
+    var getEstado = function () {
+        clienteService.getEstado().then(function (response) {
+            $scope.estados = response.data;
+            console.log(response.data);
+        });
+    };
+    getEstado();
+    
+    $scope.getCidadeByEstado = function (idEstado){
+        clienteService.getCidadeByEstado(idEstado).then(function(response){
+            $scope.cidades = response.data;
+            console.log(response.data);
+        });
     };
 
 

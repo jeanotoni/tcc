@@ -10,8 +10,9 @@
             });
         };
 
+        // Usa o método listAll pois na view o usuário pode alternar a visualização com base no seu status
         var listAnimal = function () {
-            animalService.listAnimal().then(function (response) {
+            animalService.listAll().then(function (response) {
                 $scope.animais = response.data;
             });
         };
@@ -182,7 +183,7 @@
          */
         $scope.addRacao = function () {
             if ($scope.formRacao.$invalid) {
-                console.log($scope.formRacao);
+                // console.log($scope.formRacao);
                 Materialize.toast('Preencha os campos obrigatórios!', 3000, 'toast-error');
             } else {
                 var params = {
@@ -207,8 +208,8 @@
                 dataFinal: new Date()
             };
             racaoService.interromperRacao(params).then(function (response) {
-                console.log(response.data);
                 if (response.data) {
+                    listRacaoByAnimal($scope.edit.id);
                     Materialize.toast('Ração - Alimento foi interrompido com sucesso!', 4000, 'toast-success');
                 } else {
                     Materialize.toast('Falha ao interromper Ração - Alimento.', 4000, 'toast-error');
@@ -219,6 +220,12 @@
         var listRacaoByAnimal = function (idAnimal) {
             racaoService.listRacaoByAnimal(idAnimal).then(function (response) {
                 $scope.listRacoes = response.data;
+            });
+        };
+
+        $scope.exportar = function () {
+            animalService.export().then(function (response) {
+                console.log(response.data);
             });
         };
 

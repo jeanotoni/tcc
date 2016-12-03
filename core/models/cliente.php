@@ -81,7 +81,7 @@ class cliente extends model implements \interfaces\model {
             }
         }
     }
-    
+
     /**
      * Método que faz busca na tabela pedido para saber se há algum cliente vinculado à algum pedido
      * para que possa deletar-lo sem problemas posteriormente
@@ -90,7 +90,7 @@ class cliente extends model implements \interfaces\model {
      */
     public function getPedidoByCliente($idCliente) {
         $s = array('id');
-        
+
         $w = array(
             'idCliente = ?' => $idCliente
         );
@@ -115,7 +115,7 @@ class cliente extends model implements \interfaces\model {
      */
     public function deletar($idCliente) {
         $verify = $this->getPedidoByCliente($idCliente);
-        
+
         if ($verify) {
             $w = array(
                 "id = ?" => $idCliente
@@ -131,6 +131,37 @@ class cliente extends model implements \interfaces\model {
             } else {
                 return false;
             }
+        } else {
+            return false;
+        }
+    }
+
+    public function getEstado() {
+        $this->setTable('estado');
+        $rs = $this->select()->exec('ALL');
+
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
+        } else {
+            return false;
+        }
+    }
+    
+    public function getCidadeByEstado($idEstado){
+        $this->setTable('cidade');
+        
+        $w = array(
+            'idEstado = ?' => $idEstado
+        );
+        
+        $rs = $this->select()->where($w)->exec('ALL');
+        
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
         } else {
             return false;
         }

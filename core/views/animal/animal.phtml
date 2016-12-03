@@ -1,6 +1,7 @@
 <main ng-controller="animalController">
     <!-- Modal Trigger -->
     <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="mdi mdi-plus"></i>Novo</a>
+    <a class="right waves-effect waves-light btn purple" href="/animal/exportar" target="_blank"><i class="mdi mdi-download"></i>Exportar</a>
 
     <!-- MODAL NEW ANIMAL -->
     <div id="newAnimal" class="modal">
@@ -27,10 +28,10 @@
                                 </div>
                             </div>
                             <div ng-show="!chekboxInsert">
-                                <div class="col s12 m6">
+<!--                                <div class="col s12 m6">
                                     <label class="active" for="apelido">Apelido</label>
                                     <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
-                                </div>
+                                </div>-->
                                 <div class="col s12 m6">
                                     <label class="active" for="dataNascimento">Data de Nascimento</label>
                                     <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
@@ -122,17 +123,20 @@
                                     <th>Ração</th>
                                     <th>Quantidade</th>
                                     <th>Data Inicial</th>
+                                    <th>Data Final</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="listRacao in listRacoes| orderBy: '-id'">
+                                <tr ng-repeat="listRacao in listRacoes| orderBy: '-idRacaoItem'" ng-class="{'red lighten-5': listRacao.statusRacaoItem == 1}">
                                     <td>{{listRacao.idRacaoItem}}</td>
                                     <td>{{listRacao.racao}}</td>
                                     <td>{{listRacao.quantidade}} {{listRacao.unidadeMedida}}</td>
                                     <td>{{listRacao.dataInicial| tccDate}}</td>
+                                    <td>{{listRacao.dataFinal| tccDate}}</td>
                                     <td>
-                                        <a style="cursor: pointer" ng-click="interromperRacao(listRacao.idRacaoItem)">Interromper</a>
+                                        <!--{{listRacao.statusRacaoItem}}-->
+                                        <a style="cursor: pointer" ng-click="interromperRacao(listRacao.idRacaoItem)" ng-show="listRacao.statusRacaoItem == 0">Interromper</a>
                                         <!--<a style="cursor: pointer" ng-click="excluir(listRacao.id)">Excluir</a>-->
                                     </td>
                                 </tr>
@@ -197,8 +201,8 @@
                 <div class="col s12">
                     <form name="formPedido" method="POST" action="#">
                         <div class="col s6">
-                            <label class="active" for="codigo">Nº do Documento</label>
-                            <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
+                            <label class="active" for="numeroDocumento">Nº do Documento</label>
+                            <input class="validate" id="numeroDocumento" type="text" name="numeroDocumento" ng-model="model.numeroDocumento" required/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="dataCriacao">Data de Criação</label>
@@ -209,7 +213,7 @@
                             <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
                         </div>
                         <div class="col s6">
-                            <label class="active" for="situacao">Clientes</label>
+                            <label class="active" for="cliente">Clientes</label>
                             <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()"></select>
                         </div>
                     </form>

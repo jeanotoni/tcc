@@ -2,6 +2,8 @@
     <!-- Modal Trigger -->
     <a class="right waves-effect waves-light btn" ng-click="openModal()"><i class="mdi mdi-plus"></i>Novo</a>
 
+    <a class="right waves-effect waves-light btn purple" href="/pedido/exportar" target="_blank"><i class="mdi mdi-download"></i>Exportar</a>
+
     <!-- MODAL NOVO PEDIDO -->
     <div id="newPedido" class="modal">
         <form name="formPedido" method="POST" action="#">
@@ -13,38 +15,48 @@
                 <div class="row">
                     <div class="col s12">
                         <div class="col s12 m6">
-                            <label class="active" for="codigo">Nº do Documento</label>
-                            <input class="validate" id="apelido" type="text" name="codigo" ng-model="model.numeroDocumento" required/>
+                            <label class="active" for="numeroDocumento">Nº do Documento</label>
+                            <input class="validate" id="numeroDocumento" type="text" name="numeroDocumento" ng-model="model.numeroDocumento" required/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="dataEmissao">Data de Emissão</label>
                             <input class="validate" type="date" name="dataEmissao" ng-model="model.dataEmissao" ng-model-options="{timezone: 'UTC'}" required/>
                         </div>
-                        <div class="col s12 m6">
-                            <label class="active" for="valorTotal">Valor Total</label>
-                            <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
-                        </div>
+                        <!--                        <div class="col s12 m6">
+                                                    <label class="active" for="valorTotal">Valor Total</label>
+                                                    <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
+                                                </div>-->
                         <div class="col s12 m6">
                             <label class="active" for="situacao">Clientes</label>
                             <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()">
                                 <option value="">Selecione um cliente</option>
                             </select>
                         </div>
-                        <div class="col s12">
+                        <!--{{list}}-->
+                        <div class="col s12" ng-show="model.situacao != 3 && model.situacao != 4">
                             <label class="active" for="animais">Animais</label>
-                            <p>Selecione os animais que deseja adicionar ao pedido.</p>
+                            <p>Selecione os animais que deseja adicionar ao pedido e em seguida o valor de cada um.</p>
                             <div ng-repeat="animal in animais track by $index">
-                                <div class="col s6 m3">
-                                    <input ng-model="list[animal.id]" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
-                                    <label for="{{animal.id}}">{{animal.id}}</label>
+                                <!--{{list[animal.id]}}-->
+                                <div class="col s12 m6 l3">
+                                    <div class="col s4 m4 l4">
+                                        <input ng-model="list[animal.id].status" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
+                                        <label for="{{animal.id}}">{{animal.id}}</label>
+                                    </div>
+                                    <div class="col s8 m8 l8">
+                                        <input type="number" class="input-valor-animal" ng-model="list[animal.id].valorUnitario" ng-show="list[animal.id].status"/>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col s12" ng-show="model.valorTotal">
+                            <p class="right"><b>Valor Total:</b> {{model.valorTotal| currency: "R$ "}}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn modal-action modal-close waves-effect waves-green" ng-show="model.situacao != 3 && model.situacao != 4" ng-click="addPedido(1)"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action modal-close waves-effect waves-green" ng-show="model.situacao != 3 && model.situacao != 4" ng-click="addPedido()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
                 <a class="btn modal-action modal-close waves-effect waves-green blue" ng-show="model.situacao == 1" ng-click="updateStatusPedido(2)"><i class="mdi mdi-cash-multiple"></i> Finalizar</a>
                 <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="estornarCancelarPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
                 <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="estornarCancelarPedido(4)"><i class="mdi mdi-block-helper"></i> Estornar</a>

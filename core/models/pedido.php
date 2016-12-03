@@ -41,20 +41,19 @@ class pedido extends model implements \interfaces\model {
              * E o nome do cliente pois no método de listar eu envio ele junto com o resultado, e na hora de abrir o 
              * modal de edição, ele vem junto com o angular.copy(pedido), porém é um campo que não existe no banco
              */
-            
             $id = $dados['model']->id;
             unset($dados['model']->id);
             unset($dados['model']->cliente);
-            
+
             // Chama método somente se estiver algum animal selecionado
             if (!empty($dados['itens'])) {
                 $this->sellAnimal($dados['itens'], $id);
             }
 
-            // Se o pedido estiver cancelado(3) ou estornado(4) e clicar em salvar abre-o novamente
-            if ($dados['model']->situacao == 3 || $dados['model']->situacao == 4) {
-                $dados['model']->situacao = 1;
-            }
+            // Se o pedido estiver cancelado(3) ou estornado(4) e clicar em salvar abre-o novamente (OPÇÃO DESCARTADA)
+            // if ($dados['model']->situacao == 3 || $dados['model']->situacao == 4) {
+            // $dados['model']->situacao = 1;
+            // }
 
             $w = array(
                 "id = ?" => $id
@@ -156,20 +155,21 @@ class pedido extends model implements \interfaces\model {
      */
     public function listar() {
         $o = 'pedido.id DESC';
-        
+
         $s = array(
-            'pedido.*', 'cliente.nome as cliente'
+            'pedido.*', 'cliente.nome as cliente',
+            '(select SUM(valorUnitario) from pedidoitem where idPedido = pedido.id) as valorTotal'
         );
         $j = array(
             "table" => 'cliente',
             "cond" => 'cliente.id = pedido.idCliente'
         );
-        
+
         $this->setTable('pedido');
         $rs = $this->select($s)->join($j)->orderBy($o)->exec('ALL');
-        
+
         $info = $this->getProperties();
-        
+
         if ($info['error'] == 0) {
             return $rs;
         } else {
@@ -225,12 +225,12 @@ class pedido extends model implements \interfaces\model {
         foreach ($dados as $key => $value) {
             $add = false;
             // Para não sair executando e alterando o status dos animais não marcados e para entrar quando remover um animal do pedido
-            if ($value == 1) {
+            if ($value->status == 1) {
                 $add = true;
                 $u = array(
                     "statusVenda" => 1
                 );
-            } else if ($value == 0) {
+            } else if ($value->status == 0) {
                 $add = false;
                 $u = array(
                     "statusVenda" => 0
@@ -245,7 +245,7 @@ class pedido extends model implements \interfaces\model {
                 $this->update($u)->where($w)->exec();
 
                 // Chama método que adiciona o animal na tabela pedidoItem
-                $this->addItem($key, $idPedido, $add);
+                $this->addItem($key, $idPedido, $add, $value->valorUnitario);
             }
         }
 
@@ -263,7 +263,7 @@ class pedido extends model implements \interfaces\model {
      * @param type $idPedido
      * @param type $add
      */
-    public function addItem($idAnimal, $idPedido, $add) {
+    public function addItem($idAnimal, $idPedido, $add, $valorUnitario) {
         $w = array(
             'idAnimal = ?' => $idAnimal,
             'idPedido = ?' => $idPedido
@@ -274,7 +274,8 @@ class pedido extends model implements \interfaces\model {
         if ($add == true) {
             $i = array(
                 'idAnimal' => $idAnimal,
-                'idPedido' => $idPedido
+                'idPedido' => $idPedido,
+                'valorUnitario' => $valorUnitario
             );
 
             $this->insert($i)->exec();
@@ -302,6 +303,7 @@ class pedido extends model implements \interfaces\model {
 
         $this->setTable('animal');
         $rs = $this->select($s)->join($j)->where($w)->exec('ALL');
+
         $info = $this->getProperties();
 
         if ($info['error'] == 0) {
@@ -311,6 +313,11 @@ class pedido extends model implements \interfaces\model {
         }
     }
 
+    /**
+     * Verifica quais animais são deste pedido para atribuí-los em $selected[idDoAnimal][status] recebendo 1
+     * E traz o valorUnitario de cada animal e atribui em $selected[idDoAnimal][valorUnitario] para poder listar 
+     * no modal na hora de editar um pedido
+     */
     public function getAnimalSelected($idPedido) {
         $w = array(
             'idPedido = ?' => $idPedido
@@ -320,16 +327,40 @@ class pedido extends model implements \interfaces\model {
         $arrAnimais = $this->select()->where($w)->exec('ALL');
         $info = $this->getProperties();
 
-        // Verifica quais animais são deste pedido para atribuí-los em $selected
         $selecteds = null;
         if (!empty($arrAnimais)) {
             foreach ($arrAnimais as $animal) {
-                $selecteds[$animal['idAnimal']] = 1;
+                $selecteds[$animal['idAnimal']]['status'] = 1;
+                $selecteds[$animal['idAnimal']]['valorUnitario'] = $animal['valorUnitario'];
             }
         }
 
         if ($info['error'] == 0) {
             return $selecteds;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Realiza a soma do valorUnitario de cada item de um pedido e retorna o valor total
+     * @param $idPedido
+     */
+    public function getValorTotal($idPedido) {
+        $s = array(
+            'SUM(valorUnitario) as valorTotal'
+        );
+        $w = array(
+            'idPedido = ?' => $idPedido
+        );
+
+        $this->setTable('pedidoItem');
+        $rs = $this->select($s)->where($w)->exec('ROW');
+
+        $info = $this->getProperties();
+
+        if ($info['error'] == 0) {
+            return $rs;
         } else {
             return false;
         }

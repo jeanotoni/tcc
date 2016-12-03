@@ -32,5 +32,9 @@ angular.module("tcc").service("pedidoService", function ($http) {
         return $http.get('/pedido/getAnimalByPedido/'+ idPedido);
     };
     
+    this.getValorTotal = function (idPedido){
+        return $http.post('/pedido/getValorTotal/', idPedido);
+    };
+    
     
 });

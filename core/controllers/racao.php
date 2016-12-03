@@ -31,6 +31,11 @@ class racao extends controller implements \interfaces\controller {
         echo $this->toJson($rs);
     }
 
+    public function listExport() {
+        $rs = $this->model->listar();
+        return $rs;
+    }
+
     public function deletar() {
         $idRacao = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -55,7 +60,7 @@ class racao extends controller implements \interfaces\controller {
     public function interromperRacao() {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
-        
+
         $rs = $this->model->interromperRacao($request);
 
         echo $this->toJson($rs);
@@ -67,6 +72,13 @@ class racao extends controller implements \interfaces\controller {
         $rs = $this->model->listRacaoByAnimal($idAnimal);
 
         echo $this->toJson($rs);
+    }
+
+    public function exportar() {
+        $rs = $this->listExport();
+
+        $export = new \utils\pdf();
+        $export->export($rs);
     }
 
 }

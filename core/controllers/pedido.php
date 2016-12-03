@@ -35,7 +35,6 @@ class pedido extends controller implements \interfaces\controller {
       $dados = array();
       if (isset($_POST['salvarAnimal'])) {
       $dados = array(
-      'apelido' => $_POST['apelido'],
       'dataNascimento' => $_POST['dataNascimento'],
       'custo' => $_POST['custo'],
       'statusVenda' => $_POST['statusVenda'],
@@ -66,13 +65,13 @@ class pedido extends controller implements \interfaces\controller {
 
         echo $this->toJson($rs);
     }
-    
-    public function estornarCancelarPedido(){
+
+    public function estornarCancelarPedido() {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
-        
+
         $rs = $this->model->estornarCancelarPedido($request);
-        
+
         echo $this->toJson($rs);
     }
 
@@ -82,12 +81,22 @@ class pedido extends controller implements \interfaces\controller {
     public function getAnimalByPedido() {
         if (!empty($_GET['id']) && (int) $_GET['id'] > 0) {
             $id = $_GET['id'];
-            
+
             $rs = array(
                 'animal' => $this->model->getAnimalByPedido($id),
-                'selected' => $this->model->getAnimalSelected($id)
+                'selected' => $this->model->getAnimalSelected($id),
+                'valorTotal' => $this->model->getValorTotal($id)
             );
         }
+        echo $this->toJson($rs);
+    }
+
+    public function getValorTotal() {
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
+
+        $rs = $this->model->getValorTotal($request['idPedido']);
+
         echo $this->toJson($rs);
     }
 
@@ -97,6 +106,11 @@ class pedido extends controller implements \interfaces\controller {
     public function listar() {
         $dados = $this->model->listar();
         echo $this->toJson($dados);
+    }
+
+    public function listExport() {
+        $dados = $this->model->listar();
+        return $dados;
     }
 
     /**
@@ -121,6 +135,14 @@ class pedido extends controller implements \interfaces\controller {
         $rs = $this->model->listarClientes();
 
         echo $this->toJson($rs);
+    }
+
+    public function exportar() {
+        $rs = $this->listExport();
+
+        $export = new \utils\pdf();
+
+        $export->export($rs);
     }
 
 }

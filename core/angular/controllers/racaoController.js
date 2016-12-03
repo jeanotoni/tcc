@@ -1,6 +1,6 @@
 (function () {
     'user-strict';
-    angular.module("tcc").controller("racaoController", function ($scope, vacinaService, racaoService) {
+    angular.module("tcc").controller("racaoController", function ($scope, racaoService) {
 
         // Listagem das vacinas cadastradas
         var listarRacao = function () {

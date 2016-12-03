@@ -119,6 +119,7 @@ class racao extends model implements \interfaces\model {
             'racaoItem.quantidade',
             'racaoItem.dataInicial',
             'racaoItem.dataFinal',
+            'racaoItem.statusRacaoItem',
             'racao.nome as racao',
             'racao.unidadeMedida'
         );

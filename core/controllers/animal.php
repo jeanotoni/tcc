@@ -43,12 +43,12 @@ class animal extends controller implements \interfaces\controller {
         $dados = (array) json_decode($input);
 
         $info = $this->model->salvar($dados);
-        
+
         $rs = array(
             'id' => $info['lastId'],
             'updated' => $info['updated']
         );
-        
+
         echo $this->toJson($rs);
     }
 
@@ -66,7 +66,6 @@ class animal extends controller implements \interfaces\controller {
 //        $dados = array();
 //        if (isset($_POST['salvarAnimal'])) {
 //            $dados = array(
-//                'apelido' => $_POST['apelido'],
 //                'dataNascimento' => $_POST['dataNascimento'],
 //                'custo' => $_POST['custo'],
 //                'statusVenda' => $_POST['statusVenda'],
@@ -95,6 +94,11 @@ class animal extends controller implements \interfaces\controller {
         $rs = $this->model->listAll();
         echo $this->toJson($rs);
     }
+    
+    public function listExport() {
+        $rs = $this->model->listAll();
+        return $rs;
+    }
 
     public function deletar() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -103,11 +107,17 @@ class animal extends controller implements \interfaces\controller {
 
         if ($rs) {
             return true;
-//            echo 'Animal excluido com sucesso!';
         } else {
             return false;
-//            echo 'Falha ao deletar animal!';
         }
+    }
+
+    public function exportar() {
+        $rs = $this->listExport();
+        
+        $export = new \utils\pdf();
+        
+        $export->export($rs);
     }
 
 }

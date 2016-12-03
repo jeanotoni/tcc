@@ -46,7 +46,7 @@ class cliente extends controller implements \interfaces\controller {
         $idCliente = isset($_GET['id']) ? $_GET['id'] : null;
 
         $rs = $this->model->deletar($idCliente);
-        
+
         if ($rs) {
             return true;
 //            echo 'Cliente excluído com sucesso!';
@@ -54,6 +54,23 @@ class cliente extends controller implements \interfaces\controller {
             return false;
 //            echo 'Falha ao deletar Cliente!';
         }
+    }
+
+    /**
+     * ESTADOS / CIDADES
+     */
+    public function getEstado() {
+        $rs = $this->model->getEstado();
+
+        echo $this->toJson($rs);
+    }
+    
+    public function getCidadeByEstado() {
+        $idEstado = isset($_GET['id']) ? $_GET['id'] : null;
+        
+        $rs = $this->model->getCidadeByEstado($idEstado);
+
+        echo $this->toJson($rs);
     }
 
 }

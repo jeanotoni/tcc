@@ -7,6 +7,15 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
     };
     listPedido();
 
+//    $scope.getValorTotal = function (idPedido){
+//        var param = {
+//            idPedido: idPedido
+//        };
+//        pedidoService.getValorTotal(param).then(function (response){
+//            $scope.valorTotal = response.data;
+//        });
+//    };
+
     // Utiliza requisição do service do cliente para listar os clientes no combobox
     var listarClientes = function () {
         clienteService.listarIdNomeCliente().then(function (response) {
@@ -17,7 +26,6 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
 
     var listAnimal = function () {
         animalService.listAnimal().then(function (response) {
-            console.log(response.data);
             $scope.animais = response.data;
         });
     };
@@ -25,9 +33,11 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
     var getAnimalByPedido = function (idPedido) {
         pedidoService.getAnimalByPedido(idPedido).then(function (response) {
             // valido antes para não atribuir nulo à $scope.list caso não haja nada em selecteds
-            $scope.list = response.data.selected;
+
+            if (response.data.selected) {
+                $scope.list = response.data.selected;
+            }
             $scope.animais = response.data.animal;
-            console.log($scope.list);
         });
     };
 
@@ -43,10 +53,12 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
             $scope.btnIcon = 'pencil';
             $scope.titleModal = "Editar Pedido";
             $scope.btnSalvar = "EDITAR";
+            $scope.list = {};
             $scope.model = angular.copy(pedido);
             $scope.model.dataEmissao = new Date($scope.model.dataEmissao);
             getAnimalByPedido($scope.model.id);
-        } else {$scope.btnIcon = 'check';
+        } else {
+            $scope.btnIcon = 'check';
             $scope.titleModal = "Inserir Pedido";
             $scope.btnSalvar = "SALVAR";
             $scope.model = {
@@ -65,6 +77,7 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
             itens: $scope.list,
             model: $scope.model
         };
+        console.log($scope.list);
         pedidoService.salvarPedido(params).then(function (response) {
             $('#newPedido').closeModal();
 
@@ -74,7 +87,7 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
                 Materialize.toast('Pedido Cod. ' + $scope.model.id + ' EDITADO com sucesso!', 4000, 'toast-success');
             }
             $scope.model = {};
-            $scope.list = [];
+            $scope.list = {};
             listPedido();
             // $scope.formPedido.$setPristine();
         });

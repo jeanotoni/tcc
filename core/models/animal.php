@@ -97,18 +97,18 @@ class animal extends model implements \interfaces\model {
     }
 
     /**
-     * Lista todos os animais da base e não precisa mais levar em consideração o statusVenda, pois agora o usuário
-     * pode alternar a visualização clicando em aberto, vendido ou todos.
+     * Lista os animais e leva em consideração o status da venda pegando somente os abertos para listar dentro do modal de
+     * adicionar pedido.
      * @method listar
      * @date 17/08/2016
      * @return $rs
      */
     public function listar() {
-//        $w = array(
-//            "statusVenda = ?" => 0
-//        );
+        $w = array(
+            "statusVenda = ?" => 0
+        );
 
-        $rs = $this->select()->exec('ALL');
+        $rs = $this->select()->where($w)->exec('ALL');
         $info = $this->getProperties();
 
         if ($info['error'] == 0) {
@@ -119,14 +119,13 @@ class animal extends model implements \interfaces\model {
     }
 
     /**
-     * Lista todos os animais da base sem levar em considerção seu status
+     * Lista todos os animais da base e não precisa mais levar em consideração o statusVenda, pois agora o usuário
+     * pode alternar a visualização clicando em aberto, vendido ou todos.
      * @date 15/11/2016
      */
     public function listAll() {
-        $s = array('id');
-
         $this->setTable('animal');
-        $rs = $this->select($s)->exec('ALL');
+        $rs = $this->select()->exec('ALL');
 
         $info = $this->getProperties();
 

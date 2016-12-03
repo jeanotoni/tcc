@@ -3,7 +3,7 @@ angular.module("tcc").service("animalService", function ($http) {
     this.listAnimal = function () {
         return $http.get('/animal/listar/');
     };
-    
+
     this.listAll = function () {
         return $http.get('/animal/listAll/');
     };
@@ -19,13 +19,18 @@ angular.module("tcc").service("animalService", function ($http) {
     this.insertMultiple = function (animal) {
         return $http.post('/animal/insertMultiple/', animal);
     };
-    
+
 //    this.details = function (){
 //        return $http.get('/animal/animalDetails/');
 //    };
-    
-    this.getAnimalById = function (){
+
+    this.getAnimalById = function () {
         return $http.get('/animal/getAnimalById/');
+    };
+
+    this.export = function () {
+//        alert('oi');
+        return $http.get('/animal/exportar/');
     };
 
 });

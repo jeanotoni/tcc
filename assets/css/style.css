@@ -78,7 +78,9 @@ h1.title-modal {
 .icon-close-modal{
     font-size: 20px !important;
 }
+
 #newAnimal,
+#newClient,
 #aplicar-vacina-modal,
 #details-modal,
 #newPedido.modal{
@@ -150,7 +152,7 @@ select{
     border-radius: 3px;
 }
 .visualizacao-animal .active{
-    padding: 10px 15px !important;
+    /*padding: 10px 15px !important;*/
     filter: grayscale(0%);
     opacity: 1;
 }
@@ -165,7 +167,7 @@ select{
 }
 
 .activeAba{
-    padding: 10px 15px !important;
+    /*padding: 10px 15px !important;*/
     filter: grayscale(0%) !important;
     opacity: 1 !important;
 
@@ -174,4 +176,9 @@ select{
 .invalid-form{
     border-bottom: 1px solid red !important;
     box-shadow: 0 0.1px 0 0 red !important;
+}
+
+.input-valor-animal{
+    height: 17px !important;
+    margin: 0 !important;
 }
