@@ -97,18 +97,24 @@
          * troca de aba para aba 'Ração' somente quando for uma inserção.
          */
         $scope.addAnimal = function () {
-            animalService.addAnimal($scope.edit).then(function (response) {
-                if (response.data.id) {
-                    Materialize.toast('Animal Cod. ' + response.data.id + ' salvo com sucesso!', 4000, 'toast-success');
-                    $scope.edit.id = response.data.id;
-                    listAnimal();
-                } else {
-                    Materialize.toast('Falha ao salvar animal Cod. ' + response.data.id, 4000, 'toast-error');
+            if ($scope.formAnimal.$invalid) {
+                if ($scope.formAnimal.$error.required[0]) {
+                    Materialize.toast('O campo ' + getDataLabel($scope.formAnimal.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
                 }
-                if (!response.data.updated) {
-                    $scope.alterAba(2);
-                }
-            });
+            } else {
+                animalService.addAnimal($scope.edit).then(function (response) {
+                    if (response.data.id) {
+                        Materialize.toast('Animal Cod. ' + response.data.id + ' salvo com sucesso!', 4000, 'toast-success');
+                        $scope.edit.id = response.data.id;
+                        listAnimal();
+                    } else {
+                        Materialize.toast('Falha ao salvar animal Cod. ' + response.data.id, 4000, 'toast-error');
+                    }
+                    if (!response.data.updated) {
+                        $scope.alterAba(2);
+                    }
+                });
+            }
         };
 
         $scope.deletar = function (id) {
@@ -183,8 +189,9 @@
          */
         $scope.addRacao = function () {
             if ($scope.formRacao.$invalid) {
-                // console.log($scope.formRacao);
-                Materialize.toast('Preencha os campos obrigatórios!', 3000, 'toast-error');
+                if ($scope.formRacao.$error.required[0]) {
+                    Materialize.toast('O campo ' + getDataLabel($scope.formRacao.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
+                }
             } else {
                 var params = {
                     model: $scope.model,
@@ -201,6 +208,13 @@
                 });
             }
         };
+
+        var getDataLabel = function (name) {
+            var label = $('[id="' + name + '"]').attr('data-label');
+            console.log(label);
+            return label;
+        };
+
 
         $scope.interromperRacao = function (idRacaoItem) {
             var params = {

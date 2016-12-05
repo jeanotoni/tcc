@@ -18,7 +18,7 @@
                 </div>
                 <div class="row">
                     <div class="col s12">
-                        <form method="POST" action="#">
+                        <form method="POST" action="#" name="formAnimal">
                             <div class="row" ng-show="!edit.id">
                                 <div class="col s6">
                                     <p>
@@ -28,47 +28,39 @@
                                 </div>
                             </div>
                             <div ng-show="!chekboxInsert">
-<!--                                <div class="col s12 m6">
-                                    <label class="active" for="apelido">Apelido</label>
-                                    <input class="validate" id="apelido" type="text" name="apelido" ng-model="edit.apelido" required/>
-                                </div>-->
                                 <div class="col s12 m6">
                                     <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
+                                    <input class="validate" type="date" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" name="dataNascimento" id="dataNascimento" data-label="Data de Nascimento" placeholder="Digite a data de nascimento" ng-required="true" ng-class="{'invalid-form': formAnimal.dataNascimento.$error.required}"/>
                                 </div>
                                 <div class="col s12 m6">
                                     <label class="active" for="custo">Custo</label>
-                                    <input class="validate" type="number" name="custo" ng-model="edit.custo" required/>
+                                    <input class="validate" type="number" ng-model="edit.custo" name="custo" id="custo" data-label="Custo" placeholder="Digite a preço pago pelo animal" ng-required="true" ng-class="{'invalid-form': formAnimal.custo.$error.required}"/>
                                 </div>
-                                <!-- <div class="col s12 m6">
-                                    <label class="active" for="statusVenda">Status de Venda</label>
-                                    <input class="validate" type="text" name="statusVenda" ng-model="edit.statusVenda" required/>
-                                </div>-->
                                 <div class="col s12 m6">
                                     <label class="active" for="origem">Origem</label>
-                                    <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
+                                    <input class="validate" type="text" ng-model="edit.origem" name="origem" id="origem" data-label="Origem" placeholder="Digite a origem do animal" ng-required="true" ng-class="{'invalid-form': formAnimal.origem.$error.required}"/>
                                 </div>
                                 <div class="col s12">
                                     <label class="active" for="observacao">Observação</label>
-                                    <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="edit.observacao"></textarea>
+                                    <textarea id="observacao" class="validate" type="textarea" ng-model="edit.observacao" name="observacao" placeholder="Digite a observação"></textarea>
                                 </div>
                             </div>
-                            <div ng-show="chekboxInsert">
+                            <div ng-if="chekboxInsert">
                                 <div class="col s12 m6">
                                     <label class="active" for="statusVenda">Quantidade</label>
-                                    <input class="validate" type="number" name="quantidade" ng-model="edit.quantidade" placeholder="Digite a quantidade" required/>
+                                    <input class="validate" type="number" ng-model="edit.quantidade" name="quantidade" id="quantidade" data-label="Quantidade" placeholder="Digite a quantidade de animais" ng-required="true" ng-class="{'invalid-form': formAnimal.quantidade.$error.required}"/>
                                 </div>
                                 <div class="col s12 m6">
                                     <label class="active" for="custoTotal">Custo Total</label>
-                                    <input class="validate" type="number" name="custoTotal" ng-model="edit.custoTotal" placeholder="Será divido pela quantidade" required/>
+                                    <input class="validate" type="number" ng-model="edit.custoTotal" name="custoTotal" id="custoTotal" data-label="custoTotal" placeholder="Será divido pela quantidade" ng-required="true" ng-class="{'invalid-form': formAnimal.custoTotal.$error.required}"/>
                                 </div>
                                 <div class="col s12 m6">
                                     <label class="active" for="origem">Origem</label>
-                                    <input class="validate" type="text" name="origem" ng-model="edit.origem" required/>
+                                    <input class="validate" type="text" ng-model="edit.origem" name="origem" id="origem" data-label="origem" placeholder="Digite a origem dos animais" ng-required="true" ng-class="{'invalid-form': formAnimal.origem.$error.required}"/>
                                 </div>
                                 <div class="col s12 m6">
                                     <label class="active" for="dataNascimento">Data de Nascimento</label>
-                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}" required/>
+                                    <input class="validate" type="date" name="dataNascimento" ng-model="edit.dataNascimento" ng-model-options="{timezone: 'UTC'}"/>
                                 </div>
                             </div>
                         </form>
@@ -98,15 +90,15 @@
                         <form method="POST" action="#" name="formRacao">
                             <div class="col s12 m6">
                                 <label class="active" for="racao">Ração</label>
-                                <select class="browser-default" ng-model="model.idRacao" ng-options="racao.id as racao.nome for racao in racoes" ng-init="resetSelect()"></select>
+                                <select class="browser-default" name="idRacao" id="idRacao" data-label="Ração" ng-model="model.idRacao" ng-options="racao.id as racao.nome for racao in racoes" ng-init="resetSelect()" ng-required="true" ng-class="{'invalid-form': formRacao.idRacao.$error.required}"></select>
                             </div>
                             <div class="col s12 m6">
                                 <label class="active" for="quantidade">Quantidade</label>
-                                <input class="validate" type="number" name="quantidade" ng-model="model.quantidade" placeholder="Digite a quantidade"  ng-required="true" ng-class="{'invalid-form': formRacao.quantidade.$error.required}"/>
+                                <input class="validate" type="number" name="quantidade" id="quantidade" data-label="Quantidade" ng-model="model.quantidade" placeholder="Digite a quantidade" ng-required="true" ng-class="{'invalid-form': formRacao.quantidade.$error.required}"/>
                             </div>
                             <div class="col s12 m6">
                                 <label class="active" for="dataInicial">Data Inicial</label>
-                                <input class="validate" type="date" name="dataInicial" ng-model="model.dataInicial"/>
+                                <input class="validate" type="date" name="dataInicial" id="dataInicial" data-label="Data Inicial" ng-model="model.dataInicial" ng-required="true" ng-class="{'invalid-form': formRacao.dataInicial.$error.required}"/>
                             </div>
                             <div class="col s12 m6" style="padding-top: 20px;">
                                 <a class="btn modal-action waves-effect waves-green brown lighten-1" ng-click="addRacao()" style="width: 100%;">Adicionar</a>
@@ -224,7 +216,7 @@
             <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addPedido()"><i class="mdi mdi-check"></i>Salvar</a>
         </div>
     </div>
-    
+
     <!-- LISTAGEM DOS ANIMAIS -->
     <div class="row">
         <div class="col s12 m6 visualizacao-animal">
