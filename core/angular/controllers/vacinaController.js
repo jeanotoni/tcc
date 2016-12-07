@@ -31,11 +31,26 @@
 
         // Insere vacina no banco
         $scope.addVaccine = function () {
-            vacinaService.addVaccine($scope.model).then(function (response) {
-                if (response.data.id) {
-                    listVaccine();
+            if ($scope.formVacina.$invalid) {
+                if ($scope.formVacina.$error.required[0]) {
+                    Materialize.toast('O campo ' + getDataLabel($scope.formVacina.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
                 }
-            });
+            } else {
+                vacinaService.addVaccine($scope.model).then(function (response) {
+                    if (response.data.id) {
+                        Materialize.toast('Vacina Cod. ' + response.data.id + ' inserida com sucesso!', 3000, 'toast-success');
+                        $('#newVaccine').closeModal();
+                        listVaccine();
+                    } else {
+                        Materialize.toast('Falha ao inserir vacina.', 3000, 'toast-error');
+                    }
+                });
+            }
+        };
+
+        var getDataLabel = function (name) {
+            var label = $('[id="' + name + '"]').attr('data-label');
+            return label;
         };
 
         $scope.delete = function (id) {
@@ -72,7 +87,7 @@
                 }
             });
         };
-        
+
         // Abre modal de aplicação de vacina
         $scope.modalAplicacao = function (aplicacao) {
             $scope.model = {};
@@ -111,19 +126,25 @@
 
         // Utiliza-se para chamar método que salva a aplicação de uma vacina, atualiza listagem e limpa os $scopes
         $scope.vaccinateAnimals = function () {
-            var params = {
-                itens: $scope.list,
-                model: $scope.model
-            };
-            vacinaService.vaccinateAnimals(params).then(function (response) {
-                if (response.data) {
-                    getVaccineApplication();
-                    $('#aplicar-vacina-modal').closeModal();
-                    Materialize.toast('Aplicação realizada com sucesso!', 4000, 'toast-success');
-                    $scope.list = {};
-                    $scope.model = {};
+            if ($scope.formAplicarVacina.$invalid) {
+                if ($scope.formAplicarVacina.$error.required[0]) {
+                    Materialize.toast('O campo ' + getDataLabel($scope.formAplicarVacina.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
                 }
-            });
+            } else {
+                var params = {
+                    itens: $scope.list,
+                    model: $scope.model
+                };
+                vacinaService.vaccinateAnimals(params).then(function (response) {
+                    if (response.data) {
+                        getVaccineApplication();
+                        $('#aplicar-vacina-modal').closeModal();
+                        Materialize.toast('Aplicação realizada com sucesso!', 4000, 'toast-success');
+                        $scope.list = {};
+                        $scope.model = {};
+                    }
+                });
+            }
         };
 
 

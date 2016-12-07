@@ -1,8 +1,7 @@
 <main ng-controller="clienteController">
     <!-- Modal Trigger -->
-    <a class="right waves-effect waves-light btn" ng-click="modal()">
-        <i class="mdi mdi-plus"></i>Novo
-    </a>
+    <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="mdi mdi-plus"></i>Novo</a>
+    <a class="right waves-effect waves-light btn purple" href="/cliente/exportar" target="_blank" ng-if="animais != ''"><i class="mdi mdi-download"></i>Exportar</a>
 
     <!-- MODAL NOVO CLIENTE -->
     <div id="newClient" class="modal">
@@ -11,50 +10,51 @@
             <a href="#" ng-click="closeModal()" style="color: black" class="right icon-close-modal"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
-                    <form method="POST" action="#">
-                        <div class="col s12 m6">
-                            <label class="active" for="nome">Nome</label>
-                            <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
+                    <form name="formClient" method="POST" action="#">
+                        <div class="row no-margin">
+                            <div class="col s12 m6">
+                                <label class="active" for="nome">Nome</label>
+                                <input class="validate" type="text" ng-model="model.nome" name="nome" id="nome" data-label="Nome" placeholder="Digite o nome" ng-required="true" ng-class="{'invalid-form': formClient.nome.$error.required}"/>
+                            </div>
                         </div>
-                        <div class="col s12 m6">
-                            <label class="active" for="cpf">Cpf</label>
-                            <input class="validate" id="cpf" type="text" name="cpf" ng-model="model.cpf" required/>
-                        </div>
+                        <!--                        <div class="col s12 m6">
+                                                    <label class="active" for="cpf">Cpf</label>
+                                                    <input class="validate" ui-br-cpf-mask type="text" ng-model="model.cpf" name="cpf" id="cpf" placeholder="Digite o CPF" data-label="CPF" ng-required="true" ng-class="{'invalid-form': formClient.cpf.$error.required}"/>
+                                                </div>-->
                         <div class="row">
                             <div class="col s12 m6">
                                 <label class="active" for="estado">Estados</label>
-                                <select class="browser-default" ng-model="model.idEstado" ng-change="getCidadeByEstado(model.idEstado)" ng-options="estado.id as estado.nome for estado in estados" ng-init="resetSelect()">
+                                <select class="browser-default" ng-model="model.idEstado" ng-change="getCidadeByEstado(model.idEstado)" ng-options="estado.id as estado.nome for estado in estados" ng-init="resetSelect()" name="idEstado" id="idEstado" data-label="Estado" placeholder="Digite o estado" ng-required="true" ng-class="{'invalid-form': formClient.idEstado.$error.required}">
                                     <option value="">Selecione um estado</option>
                                 </select>
                             </div>
                             <div class="col s12 m6">
                                 <label class="active" for="cidade">Cidades</label>
-                                <select class="browser-default" ng-model="model.idCidade" ng-options="cidade.id as cidade.nome for cidade in cidades" ng-init="resetSelect()">
+                                <select class="browser-default" ng-model="model.idCidade" ng-options="cidade.id as cidade.nome for cidade in cidades" ng-init="resetSelect()" name="idCidade" id="idCidade" data-label="Cidade" placeholder="Digite o cidade" ng-required="true" ng-class="{'invalid-form': formClient.idCidade.$error.required}">
                                     <option value="">Selecione uma cidade</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="endereco">Endereço</label>
-                            <input class="validate" id="endereco" type="text" name="endereco" ng-model="model.endereco" required/>
+                            <input class="validate" type="text" ng-model="model.endereco" name="endereco" id="endereco" data-label="Endereço" placeholder="Digite o endereço" ng-required="true" ng-class="{'invalid-form': formClient.endereco.$error.required}"/>
                         </div>
                         <div class="col s12 m2">
                             <label class="active" for="numeroCasa">N° da Casa</label>
-                            <input class="validate" id="numeroCasa" type="text" name="numeroCasa" ng-model="model.numeroCasa" required/>
+                            <input class="validate" type="text" ng-model="model.numeroCasa" name="numeroCasa" id="numeroCasa"/>
                         </div>
                         <div class="col s12 m4">
                             <label class="active" for="bairro">Bairro</label>
-                            <input class="validate" id="bairro" type="text" name="bairro" ng-model="model.bairro" required/>
+                            <input class="validate" id="bairro" type="text" name="bairro" ng-model="model.bairro"/>
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="telefone">Telefone</label>
-                            <input class="validate" id="telefone" type="text" name="telefone" ng-model="model.telefone" required/>
+                            <input class="validate" ui-br-phone-number id="telefone" type="text" name="telefone" ng-model="model.telefone"/>
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="celular">Celular</label>
-                            <input class="validate" id="celular" type="text" name="celular" ng-model="model.celular" required/>
+                            <input class="validate" ui-br-phone-number type="text" ng-model="model.celular" name="celular" id="celular" data-label="Celular" placeholder="Digite o celular" ng-required="true" ng-class="{'invalid-form': formClient.celular.$error.required}"/>
                         </div>
-
                         <div class="col s12">
                             <label class="active" for="observacao">Observação</label>
                             <textarea id="observacao" class="validate" type="textarea" name="observacao" ng-model="model.observacao"></textarea>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="addClient()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
+            <a class="btn modal-action waves-effect waves-green" ng-click="addClient()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Telefone</th>
+                <th>Celular</th>
                 <th>Data de Cadastro</th>
                 <th>Ações</th>
             </tr>
@@ -81,8 +81,8 @@
         <tbody>
             <tr ng-repeat="cliente in clientes">
                 <td>{{cliente.id}}</td>
-                <td>{{cliente.nome}}</td>                
-                <td>{{cliente.telefone}}</td>                
+                <td>{{cliente.nome}}</td>
+                <td>{{cliente.celular| brPhoneNumber}}</td>
                 <td>{{cliente.dataCadastro| tccDate}}</td>
                 <td><a href="#" ng-click="modal(cliente)">Editar</a> | <a style="cursor: pointer" ng-click="deletar(cliente.id)">Excluir</a></td>
             </tr>

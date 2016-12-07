@@ -68,23 +68,62 @@ class pdf {
             'label' => 'Nome',
             'align' => 'right'
         ),
-        'unidadeMedida' => array(
-            'label' => 'Unidade de Medida',
-            'align' => 'right'
-        ),
         'descricao' => array(
             'label' => 'Descrição',
             'align' => 'right'
         ),
+        'dosagem' => array(
+            'label' => 'Dosagem',
+            'align' => 'right'
+        ),
+        'dataAplicacao' => array(
+            'label' => 'Data de Aplicação',
+            'align' => 'right'
+        ),
+        'vacina' => array(
+            'label' => 'Vacina',
+            'align' => 'right'
+        ),
+        'idVacina' => array(
+            'label' => 'Código',
+            'align' => 'right'
+        ),
+        'endereco' => array(
+            'label' => 'Endereço',
+            'align' => 'right'
+        ),
+        'celular' => array(
+            'label' => 'Celular',
+            'align' => 'right'
+        )
     );
+    public $title;
     public $css = "
             <style>
-                table td {
-                    border: 1px solid #c7c7c7;
+                table {
+                    border: 1px solid #e7e7e7;
                 }
-            
-            </style>
-            ";
+                thead td{
+                    font-weight: bold !important;
+                }
+                table tr:nth-child(odd){
+                    background: #f2f2f2;
+                }
+                .cont{
+                    background: #f2f2f2; 
+                    width: 100%; 
+                    padding: 20px 0;
+                }
+                .cont p{
+                    margin: 0 !important; 
+                    float: left;
+                }
+                .teste{
+                    text-align: right; 
+                    font-size: 27px;
+                    font-weight: bold; 
+                }
+            </style>";
 
     // use Dompdf\Dompdf;
 
@@ -94,7 +133,7 @@ class pdf {
     }
 
     private function verifyIgnore($key) {
-        $ignore = array('idCliente', 'dataCriacao', 'observacao', 'descricao');
+        $ignore = array('idCliente', 'dataCriacao', 'observacao', 'descricao', 'numeroCasa', 'telefone', 'bairro', 'cpf', 'idEstado', 'idCidade');
 
         if (!in_array($key, $ignore)) {
             return true;
@@ -116,8 +155,11 @@ class pdf {
         return $pdf;
     }
 
-    public function export($rs) {
-        $pdf = '<table width="100%" cellpadding="5px" cellspacing="0">';
+    public function export($rs, $title) {
+        $pdf = '<p>Gerado por: Agro Boi <br><span class="teste">' . $title . '<span></p>';
+        
+        $pdf .= '<table width="100%" cellpadding="5px" cellspacing="0">';
+        
         $pdf .= $this->getHead($rs);
 
         $pdf .= '<tbody>';
@@ -138,8 +180,13 @@ class pdf {
         }
         $pdf .= '</tbody></table>';
 
-        echo $pdf;
-        exit();
+        date_default_timezone_set('America/Sao_Paulo');
+
+        $pdf .= '<div style="width: 100%; background: #f2f2f2; position: absolute; bottom: 0">
+                    <div style="text-align: right">' . date('d/m/Y H:i:s') . '</div>
+                </div>';
+//        echo $pdf;
+//        exit();
 
         $this->dompdf->loadHtml($pdf);
         $this->dompdf->setPaper('A4', 'landscape');

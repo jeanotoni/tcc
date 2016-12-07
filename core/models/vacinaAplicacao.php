@@ -120,7 +120,7 @@ class vacinaAplicacao extends model implements \interfaces\model {
             'vacinaItem.*',
             'vacina.nome as nomeVacina'
         );
-        
+
         $j = array(
             array(
                 'table' => 'vacinaItem',
@@ -170,6 +170,24 @@ class vacinaAplicacao extends model implements \interfaces\model {
         } else {
             return false;
         }
+    }
+
+    public function listar() {
+        $s = array(
+            'vacina.id as idVacina',
+            'vacina.nome as vacina'
+        );
+        
+        $this->setTable('vacinaAplicacao');
+        
+        $j = array(
+            'table' => 'vacina',
+            'cond' => 'vacina.id = vacinaAplicacao.idVacina'
+        );
+
+        $rs = $this->select($s)->join($j)->orderBy('vacinaAplicacao.id DESC')->exec('ALL');
+        
+        return $rs;
     }
 
 }

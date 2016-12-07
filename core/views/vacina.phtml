@@ -1,8 +1,7 @@
 <main ng-controller="vacinaController">
     <!-- Modal Trigger -->
-    <a class="right waves-effect waves-light btn" ng-click="modal()">
-        <i class="mdi mdi-plus"></i>Novo
-    </a>
+    <a class="right waves-effect waves-light btn" ng-click="modal()"><i class="mdi mdi-plus"></i>Novo</a>
+    <a class="right waves-effect waves-light btn purple" href="/vacina/exportar" target="_blank" ng-if="animais != ''"><i class="mdi mdi-download"></i>Exportar</a>
 
     <!-- MODAL NOVA VACINA-->
     <div id="newVaccine" class="modal">
@@ -11,26 +10,22 @@
             <a href="#" ng-click="closeModal()" style="color: black" class="right icon-close-modal"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
-                    <form method="POST" action="#">
+                    <form name="formVacina" method="POST" action="#">
                         <br/>
                         <div class="col s12 m6">
                             <label class="active" for="nome">Nome</label>
-                            <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
+                            <input class="validate" type="text" ng-model="model.nome"  name="nome" id="nome" data-label="Nome" placeholder="Digite o nome" ng-required="true" ng-class="{'invalid-form': formVacina.nome.$error.required}"/>
                         </div>
-<!--                        <div class="col s6">
-                            <label class="active" for="custo">Custo</label>
-                            <input class="validate" type="number" name="custo" ng-model="model.custo" required/>
-                        </div>-->
                         <div class="col s12 m6">
                             <label class="active" for="dosagem">Dosagem por Quilo (ml)</label>
-                            <input class="validate" type="number" name="dosagem" ng-model="model.dosagem"/>
+                            <input class="validate" ui-number-mask type="text" name="dosagem" ng-model="model.dosagem"/>
                         </div>
                         <div class="col s12">
                             <label class="active" for="descricao">Descrição</label>
                             <textarea id="descricao" class="validate" type="textarea" name="descricao" ng-model="model.descricao"></textarea>
                         </div>                        
                         <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green"  ng-show="!chekboxInsert" ng-click="addVaccine()">Salvar Vacina</a>
+                            <a class="btn modal-action waves-effect waves-green"  ng-show="!chekboxInsert" ng-click="addVaccine()">Salvar Vacina</a>
                         </div>
                     </form>
                 </div>

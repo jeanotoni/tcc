@@ -14,7 +14,7 @@ class cliente extends model implements \interfaces\model {
     public function listar() {
         $this->setTable('cliente');
         $rs = $this->select()->orderBy('id DESC')->exec('ALL');
-
+        
         $info = $this->getProperties();
 
         if ($info['error'] == 0) {

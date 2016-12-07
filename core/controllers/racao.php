@@ -51,8 +51,18 @@ class racao extends controller implements \interfaces\controller {
     public function addRacaoByAnimal() {
         $input = file_get_contents('php://input');
         $request = (array) json_decode($input);
-
+//        debug($request);
         $rs = $this->model->addRacaoByAnimal($request);
+
+        echo $this->toJson($rs);
+    }
+
+    
+    public function addRacaoMultipleAnimal() {
+        $input = file_get_contents('php://input');
+        $request = (array) json_decode($input);
+        
+        $rs = $this->model->addRacaoMultipleAnimal($request);
 
         echo $this->toJson($rs);
     }
@@ -76,9 +86,11 @@ class racao extends controller implements \interfaces\controller {
 
     public function exportar() {
         $rs = $this->listExport();
+        
+        $title = 'Relatório de Rações';
 
         $export = new \utils\pdf();
-        $export->export($rs);
+        $export->export($rs, $title);
     }
 
 }

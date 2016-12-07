@@ -139,10 +139,12 @@ class pedido extends controller implements \interfaces\controller {
 
     public function exportar() {
         $rs = $this->listExport();
+        
+        $title = 'Relatório de Pedidos';
 
         $export = new \utils\pdf();
 
-        $export->export($rs);
+        $export->export($rs, $title);
     }
 
 }

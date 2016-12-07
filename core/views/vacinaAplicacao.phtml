@@ -1,7 +1,6 @@
 <main ng-controller="vacinaController">
-    <a class="right waves-effect waves-light btn" ng-click="modalAplicacao()" style="margin-right: 10px;">
-        <i class="mdi mdi-needle"></i>Nova Aplicação
-    </a>
+    <a class="right waves-effect waves-light btn" ng-click="modalAplicacao()" style="margin-right: 10px;"><i class="mdi mdi-needle"></i>Nova Aplicação</a>
+    <a class="right waves-effect waves-light btn purple" href="/vacinaAplicacao/exportar" target="_blank" ng-if="animais != ''"><i class="mdi mdi-download"></i>Exportar</a>
 
     <!-- MODAL APLICAR VACINA -->
     <div id="aplicar-vacina-modal" class="modal">
@@ -10,22 +9,27 @@
             <a href="#" ng-click="closeModal()" style="color: black" class="icon-close-modal right"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
-                    <form method="POST" action="#">
+                    <form name="formAplicarVacina" method="POST" action="#">
                         <div class="col s12 m6">
                             <label class="active" for="vacina">Vacina</label>
-                            <select class="browser-default" ng-model="model.idVacina" ng-options="vacina.id as vacina.nome for vacina in vacinas" ng-init="resetSelect()">
+                            <select class="browser-default" ng-model="model.idVacina" ng-options="vacina.id as vacina.nome for vacina in vacinas" ng-init="resetSelect()" name="idVacina" id="idVacina" data-label="Vacina" ng-required="true" ng-class="{'invalid-form': formAplicarVacina.idVacina.$error.required}">
                                 <option value="">Selecione uma vacina</option>
                             </select>
                         </div>
                         <div class="col s12 m6">
                             <label class="active" for="dataAplicacao">Data da Aplicação</label>
-                            <input class="validate" type="date" name="dataAplicacao" ng-model="model.dataAplicacao" ng-model-options="{timezone: 'UTC'}" required/>
+                            <input class="validate" type="date" ng-model="model.dataAplicacao" ng-model-options="{timezone: 'UTC'}" name="dataAplicacao" id="dataAplicacao" data-label="Data da Aplicação" ng-required="true" ng-class="{'invalid-form': formAplicarVacina.dataAplicacao.$error.required}"/>
                         </div>
                         <div class="col s12">
                             <label class="active" for="descricao">Descrição</label>
                             <textarea class="validate" type="textarea" name="descricao" ng-model="model.descricao"></textarea>
                         </div>
-                        <div class="col s12">
+
+                        <div class="col s12" ng-show="animais == ''"><br/>
+                            <p class="center">Você não tem nenhum animal cadastrado no momento. Vá até animais, cadastre algum e volte para completar a aplicação!</p><br/>
+                        </div>
+
+                        <div class="col s12" ng-show="animais != ''">
                             <!--{{list}}-->
                             <br>
                             <label class="active">Animais</label>
@@ -38,7 +42,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="vaccinateAnimals()"><i class="mdi mdi-check"></i>Adicionar Aplicação</a>
+                            <a class="btn modal-action waves-effect waves-green" ng-click="vaccinateAnimals()"><i class="mdi mdi-check"></i>Adicionar Aplicação</a>
                         </div>
                     </form>
                 </div>

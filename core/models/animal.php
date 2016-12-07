@@ -30,7 +30,7 @@ class animal extends model implements \interfaces\model {
         if (empty($dados['id'])) {
             $this->insert($dados)->exec();
             $rs = $this->getProperties();
-                        
+
             $rs['updated'] = false;
 
             if ($rs['error'] == 0) {
@@ -56,7 +56,7 @@ class animal extends model implements \interfaces\model {
 
             $rs['lastId'] = $id;
             $rs['updated'] = true;
-            
+
             if ($rs['error'] == 0) {
                 return $rs;
             } else {
@@ -86,13 +86,19 @@ class animal extends model implements \interfaces\model {
         // remove data de nascimento que já vem setada por padrão no formulário
         unset($dados['dataNascimento']);
         if (empty($dados['id'])) {
+            $lastIds = array();
             for ($i = 0; $i < $quantidade; $i++) {
                 $this->insert($dados)->exec();
                 $rs = $this->getProperties();
-                if ($rs['error'] === 1) {
+
+                $lastIds[] = $rs['lastId'];
+                if ($rs['error'] == 1) {
                     return false;
                 }
             }
+            return $lastIds;
+//            $racao = new \models\racao();
+//            $racao->addRacaoMultipleAnimal($dados, $lastIds);
         }
     }
 

@@ -8,8 +8,7 @@
 	<script src="../releases/angular-input-masks-dependencies.js"></script>
 	<script src="../releases/angular-input-masks.js"></script>
 	<script>
-		angular.module('demo', ['ui.utils.masks'])
-			.controller('ctrl', function ctrl($scope) {
+		angular.module('demo', ['ui.utils.masks']).controller('ctrl', function ctrl($scope) {
 				$scope.numberWith2Decimals = -1234.178;
 				$scope.percentageWithDefaultDecimals = 0.7654;
 
@@ -42,8 +41,8 @@
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-number-mask</h2>
-		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
-		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<input type="text" name="field21" ng-model="numberWithoutGroupSep" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGroupSep"></span> - {{form.field21.$error}}
 		<br>
 		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ui-number-mask> <br>
 		<span ng-bind="numberWithDefaultDecimals"></span>

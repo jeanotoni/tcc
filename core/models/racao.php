@@ -84,20 +84,39 @@ class racao extends model implements \interfaces\model {
             return false;
         }
     }
-    
-    public function interromperRacao($request){
+
+    /**
+     * Método para adicionar ração à multiplos animais depois de usar a funcionalidade addMultiplesAnimais()
+     */
+    public function addRacaoMultipleAnimal($request) {
+        foreach ($request['arrAnimais'] as $key => $idAnimal) {
+            $request['model']->idAnimal = $idAnimal;
+
+            $this->setTable('racaoItem');
+
+            $this->insert($request['model'])->exec();
+            $info = $this->getProperties();
+
+            if ($info['error'] == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function interromperRacao($request) {
         $u = array(
             'statusRacaoItem' => 1,
             'dataFinal' => $request['dataFinal']
         );
-        
+
         $w = array(
             'id = ?' => $request['idRacaoItem']
         );
-        
+
         $this->setTable('racaoItem');
         $this->update($u)->where($w)->exec();
-        
+
         $info = $this->getProperties();
 
         if ($info['error'] == 0) {
@@ -120,19 +139,18 @@ class racao extends model implements \interfaces\model {
             'racaoItem.dataInicial',
             'racaoItem.dataFinal',
             'racaoItem.statusRacaoItem',
-            'racao.nome as racao',
-            'racao.unidadeMedida'
+            'racao.nome as racao'
         );
-        
+
         $w = array(
             'idAnimal = ?' => $idAnimal
         );
-        
+
         $j = array(
             'table' => 'racao',
             'cond' => 'racao.id = racaoItem.idRacao'
         );
-        
+
         $this->setTable('racaoItem');
 
         $rs = $this->select($s)->join($j)->where($w)->exec('ALL');
@@ -144,8 +162,5 @@ class racao extends model implements \interfaces\model {
             return false;
         }
     }
-    
-    
-    
 
 }

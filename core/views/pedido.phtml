@@ -14,37 +14,35 @@
                 </h1>
                 <div class="row">
                     <div class="col s12">
-                        <div class="col s12 m6">
+                        <div class="col s6">
                             <label class="active" for="numeroDocumento">Nº do Documento</label>
-                            <input class="validate" id="numeroDocumento" type="text" name="numeroDocumento" ng-model="model.numeroDocumento" required/>
+                            <input class="validate" type="text" ng-model="model.numeroDocumento" name="numeroDocumento" id="numeroDocumento" data-label="Número do Documento" placeholder="Digite o número do documento" ng-required="true" ng-class="{'invalid-form': formPedido.numeroDocumento.$error.required}"/>
                         </div>
                         <div class="col s6">
                             <label class="active" for="dataEmissao">Data de Emissão</label>
-                            <input class="validate" type="date" name="dataEmissao" ng-model="model.dataEmissao" ng-model-options="{timezone: 'UTC'}" required/>
+                            <input class="validate" type="date" ng-model="model.dataEmissao" ng-model-options="{timezone: 'UTC'}" name="dataEmissao" id="dataEmissao" data-label="Data de Emissão" ng-required="true" ng-class="{'invalid-form': formPedido.dataEmissao.$error.required}"/>
                         </div>
-                        <!--                        <div class="col s12 m6">
-                                                    <label class="active" for="valorTotal">Valor Total</label>
-                                                    <input class="validate" type="number" name="valorTotal" ng-model="model.valorTotal" required/>
-                                                </div>-->
-                        <div class="col s12 m6">
-                            <label class="active" for="situacao">Clientes</label>
-                            <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()">
+                        <div class="col s6">
+                            <label class="active" for="cliente">Clientes</label>
+                            <select class="browser-default" ng-model="model.idCliente" ng-options="cliente.id as cliente.nome for cliente in clientes" ng-init="resetSelect()" name="idCliente" id="idCliente" data-label="Cliente" ng-required="true" ng-class="{'invalid-form': formPedido.idCliente.$error.required}">
                                 <option value="">Selecione um cliente</option>
                             </select>
                         </div>
-                        <!--{{list}}-->
-                        <div class="col s12" ng-show="model.situacao != 3 && model.situacao != 4">
+                        <div class="col s12" ng-show="animais == ''"><br/>
+                            <p class="center">Você não tem nenhum animal cadastrado no momento. Porém você pode criar o pedido e depois inserir animais nele!</p>
+                        </div>
+
+                        <div class="col s12" ng-show="model.situacao != 3 && model.situacao != 4 && animais != ''">
                             <label class="active" for="animais">Animais</label>
                             <p>Selecione os animais que deseja adicionar ao pedido e em seguida o valor de cada um.</p>
                             <div ng-repeat="animal in animais track by $index">
-                                <!--{{list[animal.id]}}-->
                                 <div class="col s12 m6 l3">
                                     <div class="col s4 m4 l4">
                                         <input ng-model="list[animal.id].status" ng-true-value="1" ng-false-value="0" type="checkbox" id="{{animal.id}}" />
                                         <label for="{{animal.id}}">{{animal.id}}</label>
                                     </div>
                                     <div class="col s8 m8 l8">
-                                        <input type="number" class="input-valor-animal" ng-model="list[animal.id].valorUnitario" ng-show="list[animal.id].status"/>
+                                        <input type="text" ui-money-mask class="input-valor-animal" ng-model="list[animal.id].valorUnitario" ng-if="list[animal.id].status"  placeholder="Valor Unitário"  name="valorUnitario" id="valorUnitario"/>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +54,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn modal-action modal-close waves-effect waves-green" ng-show="model.situacao != 3 && model.situacao != 4" ng-click="addPedido()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
+                <a class="btn modal-action waves-effect waves-green" ng-show="model.situacao != 3 && model.situacao != 4" ng-click="addPedido()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
                 <a class="btn modal-action modal-close waves-effect waves-green blue" ng-show="model.situacao == 1" ng-click="updateStatusPedido(2)"><i class="mdi mdi-cash-multiple"></i> Finalizar</a>
                 <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 1" ng-click="estornarCancelarPedido(3)"><i class="mdi mdi-close"></i> Cancelar</a>
                 <a class="btn modal-action modal-close waves-effect waves-green red" ng-show="model.situacao == 2" ng-click="estornarCancelarPedido(4)"><i class="mdi mdi-block-helper"></i> Estornar</a>
@@ -69,7 +67,7 @@
     <table class="striped centered responsive-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Código</th>
                 <th>Número Documento</th>
                 <th>Cliente</th>
                 <th>Data de Criação</th>

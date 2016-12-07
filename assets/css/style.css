@@ -78,7 +78,7 @@ h1.title-modal {
 .icon-close-modal{
     font-size: 20px !important;
 }
-
+#sell-modal,
 #newAnimal,
 #newClient,
 #aplicar-vacina-modal,
@@ -174,11 +174,22 @@ select{
 }
 
 .invalid-form{
-    border-right: 1px solid red !important;
+    border-right: 4px solid red !important;
     box-shadow: 0 0.1px 0 0 red !important;
 }
 
 .input-valor-animal{
     height: 17px !important;
     margin: 0 !important;
+}
+
+.mensagem-cadastro-vazio{
+    line-height: 30px;
+    float: left; 
+    margin-top: 0;
+}
+
+.contato i {
+    font-size: 30px;
+    text-align: center;
 }

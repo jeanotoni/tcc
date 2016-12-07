@@ -73,24 +73,35 @@ angular.module("tcc").controller("pedidoController", function ($scope, pedidoSer
 
 
     $scope.addPedido = function () {
-        var params = {
-            itens: $scope.list,
-            model: $scope.model
-        };
-        console.log($scope.list);
-        pedidoService.salvarPedido(params).then(function (response) {
-            $('#newPedido').closeModal();
-
-            if (response.data.lastId) {
-                Materialize.toast('Pedido Cod. ' + response.data.lastId + ' SALVO com sucesso!', 4000, 'toast-success');
-            } else {
-                Materialize.toast('Pedido Cod. ' + $scope.model.id + ' EDITADO com sucesso!', 4000, 'toast-success');
+        if ($scope.formPedido.$invalid) {
+            if ($scope.formPedido.$error.required[0]) {
+                Materialize.toast('O campo ' + getDataLabel($scope.formPedido.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
             }
-            $scope.model = {};
-            $scope.list = {};
-            listPedido();
-            // $scope.formPedido.$setPristine();
-        });
+        } else {
+            var params = {
+                itens: $scope.list,
+                model: $scope.model
+            };
+            pedidoService.salvarPedido(params).then(function (response) {
+                $('#newPedido').closeModal();
+
+                if (response.data.lastId) {
+                    Materialize.toast('Pedido Cod. ' + response.data.lastId + ' SALVO com sucesso!', 4000, 'toast-success');
+                } else {
+                    Materialize.toast('Pedido Cod. ' + $scope.model.id + ' EDITADO com sucesso!', 4000, 'toast-success');
+                }
+                $scope.model = {};
+                $scope.list = {};
+                listPedido();
+                // $scope.formPedido.$setPristine();
+            });
+        }
+    };
+
+    var getDataLabel = function (name) {
+        var label = $('[id="' + name + '"]').attr('data-label');
+        console.log(label);
+        return label;
     };
 
     var situation = {

@@ -115,9 +115,10 @@ class animal extends controller implements \interfaces\controller {
     public function exportar() {
         $rs = $this->listExport();
         
-        $export = new \utils\pdf();
+        $title = 'Relatório de Animais';
         
-        $export->export($rs);
+        $export = new \utils\pdf();
+        $export->export($rs, $title);
     }
 
 }

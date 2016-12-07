@@ -4,18 +4,22 @@
  */
 angular.module('tcc').filter('truncate', function ($filter) {
     return function (text, tamanho, mascara) {
-        text += '';
+        if (text == null) {
+            text = '';
+        } else {
+            text += '';
+        }
         var extend = '...';
         if (mascara) {
             extend = mascara;
         }
         var limit = 20;
-        
-        if(tamanho){
+
+        if (tamanho) {
             limit = tamanho;
         }
         var rs = $filter('limitTo')(text, limit);
-        
+
         if (text.length > limit) {
             rs = rs + extend;
         }

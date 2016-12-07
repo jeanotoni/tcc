@@ -36,11 +36,26 @@
 
         // Insere Ração no banco
         $scope.salvarRacao = function () {
-            racaoService.salvarRacao($scope.model).then(function (response) {
-                if (response.data.id) {
-                    listarRacao();
+            if ($scope.formRacao.$invalid) {
+                if ($scope.formRacao.$error.required[0]) {
+                    Materialize.toast('O campo ' + getDataLabel($scope.formRacao.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
                 }
-            });
+            } else {
+                racaoService.salvarRacao($scope.model).then(function (response) {
+                    if (response.data.id) {
+                        Materialize.toast('Ração Cod. '+ response.data.id +' inserida com sucesso!', 3000, 'toast-success');
+                        $('#newRacao').closeModal();
+                        listarRacao();
+                    } else {
+                        Materialize.toast('Falha ao inserir ração.', 3000, 'toast-error');
+                    }
+                });
+            }
+        };
+
+        var getDataLabel = function (name) {
+            var label = $('[id="' + name + '"]').attr('data-label');
+            return label;
         };
 
         $scope.deletar = function (id) {

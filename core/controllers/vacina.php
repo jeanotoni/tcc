@@ -1,5 +1,7 @@
 <?php
+
 // para definir que é um controller
+
 namespace controllers;
 
 class vacina extends controller implements \interfaces\controller {
@@ -40,6 +42,11 @@ class vacina extends controller implements \interfaces\controller {
         $dados = $this->model->listar();
         echo $this->toJson($dados);
     }
+    
+    public function listExport() {
+        $rs = $this->model->listar();
+        return $rs;
+    }
 
     public function deletar() {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -54,5 +61,14 @@ class vacina extends controller implements \interfaces\controller {
             }
         }
     }
-  
+
+    public function exportar() {
+        $rs = $this->listExport();
+
+        $title = 'Relatório de Vacinas';
+
+        $export = new \utils\pdf();
+        $export->export($rs, $title);
+    }
+
 }

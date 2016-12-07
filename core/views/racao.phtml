@@ -10,24 +10,17 @@
             <a href="#" ng-click="closeModal()" style="color: black" class="right icon-close-modal"><i class="mdi mdi-close"></i></a>
             <div class="row">
                 <div class="col s12">
-                    <form method="POST" action="#">
+                    <form name="formRacao" method="POST" action="#">
                         <div class="col s12 m6">
                             <label class="active" for="nome">Nome</label>
-                            <input class="validate" id="nome" type="text" name="nome" ng-model="model.nome" required/>
+                            <input class="validate" type="text" ng-model="model.nome" name="nome" id="nome" data-label="Nome" placeholder="Digite o nome" ng-required="true" ng-class="{'invalid-form': formRacao.nome.$error.required}"/>
                         </div>
-                        <!-- <div class="col s12 m6">
-                            <label class="active" for="unidadeMedida">Unidade de medida</label>
-                            <select class="browser-default" ng-model="model.unidadeMedida" ng-init="resetSelect()">
-                                <option>Quilogramas</option>
-                                <option>Sacaria</option>
-                            </select>
-                        </div>-->
                         <div class="col s12">
                             <label class="active" for="descricao">Descrição</label>
                             <textarea id="descricao" class="validate" type="textarea" name="descricao" ng-model="model.descricao"></textarea>
                         </div>
                         <div class="modal-footer">
-                            <a class="btn modal-action modal-close waves-effect waves-green" ng-click="salvarRacao()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
+                            <a class="btn modal-action waves-effect waves-green" ng-click="salvarRacao()"><i class="mdi mdi-{{btnIcon}}"></i>{{btnSalvar}}</a>
                         </div>
                     </form>
                 </div>
@@ -40,7 +33,6 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Unidade Medida</th>
                 <th>Data de Cadastro</th>
                 <!--<th>Preço</th>-->
                 <th>Ações</th>
@@ -50,7 +42,6 @@
             <tr ng-repeat="racao in racoes| orderBy: '-id'">
                 <td>{{racao.id}}</td>
                 <td>{{racao.nome}}</td>
-                <td>{{racao.unidadeMedida}}</td>
                 <td>{{racao.dataCadastro| tccDate}}</td>
                 <!--<td>{{racao.preco| currency : 'R$ '}}</td>-->
                 <td>

@@ -16,6 +16,10 @@ angular.module("tcc").service("racaoService", function ($http) {
         return $http.post('/racao/addRacaoByAnimal/', racao);
     };
     
+    this.addRacaoMultipleAnimal = function (dados){
+        return $http.post('/racao/addRacaoMultipleAnimal/', dados);
+    };
+    
     this.listRacaoByAnimal = function (idAnimal) {
         return $http.get('/racao/listRacaoByAnimal/'+ idAnimal);
     };

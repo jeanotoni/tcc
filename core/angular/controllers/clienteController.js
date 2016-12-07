@@ -36,11 +36,27 @@ angular.module('tcc').controller("clienteController", function ($scope, clienteS
 
     // Insere cliente no banco e atualiza a listagem
     $scope.addClient = function () {
-        clienteService.addClient($scope.model).then(function (response) {
-            if (response.data.id) {
-                listarCliente();
+        if ($scope.formClient.$invalid) {
+            console.log($scope.formClient);
+            if ($scope.formClient.$error.required[0]) {
+                Materialize.toast('O campo ' + getDataLabel($scope.formClient.$error.required[0].$name) + ' é obrigatório!', 3000, 'toast-error');
             }
-        });
+        } else {
+            clienteService.addClient($scope.model).then(function (response) {
+                if (response.data.id) {
+                    listarCliente();
+                    Materialize.toast('Cliente '+ response.data.id +' adicionado com sucesso!', 4000, 'toast-success');
+                    $('#newClient').closeModal();
+                } else {
+                    Materialize.toast('Falha ao adicionar cliente.', 4000, 'toast-error');
+                }
+            });
+        }
+    };
+
+    var getDataLabel = function (name) {
+        var label = $('[id="' + name + '"]').attr('data-label');
+        return label;
     };
 
     /**
@@ -67,15 +83,13 @@ angular.module('tcc').controller("clienteController", function ($scope, clienteS
     var getEstado = function () {
         clienteService.getEstado().then(function (response) {
             $scope.estados = response.data;
-            console.log(response.data);
         });
     };
     getEstado();
-    
-    $scope.getCidadeByEstado = function (idEstado){
-        clienteService.getCidadeByEstado(idEstado).then(function(response){
+
+    $scope.getCidadeByEstado = function (idEstado) {
+        clienteService.getCidadeByEstado(idEstado).then(function (response) {
             $scope.cidades = response.data;
-            console.log(response.data);
         });
     };
 

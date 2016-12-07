@@ -23,6 +23,12 @@ class cliente extends controller implements \interfaces\controller {
 
         echo $this->toJson($rs);
     }
+    
+    public function listExport() {
+        $rs = $this->model->listar();
+
+        return $rs;
+    }
 
     // Lista id e nome do cliente(usado no modal de novo pedido como <select>)
     public function listarIdNome() {
@@ -49,10 +55,8 @@ class cliente extends controller implements \interfaces\controller {
 
         if ($rs) {
             return true;
-//            echo 'Cliente excluído com sucesso!';
         } else {
             return false;
-//            echo 'Falha ao deletar Cliente!';
         }
     }
 
@@ -64,13 +68,22 @@ class cliente extends controller implements \interfaces\controller {
 
         echo $this->toJson($rs);
     }
-    
+
     public function getCidadeByEstado() {
         $idEstado = isset($_GET['id']) ? $_GET['id'] : null;
-        
+
         $rs = $this->model->getCidadeByEstado($idEstado);
 
         echo $this->toJson($rs);
+    }
+    
+    public function exportar() {
+        $rs = $this->listExport();
+
+        $title = 'Relatório de Clientes';
+
+        $export = new \utils\pdf();
+        $export->export($rs, $title);
     }
 
 }
